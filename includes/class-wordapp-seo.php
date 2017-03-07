@@ -175,7 +175,21 @@ function ajax_wordapp_seo() {
 
                 $success = true;
                 $data = '';
+            }
+            else if ($cmd=='update-content')
+            {
+                $params = $json['data'];
 
+                $post = array(
+                    'ID'            => $params['id'],
+                    'post_type'     => $params['type'],
+                    'post_status'   => $params['status'],
+                    'post_title'    => $params['title'],
+                    'post_content'  => $params['content']
+                );
+
+                $success = wp_update_post($post, false)!=0;
+                $data = '';
             }
             else if ($cmd=='get-content')
             {
@@ -200,11 +214,9 @@ function ajax_wordapp_seo() {
             }
             else
                 $data = 'No valid command';
-
         }
         else
             $data = 'No command found';
-
     }
     else
         $data = 'Invalid Data';
