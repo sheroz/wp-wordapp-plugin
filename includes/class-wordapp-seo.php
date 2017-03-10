@@ -107,45 +107,17 @@ function ajax_wordapp_seo() {
 
             if ($cmd=='get-content-list')
             {
-                /*
-                $args1 = array(
-                    'sort_order' => 'asc',
-                    'sort_column' => 'post_title',
-                    'hierarchical' => 1,
-                    'exclude' => '',
-                    'include' => '',
-                    'meta_key' => '',
-                    'meta_value' => '',
-                    'authors' => '',
-                    'child_of' => 0,
-                    'parent' => -1,
-                    'exclude_tree' => '',
-                    'number' => '',
-                    'offset' => 0,
-                    'post_type' => 'page',
-                    'post_status' => 'publish,private,draft'
-                );
-                */
 
                 $args = array(
-//                    'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
-                    'post_status' => 'publish,pending,draft,future,private,inherit,trash'
+                    'posts_per_page' => -1,
+                    'orderby' => array('type','ID'),
+                    'post_type' => array('post','page'),
+                    'post_status' => 'publish,pending,draft,private,trash'
                 );
+//              'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
 
-                // $pages = get_pages($args);
 
                 $data = array ();
-
-                $pages = get_pages($args);
-                foreach ( $pages as $page ) {
-                    $data[] = array(
-                                'id'    => $page->ID,
-                                'url'   => get_page_link( $page->ID ),
-                                'type'  => $page->post_type,
-                                'title' => $page->post_title,
-                                'status' => get_post_status( $page->ID )
-                              );
-                }
 
                 $posts = get_posts($args);
                 foreach ( $posts as $post ) {
@@ -157,6 +129,7 @@ function ajax_wordapp_seo() {
                         'status' => get_post_status( $post->ID )
                     );
                 }
+                wp_reset_postdata();
 
                 $success = true;
             }
@@ -211,6 +184,28 @@ function ajax_wordapp_seo() {
                         $data = 'Invalid id';
                 } else
                     $data = 'Empty data parameter';
+            }
+            else if ($cmd=='get-media-list')
+            {
+
+                $data = array ();
+
+                $args = array( 'post_type' => 'attachment', 'posts_per_page' => -1, 'post_status' => 'any', 'post_parent' => null );
+                $attachments = get_posts( $args );
+                if ( $attachments ) {
+                    foreach ( $attachments as $post ) {
+                        $data[] = array(
+                            'id'    => $post->ID,
+                            'url'   => get_attachment_link( $post->ID ),
+                            'type'  => $post->post_type,
+                            'title' => $post->post_title,
+                            'status' => get_post_status( $post->ID ),
+                            'metadata' => wp_get_attachment_metadata( $post->ID )
+                        );
+                    }
+                    wp_reset_postdata();
+                }
+                $success = true;
             }
             else
                 $data = 'No valid command';
