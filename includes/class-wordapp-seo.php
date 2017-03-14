@@ -189,19 +189,34 @@ function ajax_wordapp_seo() {
             {
 
                 $data = array ();
+//                $base_url = wp_upload_dir();
+//                $base_url = $base_url['baseurl'];
 
                 $args = array( 'post_type' => 'attachment', 'posts_per_page' => -1, 'post_status' => 'any', 'post_parent' => null );
                 $attachments = get_posts( $args );
                 if ( $attachments ) {
-                    foreach ( $attachments as $post ) {
-                        $data[] = array(
-                            'id'    => $post->ID,
-                            'url'   => get_attachment_link( $post->ID ),
-                            'type'  => $post->post_type,
-                            'title' => $post->post_title,
-                            'status' => get_post_status( $post->ID ),
-                            'metadata' => wp_get_attachment_metadata( $post->ID )
-                        );
+                    foreach ( $attachments as $attachment ) {
+                        $data[] =  wp_prepare_attachment_for_js( $attachment->ID );
+//                        $post_id = $post->ID;
+//                        $metadata = wp_get_attachment_metadata( $post->ID );
+//                        if (!empty($metadata) && !empty($metadata['file']))
+//                        {
+//                            $file_url = $base_url .'/'. $metadata['file'];
+//                            $data[] = array(
+//                                'id'    => $post_id,
+//                                'src'   => $post->guid,
+//                                'type'  => $post->post_mime_type,
+//                                'title' => $post->post_title,
+//                                'status' => get_post_status( $post_id ),
+//                                'metadata' => $metadata,
+//                                'file_url' => $file_url,
+//                                'caption' => $post->post_excerpt,
+//                                'description' => $post->post_content,
+//                                'href' => get_permalink( $post_id ),
+//                                'alt' => get_post_meta( $post_id, '_wp_attachment_image_alt', true ),
+//                                'file' => wp_prepare_attachment_for_js( $post_id )
+//                            );
+//                        }
                     }
                     wp_reset_postdata();
                 }
