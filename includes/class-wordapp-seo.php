@@ -240,6 +240,7 @@ function ajax_wordapp_seo() {
 
                     $wp_filetype = wp_check_filetype($filename, null );
                     $attachment = array(
+                        'post_excerpt' => $caption,
                         'post_mime_type' => $wp_filetype['type'],
                         'post_parent' => $parent_post_id,
                         'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
@@ -252,8 +253,14 @@ function ajax_wordapp_seo() {
 //                        require_once(ABSPATH . "wp-admin" . '/includes/image.php');
                         $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
                         wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+
+                        if ( add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
+                            update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
+                        }
+
                         $success = true;
                         $data = '';
+
                     } else
                         $data = 'File upload error! wp_insert_attachment()';
                 } else
