@@ -90,6 +90,12 @@ function ajax_wordapp_seo() {
         if ($cmd && !empty($cmd))
         {
 
+            if ($cmd=='set-config') {
+                $response['success'] = true;
+                $response['data'] = 'Configuration process started... '; // todo: test only!!!
+                wp_send_json($response);
+            }
+
             if ($cmd=='check-config')
             {
                 // check if security token and config params are set
@@ -250,11 +256,11 @@ function ajax_wordapp_seo() {
 
                     $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $parent_post_id );
                     if (!is_wp_error($attachment_id)) {
-//                        require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                        $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+//                      require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+                        $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
                         wp_update_attachment_metadata( $attachment_id,  $attachment_data );
 
-                        if ( add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
+                        if (add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
                             update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
                         }
 
