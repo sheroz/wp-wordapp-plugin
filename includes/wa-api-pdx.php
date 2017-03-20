@@ -28,17 +28,9 @@ function ajax_wa_pdx() {
 //    if(!empty($_GET['token']))
 //        $log.= "token: " . $_GET['token'] . "\n";
 
-    $response = array(
-        'success' => false,
-        'data'	=> null
-    );
 
-    if(!empty($_GET['check-wordapp-seo']))
-    {
-        $response['success'] = true;
-        $response['data'] = 'Wordapp-SEO Version 0.0.1';
-        wp_send_json($response);
-    }
+    if(!empty($_GET['check-wa-pdx']))
+        wa_pdx_send_response('Wordapp Plugin Version 0.0.1', true);
 
     $is_authorized = ($_POST['token'] && $_POST['token']==$token);
     if ($is_authorized)
@@ -59,8 +51,6 @@ function ajax_wa_pdx() {
     file_put_contents($file, $log, FILE_APPEND);
 
     $cmd = null;
-    $success = false;
-    $data = null;
 
     if($json)
     {
@@ -70,49 +60,58 @@ function ajax_wa_pdx() {
         {
 
             if ( $cmd == WA_API_PDX_CMD_CONFIG_SET ) {
-                $response['success'] = true;
-                $response['data'] = 'Configuration process started... '; // todo: test only!!!
-                wp_send_json($response);
+                // todo: test only!!!
+                wa_pdx_send_response('Configuration process started... ', true);
             }
 
             if ( $cmd == WA_API_PDX_CMD_CONFIG_CHECK )
             {
                 // check if security token and config params are set
-                $response['success'] = true;
-                $response['data'] = 'Configured.';
-                wp_send_json($response);
+                wa_pdx_send_response('Configured.', true);
+
             } else
             {
                 if (!$is_authorized) {
-                    $response['success'] = false;
-                    $response['data'] = 'Not authorized';
-                    wp_send_json($response);
+                    wa_pdx_send_response('Not authorized');
                 }
             }
 
-            if ( $cmd == WA_API_PDX_CMD_CONTENT_GET_LIST )
-                wa_pdx_cmd_content_get_list ();
-            else if ( $cmd == WA_API_PDX_CMD_CONTENT_ADD )
-                wa_pdx_cmd_content_add($json['data']);
-            else if ( $cmd == WA_API_PDX_CMD_CONTENT_UPDATE )
-                wa_pdx_cmd_content_update($json['data']);
-            else if ( $cmd == WA_API_PDX_CMD_CONTENT_GET )
-                wa_pdx_cmd_content_get($json['data']);
-            else if ( $cmd == WA_API_PDX_CMD_MEDIA_GET_LIST )
-                wa_pdx_cmd_media_get_list ();
-            else if ( $cmd == WA_API_PDX_CMD_MEDIA_ADD )
-                wa_pdx_cmd_media_add ($json['data']);
-            else
-                $data = 'No valid command';
+            switch ($cmd) {
+
+                case WA_API_PDX_CMD_CONTENT_GET_LIST:
+                    wa_pdx_cmd_content_get_list();
+                    break;
+
+                case WA_API_PDX_CMD_CONTENT_ADD:
+                    wa_pdx_cmd_content_add($json['data']);
+                    break;
+
+                case WA_API_PDX_CMD_CONTENT_UPDATE:
+                    wa_pdx_cmd_content_update($json['data']);
+                    break;
+
+                case WA_API_PDX_CMD_CONTENT_GET:
+                    wa_pdx_cmd_content_get($json['data']);
+                    break;
+
+                case WA_API_PDX_CMD_MEDIA_GET_LIST:
+                    wa_pdx_cmd_media_get_list();
+                    break;
+
+                case WA_API_PDX_CMD_MEDIA_ADD:
+                    wa_pdx_cmd_media_add($json['data']);
+                    break;
+
+                default:
+                    wa_pdx_send_response('No valid command');
+            }
+
         }
         else
-            $data = 'No command found';
+            wa_pdx_send_response('No command found');
     }
     else
-        $data = 'Invalid Data';
-
-    wa_pdx_send_response($data, $success);
-
+        wa_pdx_send_response('Invalid Data');
 }
 
 function wa_pdx_send_response ($data, $success = false)
@@ -148,7 +147,6 @@ function wa_pdx_cmd_content_get_list ()
     wp_reset_postdata();
 
     wa_pdx_send_response($data, true);
-
 }
 
 function wa_pdx_cmd_content_add ($params)
@@ -177,7 +175,6 @@ function wa_pdx_cmd_content_update ($params)
 
     $success = wp_update_post($post, false)!=0;
     wa_pdx_send_response('', $success);
-
 }
 
 function wa_pdx_cmd_content_get ($params)
@@ -198,7 +195,6 @@ function wa_pdx_cmd_content_get ($params)
             wa_pdx_send_response('Invalid id');
     } else
         wa_pdx_send_response('Empty data parameter');
-
 }
 
 function wa_pdx_cmd_media_add ($params)
@@ -279,5 +275,5 @@ function wa_pdx_cmd_media_get_list ()
         }
         wp_reset_postdata();
     }
-    wa_pdx_send_response('', true);
+    wa_pdx_send_response($data, true);
 }

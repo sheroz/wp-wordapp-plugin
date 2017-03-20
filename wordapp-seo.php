@@ -7,9 +7,9 @@
  * @package           Wordapp_Seo
  *
  * @wordpress-plugin
- * Plugin Name:       Wordapp SEO
- * Plugin URI:        http://wordapp.io/plugins/wordpress-seo
- * Description:       Wordapp is a language-processing platform for SEO and SEM. Wordapp SEO plugin connects your site with Wordapp Platform to create, translate and optimize online content easily and seamlessly.
+ * Plugin Name:       Wordapp
+ * Plugin URI:        http://wordapp.io/plugins/wp
+ * Description:       Wordapp is a language-processing platform for SEO and SEM. Wordapp plugin connects your site with Wordapp Platform to create, translate and optimize online content easily and seamlessly.
  * Version:           0.0.1
  * Author:            Wordapp
  * Author URI:        http://wordapp.io
