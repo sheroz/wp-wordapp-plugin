@@ -183,8 +183,8 @@ class Wordapp_Seo {
         require_once 'wa-api-pdx.php';
 
         $this->loader->run();
-        add_action('wp_ajax_wordapp_seo', 'ajax_wordapp_seo' );
-        add_action('wp_ajax_nopriv_wordapp_seo', 'ajax_wordapp_seo' );
+        add_action('wp_ajax_wa_pdx', 'ajax_wa_pdx' );
+        add_action('wp_ajax_nopriv_wa_pdx', 'ajax_wa_pdx' );
 	}
 
 
