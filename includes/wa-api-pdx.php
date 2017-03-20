@@ -10,8 +10,7 @@ require_once 'wa-api-pdx-const.php';
 function ajax_wa_pdx() {
 
     $token = 'q*ZNLR9+3s!cjfstz.@&KBY@4AerUc36';
-
-    $file = '/tmp/wordapp-seo-debug.log';
+    $log_file = '/tmp/wordapp-seo-debug.log';
 
     $log = "\n=====================\n";
     $log.= "ajax_wordapp_seo():\n";
@@ -48,9 +47,7 @@ function ajax_wa_pdx() {
 
     $log.= "\n";
 
-    file_put_contents($file, $log, FILE_APPEND);
-
-    $cmd = null;
+    file_put_contents($log_file, $log, FILE_APPEND);
 
     if($json)
     {
@@ -59,22 +56,16 @@ function ajax_wa_pdx() {
         if ($cmd && !empty($cmd))
         {
 
-            if ( $cmd == WA_API_PDX_CMD_CONFIG_SET ) {
-                // todo: test only!!!
+            // todo: not completed yet... for response test only!!!
+            if ( $cmd == WA_API_PDX_CMD_CONFIG_SET )
                 wa_pdx_send_response('Configuration process started... ', true);
-            }
 
+            // check if security token and config params are set
             if ( $cmd == WA_API_PDX_CMD_CONFIG_CHECK )
-            {
-                // check if security token and config params are set
                 wa_pdx_send_response('Configured.', true);
 
-            } else
-            {
-                if (!$is_authorized) {
-                    wa_pdx_send_response('Not authorized');
-                }
-            }
+            if (!$is_authorized)
+                wa_pdx_send_response('Not authorized');
 
             switch ($cmd) {
 
@@ -105,7 +96,6 @@ function ajax_wa_pdx() {
                 default:
                     wa_pdx_send_response('No valid command');
             }
-
         }
         else
             wa_pdx_send_response('No command found');
@@ -129,7 +119,7 @@ function wa_pdx_cmd_content_get_list ()
         'post_type' => array('post','page'),
         'post_status' => 'publish,pending,draft,private,trash'
     );
-//              'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
+//  'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
 
     $data = array ();
 
