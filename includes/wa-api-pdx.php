@@ -20,41 +20,15 @@ function ajax_wa_pdx() {
     $log.= $date->format('Y-m-d H:i:s');
     $log.= "\n";
 
-    $log.= "---- begin of headers ----\n";
-    foreach (getallheaders() as $name => $value) {
-        $log.= "$name: $value\n";
-    }
-    $log.= "---- end of headers ----\n";
+//    $log.= "---- begin of headers ----\n";
+//    foreach (getallheaders() as $name => $value) {
+//        $log.= "$name: $value\n";
+//    }
+//    $log.= "---- end of headers ----\n";
 
 //    if(!empty($_GET['token']))
 //        $log.= "token: " . $_GET['token'] . "\n";
 
-
-    // test signature
-    $signed_data = '02cb861f54267b72e01b5f522a904b20ff9bd604d94a039b90d6a8ef1e10006a8ehttp://localhost:3000/api/pdx';
-    $signature_hex_ruby = '8a9e38a3aba180f8424b20e7fe3e3075569032e30ff0fdef29031f0701ebda853b26d8d8bc5f698151780a287072fb78811fb3259f4e2b38e3e5cde82a92f3e58deaf378182821d7b03b0ce7682089eac0b56bb48a02b6a9281154e524056b8b3ccbb6666aca1d5271046dd997e0e627080f757af1db7b80238e7747dcdacd7e2db3409998b3c99474ad02ed5f82ef8118ff5a668604a02a758577fa1d66fdf96afc719a10ca015e3c5327a978c7275f0f88f1c8e84b90cb46dab592abbaa03fdc49dfd703f489124ba43f1283dd939b3ea9dda75c9d68c548ac8e1ad1416c934d6db5563769578c0c8ddc1d9a4fe40cebcb007b5f525a9e0a57faa820234be0';
-    $signature_php ='';
-
-    openssl_sign($signed_data, $signature_php, $PDX_PRV_KEY_PEM_2048, "SHA256");
-
-    $signature_php_hex = pack('H*', $signature_php);
-    echo "RUBY signature: " . $signature_hex_ruby ."\n";
-    echo "PHP signature : " . $signature_php_hex ."\n";
-
-    /*
-        function hex2bin($data) {
-            $len = strlen($data);
-            return pack("H" . $len, $data);
-        }
-     */
-    $ok = openssl_verify($signed_data, $signature_php, $PDX_PUB_KEY_PEM_2048, "SHA256");
-    if ($ok == 1) {
-        echo "PHP signature good";
-    } elseif ($ok == 0) {
-        echo "PHP signature bad";
-    } else {
-        echo "PHP signature ugly, error checking signature";
-    }
 
     if(!empty($_GET['check-wa-pdx']))
         wa_pdx_send_response('Wordapp Plugin Version 0.0.1', true);
@@ -86,7 +60,38 @@ function ajax_wa_pdx() {
 
             // todo: not completed yet... for response test only!!!
             if ( $cmd == WA_API_PDX_CMD_CONFIG_SET )
+            {
+                $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
+
+                // test signature
+                $signed_data = '02cb861f54267b72e01b5f522a904b20ff9bd604d94a039b90d6a8ef1e10006a8ehttp://localhost:3000/api/pdx';
+                $signature_hex_ruby = '8a9e38a3aba180f8424b20e7fe3e3075569032e30ff0fdef29031f0701ebda853b26d8d8bc5f698151780a287072fb78811fb3259f4e2b38e3e5cde82a92f3e58deaf378182821d7b03b0ce7682089eac0b56bb48a02b6a9281154e524056b8b3ccbb6666aca1d5271046dd997e0e627080f757af1db7b80238e7747dcdacd7e2db3409998b3c99474ad02ed5f82ef8118ff5a668604a02a758577fa1d66fdf96afc719a10ca015e3c5327a978c7275f0f88f1c8e84b90cb46dab592abbaa03fdc49dfd703f489124ba43f1283dd939b3ea9dda75c9d68c548ac8e1ad1416c934d6db5563769578c0c8ddc1d9a4fe40cebcb007b5f525a9e0a57faa820234be0';
+                $signature_php ='';
+
+                openssl_sign($signed_data, $signature_php, $PDX_PRV_KEY_PEM_2048, "SHA256");
+
+                $signature_php_hex = bin2hex($signature_php);
+                $log.= "RUBY signature: " . $signature_hex_ruby ."\n";
+                $log.= "PHP signature : " . $signature_php_hex ."\n";
+
+                //    function hex2bin($data) {
+                //        $len = strlen($data);
+                //        return pack("H" . $len, $data);
+                //    }
+
+                $ok = openssl_verify($signed_data, $signature_php, $PDX_PUB_KEY_PEM_2048, "SHA256");
+                if ($ok == 1) {
+                    $log.= "PHP signature good\n";
+                } elseif ($ok == 0) {
+                    $log.= "PHP signature bad\n";
+                } else {
+                    $log.= "PHP signature ugly, error checking signature\n";
+                }
+
+                file_put_contents($log_file, $log, FILE_APPEND);
+
                 wa_pdx_send_response('Configuration process started... ', true);
+            }
 
             // check if security token and config params are set
             if ( $cmd == WA_API_PDX_CMD_CONFIG_CHECK )
