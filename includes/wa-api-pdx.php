@@ -8,8 +8,6 @@
 require_once 'wa-api-pdx-const.php';
 
 function ajax_wa_pdx() {
-    $PDX_PRV_KEY_PEM_2048  = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEApMxOSkfyRShmTseKyRbtoi1qSLXPvRjr31cdNf4LFfxGAnpU\nui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEKpdcvW/SFjGSsoFIm90sHG0onuPNh\nC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8gRh/BXZEG5I4pUIN3xHkl34vFgyF\nA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJXRW4cUBtvtbpPIh/MTU8Mna4h/cS\nzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAtJZ00+k75fM/lINrcJMrlfebb27hP\nFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963YwIDAQABAoIBAFZOMQox161kVQAY\n/JQHj/gJNMpTfTIZJR5YLxIhs4iWD8woaMsBOlvqJqtNjMASCB9kBQjjYgnBpMoT\nQ+KN9neX1FOiIXa/GrDzlTiZcGVYVqlDvKUe3LAaRZrOuWa29aLgAek7c1YjBg0D\nDT7PXNV3EL65iz2tPEE/8KfMZRz4v2brxUilyrpMm1KgQlw/Lwm5Zu7+anPLyPoq\n9nHe3qazS9LCgFFv5GgRPA05jcBLJwqxqmFVNnc2LtEz59kx5wJigWGkizGz3Fmw\neHFvIESOJ+lxUHSMmQSWYbP3US+AlzmqT5mWUgjuSE8rD/OgEzt0s/uFNsI4hbFn\nuijc8YECgYEAzv9FXWxqKPE+zAHzkyGnj8a7fnEiV1tydQTWyF4cUUO5g7UAmMxt\nmHR8mijbuLx8FMOj0/jSmrrdG7le9c7y/EHxYeHqbj3Kz5i/PXGg5ZOQ2je93ZUv\nBHmblAAMlNbdGGjcQxjUhUyTtHQDz/BQWcYAZl32QWm5Meg8zw8I1WECgYEAy8+g\nnwCpX+g+CgP1jgwFlfuHQ+osOlOMDXyMyI1+LBjtjwQTLPIrz8oq3NMVAT8qTmUZ\n6MiHUvXm3TNLjm7zbFT8uTpExFrseHLn5gte6G3EAD5MeWEQdsog/z0n5JGacX1h\nQEcuZ69e4HRTtxi70wgcu6CpiT1b8lUvSG+MP0MCgYEApHPURRPUB7EaZfQK8tKj\nECwgW6VAVkz10xhEF64FK1717TiJP9vyGlQ5hjR90/gTUF/aMZcWow1gix0r33hK\nPbWaM1zL5ke7cFD3ZrZ20M37IBN3CarzTsfanauoUzudLj5o9/mrJjgfhRdCzBot\njBUtziZKdc+r7YWHgi18pCECgYBQHCxmUzxAFmlMRoIec1s+uL9SUplP08cZBfvQ\nWM1fR+0YaeGfqRDPfAedBNscwlc+uT6V4TxPv5gfGip4seO8kStFI0IkbBjGv2On\naJDFi1+fON2WWDDAgHK34LHthc3PDhlLyq7S0nvYfeDp9y7cpDOnDF+XMicR+am8\nLxxRQQKBgQDG1y3vYvb+2hx9lgWHELgCxwoAXldjyHsa7lFaG2JTNsfGl4jRPurc\nOjgHC7jJRoa3Wum9mIElvpOnQosShwlwkwvDQftLU2LDOrw++JSdXy1+eihLmVW8\nBb2z4knu3kEunoVrmhYDEZuRByRvkMRq7MslMSPmpjSDm2TvMhyYPg==\n-----END RSA PRIVATE KEY-----\n";
-    $PDX_PUB_KEY_PEM_2048  = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApMxOSkfyRShmTseKyRbt\noi1qSLXPvRjr31cdNf4LFfxGAnpUui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEK\npdcvW/SFjGSsoFIm90sHG0onuPNhC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8\ngRh/BXZEG5I4pUIN3xHkl34vFgyFA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJ\nXRW4cUBtvtbpPIh/MTU8Mna4h/cSzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAt\nJZ00+k75fM/lINrcJMrlfebb27hPFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963\nYwIDAQAB\n-----END PUBLIC KEY-----\n";
 
     $token = 'q*ZNLR9+3s!cjfstz.@&KBY@4AerUc36';
     $log_file = '/tmp/wordapp-seo-debug.log';
@@ -28,7 +26,6 @@ function ajax_wa_pdx() {
 
 //    if(!empty($_GET['token']))
 //        $log.= "token: " . $_GET['token'] . "\n";
-
 
     if(!empty($_GET['check-wa-pdx']))
         wa_pdx_send_response('Wordapp Plugin Version 0.0.1', true);
@@ -63,7 +60,19 @@ function ajax_wa_pdx() {
             {
                 $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
 
-                // test signature
+                $params = $json['data'];
+
+                $ticket_id = $params['ticket_id'];
+                $api_pdx_url = $params['api_pdx_url'];
+                $signature = $params['signature'];
+
+                $reassembled_data = sprintf("%02x", $cmd);
+                $reassembled_data .= $ticket_id;
+                $reassembled_data .= $api_pdx_url;
+
+                $log.= "Reassembled data: " . $reassembled_data ."\n";
+
+/*                // test signature
                 $signed_data = '02cb861f54267b72e01b5f522a904b20ff9bd604d94a039b90d6a8ef1e10006a8ehttp://localhost:3000/api/pdx';
                 $signature_hex_ruby = '8a9e38a3aba180f8424b20e7fe3e3075569032e30ff0fdef29031f0701ebda853b26d8d8bc5f698151780a287072fb78811fb3259f4e2b38e3e5cde82a92f3e58deaf378182821d7b03b0ce7682089eac0b56bb48a02b6a9281154e524056b8b3ccbb6666aca1d5271046dd997e0e627080f757af1db7b80238e7747dcdacd7e2db3409998b3c99474ad02ed5f82ef8118ff5a668604a02a758577fa1d66fdf96afc719a10ca015e3c5327a978c7275f0f88f1c8e84b90cb46dab592abbaa03fdc49dfd703f489124ba43f1283dd939b3ea9dda75c9d68c548ac8e1ad1416c934d6db5563769578c0c8ddc1d9a4fe40cebcb007b5f525a9e0a57faa820234be0';
                 $signature_php ='';
@@ -80,7 +89,7 @@ function ajax_wa_pdx() {
                 //    }
 
                 $ok = openssl_verify($signed_data, $signature_php, $PDX_PUB_KEY_PEM_2048, "SHA256");
-                if ($ok == 1) {
+              if ($ok == 1) {
                     $log.= "PHP signature good\n";
                 } elseif ($ok == 0) {
                     $log.= "PHP signature bad\n";
@@ -88,7 +97,22 @@ function ajax_wa_pdx() {
                     $log.= "PHP signature ugly, error checking signature\n";
                 }
 
+*/
+                $signature = pack("H" . strlen($signature), $signature);
+                $verified = openssl_verify($reassembled_data, $signature, PDX_PUB_KEY_PEM_2048, "SHA256");
+
+                if ($verified == 1) {
+                    $log.= "Signature verification OK\n";
+                } elseif ($verified == 0) {
+                    $log.= "Signature verification FAILED\n";
+                } else {
+                    $log.= "Signature verification ugly, error checking signature\n";
+                }
                 file_put_contents($log_file, $log, FILE_APPEND);
+
+                if ($verified != 1 && PDX_SIGNATURE_CHECK_STRICT == 1) {
+                    wa_pdx_send_response('Signature Verification Failed');
+                }
 
                 wa_pdx_send_response('Configuration process started... ', true);
             }
@@ -159,11 +183,11 @@ function wa_pdx_cmd_content_get_list ()
     $posts = get_posts($args);
     foreach ( $posts as $post ) {
         $data[] = array(
-            'id'    => $post->ID,
-            'url'   => get_permalink( $post->ID ),
-            'type'  => $post->post_type,
-            'title' => $post->post_title,
-            'status' => get_post_status( $post->ID )
+            'id'        => $post->ID,
+            'url'       => get_permalink( $post->ID ),
+            'type'      => $post->post_type,
+            'title'     => $post->post_title,
+            'status'    => get_post_status( $post->ID )
         );
     }
 
@@ -175,7 +199,7 @@ function wa_pdx_cmd_content_get_list ()
 function wa_pdx_cmd_content_add ($params)
 {
     $post = array(
-        'post_type' => $params['type'],
+        'post_type'     => $params['type'],
         'post_status'   => $params['status'],
         'post_title'    => $params['title'],
         'post_content'  => $params['content']
