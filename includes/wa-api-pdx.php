@@ -64,11 +64,15 @@ function ajax_wa_pdx() {
 
                 $ticket_id = $params['ticket_id'];
                 $api_pdx_url = $params['api_pdx_url'];
+                $timestamp = $params['timestamp'];
                 $signature = $params['signature'];
 
                 $reassembled_data = sprintf("%02x", $cmd);
                 $reassembled_data .= $ticket_id;
                 $reassembled_data .= $api_pdx_url;
+                $reassembled_data .= dechex($timestamp);
+
+                $reassembled_data = strtolower ( $reassembled_data);
 
                 $log.= "Reassembled data: " . $reassembled_data ."\n";
 
