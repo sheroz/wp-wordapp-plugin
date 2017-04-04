@@ -61,11 +61,16 @@ function ajax_wa_pdx() {
                 $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
 
                 $params = $json['data'];
+                if (empty($params))
+                    wa_pdx_send_response('Invalid Data');
 
                 $ticket_id = $params['ticket_id'];
                 $api_pdx_url = $params['api_pdx_url'];
                 $timestamp = $params['timestamp'];
                 $signature = $params['signature'];
+
+                if (empty($ticket_id) || empty($api_pdx_url))
+                    wa_pdx_send_response('Invalid Params');
 
                 $reassembled_data = sprintf("%02x", $cmd);
                 $reassembled_data .= $ticket_id;
@@ -117,6 +122,24 @@ function ajax_wa_pdx() {
                 if ($verified != 1 && PDX_SIGNATURE_CHECK_STRICT == 1) {
                     wa_pdx_send_response('Signature Verification Failed');
                 }
+
+                $log= "Configuration process started...\n";
+                file_put_contents($log_file, $log, FILE_APPEND);
+
+                $api_pdx_tickets_url = $api_pdx_url . '/tickets';
+                $args = array('ticket_id' => $ticket_id);
+
+                $response = wp_remote_post($api_pdx_tickets_url, $args);
+
+                if ( is_wp_error( $response ) ) {
+                    $error_message = $response->get_error_message();
+                    $log = "Configuration fetch phase 2 failed. Url: $api_pdx_tickets_url\nError message: $error_message\n";
+                    file_put_contents($log_file, $log, FILE_APPEND);
+                    wa_pdx_send_response('Configuration fetch phase 2 failed');
+                }
+
+                $log = "Configuration data received: $response\n";
+                file_put_contents($log_file, $log, FILE_APPEND);
 
                 wa_pdx_send_response('Configuration process started... ', true);
             }
