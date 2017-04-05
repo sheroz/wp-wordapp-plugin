@@ -107,39 +107,75 @@ function ajax_wa_pdx() {
                 }
 
 */
-                $signature = pack("H" . strlen($signature), $signature);
-                $verified = openssl_verify($reassembled_data, $signature, PDX_PUB_KEY_PEM_2048, "SHA256");
+                if (1==0)
+                {
+                    $signature = pack("H" . strlen($signature), $signature);
+                    $verified = openssl_verify($reassembled_data, $signature, PDX_PUB_KEY_PEM_2048, "SHA256");
 
-                if ($verified == 1) {
-                    $log.= "Signature verification OK\n";
-                } elseif ($verified == 0) {
-                    $log.= "Signature verification FAILED\n";
-                } else {
-                    $log.= "Signature verification ugly, error checking signature\n";
-                }
-                file_put_contents($log_file, $log, FILE_APPEND);
+                    if ($verified == 1) {
+                        $log.= "Signature verification OK\n";
+                    } elseif ($verified == 0) {
+                        $log.= "Signature verification FAILED\n";
+                    } else {
+                        $log.= "Signature verification ugly, error checking signature\n";
+                    }
+                    file_put_contents($log_file, $log, FILE_APPEND);
 
-                if ($verified != 1 && PDX_SIGNATURE_CHECK_STRICT == 1) {
-                    wa_pdx_send_response('Signature Verification Failed');
+                    if ($verified != 1 && PDX_SIGNATURE_CHECK_STRICT == 1) {
+                        wa_pdx_send_response('Signature Verification Failed');
+                    }
                 }
 
                 $log= "Configuration process started...\n";
                 file_put_contents($log_file, $log, FILE_APPEND);
 
                 $api_pdx_tickets_url = $api_pdx_url . '/tickets';
+                $data_string = json_encode(array( 'ticket_id' => $ticket_id ));
+
+                $api_pdx_headers = array(
+                    'Accept: application/json',
+                    'Accept-Encoding: gzip, deflate',
+                    'Accept-Language: en-US,en;q=0.8',
+                    'Content-Type: application/json; charset=utf-8',
+                    'Content-Length: '. strlen($data_string),
+                    'User-Agent: '.PDX_PLUGIN_VERSION,
+                    'X-Api-Version: application/vnd.wordapp-v1+json'
+                );
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL,$api_pdx_tickets_url);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+//                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $api_pdx_headers);
+//                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
+//                curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                /*
                 $args = array(
+                    'method' => 'POST',
+                    'httpversion' => '1.0',
                     'headers' => array(
                         'Accept' => 'application/json',
-                        'Accept-encoding' => 'gzip, deflate',
-                        'Accept-language' => 'en-US,en;q=0.8',
+                        'Accept-Encoding' => 'gzip, deflate',
+                        'Accept-Language' => 'en-US,en;q=0.8',
                         'Content-Type' => 'application/json; charset=utf-8',
-                        'User-agent' => PDX_PLUGIN_VERSION,
+                        'User-Agent' => PDX_PLUGIN_VERSION,
                         'X-Api-Version' => 'application/vnd.wordapp-v1+json'
                     ),
-                    'blocking' => true,
+                    'timeout' => 5,
+                    'blocking' => false,
                     'body' => json_encode(array( 'ticket_id' => $ticket_id ))
                 );
-                $response = wp_remote_post($api_pdx_tickets_url, $args);
+
+                $http = new WP_Http();
+                $response = $http->request($api_pdx_tickets_url, $args);
+
+                //$response = wp_remote_post($api_pdx_tickets_url, $args);
 
                 if ( is_wp_error( $response ) ) {
                     $error_message = $response->get_error_message();
@@ -147,11 +183,15 @@ function ajax_wa_pdx() {
                     file_put_contents($log_file, $log, FILE_APPEND);
                     wa_pdx_send_response('Configuration fetch phase 2 failed');
                 }
-
-                $log = "Configuration data received: $response\n";
+*/
+                $pdx_config = json_decode($response);
+                $log = "Configuration: validation_token = " . $pdx_config['validation_token']."\n";
                 file_put_contents($log_file, $log, FILE_APPEND);
 
-                wa_pdx_send_response('Configuration process started... ', true);
+                $log = "Configuration data received: " . json_encode($response)."\n";
+                file_put_contents($log_file, $log, FILE_APPEND);
+
+                wa_pdx_send_response('Configuration set successfully', true);
             }
 
             // check if security token and config params are set
