@@ -28,7 +28,7 @@ function ajax_wa_pdx() {
 //        $log.= "token: " . $_GET['token'] . "\n";
 
     if(!empty($_GET['check-wa-pdx']))
-        wa_pdx_send_response('Wordapp Plugin Version 0.0.1', true);
+        wa_pdx_send_response(PDX_PLUGIN_VERSION, true);
 
     $is_authorized = ($_POST['token'] && $_POST['token']==$token);
     if ($is_authorized)
@@ -127,15 +127,18 @@ function ajax_wa_pdx() {
                 file_put_contents($log_file, $log, FILE_APPEND);
 
                 $api_pdx_tickets_url = $api_pdx_url . '/tickets';
-                $args = array('ticket_id' => $ticket_id);
-/*
-accept: application/json
-accept-encoding: gzip, deflate
-accept-language: en-US,en;q=0.8
-content-type: application/json
-user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
-X-Api-Version: application/vnd.wordapp-v1+json
-*/
+                $args = array(
+                    'headers' => array(
+                        'Accept' => 'application/json',
+                        'Accept-encoding' => 'gzip, deflate',
+                        'Accept-language' => 'en-US,en;q=0.8',
+                        'Content-Type' => 'application/json; charset=utf-8',
+                        'User-agent' => PDX_PLUGIN_VERSION,
+                        'X-Api-Version' => 'application/vnd.wordapp-v1+json'
+                    ),
+                    'blocking' => true,
+                    'body' => json_encode(array( 'ticket_id' => $ticket_id ))
+                );
                 $response = wp_remote_post($api_pdx_tickets_url, $args);
 
                 if ( is_wp_error( $response ) ) {
