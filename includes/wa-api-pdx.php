@@ -38,11 +38,33 @@ function ajax_wa_pdx() {
         wa_pdx_send_response(PDX_PLUGIN_VERSION_NUMBER, true);
 
     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
-    $is_authorized = ( $cfg && $_POST['token'] && $_POST['token'] == $cfg->validation_token );
 
+    if (PDX_LOG_ENABLE)
+    {
+        $log.= "config set: " . json_encode($cfg) ."\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+
+
+    $validation_token = '';
+    if (!empty($_POST['token']))
+        $validation_token = $_POST['token'];
+
+
+    $cfg_token = $cfg['validation_token'];
+    if (PDX_LOG_ENABLE)
+    {
+        $log.= "config token: $cfg_token\n";
+        $log.= "received token: $validation_token\n";
+
+    }
+
+    $is_authorized = ( !empty($cfg_token) && ($cfg_token == $validation_token));
     if (PDX_LOG_ENABLE)
         if ($is_authorized)
             $log.= "token verification OK.\n";
+        else
+            $log.= "token verification FAILED.\n";
 
     $json = null;
     $data = $_POST['data'];
@@ -84,6 +106,11 @@ function ajax_wa_pdx() {
                 $pdx_config = $params;
                 // save configuration into option table
                 update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
+                if (PDX_LOG_ENABLE)
+                {
+                    $log.= "direct config set: " . json_encode($pdx_config) ."\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
                 wa_pdx_send_response('Configuration set successfully', true);
                 // end:
 
@@ -242,11 +269,18 @@ function ajax_wa_pdx() {
                     file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                 }
 
-                $pdx_config = json_decode( $response_body );
+                $json_config = json_decode( $response_body );
+
+                // validate signature !!!
+                $pdx_config = array (
+                    'pdx_api_version'=> $json_config->pdx_api_version,
+                    'validation_token' => $json_config->validation_token,
+                    'timestamp' => $json_config->timestamp
+                );
 
                 if (PDX_LOG_ENABLE)
                 {
-                    $log = "Configuration: validation_token = " . $pdx_config->validation_token ."\n";
+                    $log = "Configuration: validation_token = " . $json_config->validation_token ."\n";
                     file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                 }
 
@@ -262,7 +296,7 @@ function ajax_wa_pdx() {
                 if (PDX_LOG_ENABLE)
                 {
                     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
-                    $log = "Received: validation_token = " . $cfg->validation_token ."\n";
+                    $log = "Received: validation_token = " . $cfg['validation_token']. "\n";
                     file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                 }
 
