@@ -25,7 +25,12 @@
  * @package    Wordapp_Seo
  */
 
+
 // If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+// remove configuration data
+require_once plugin_dir_path( __FILE__ ) . 'includes/wa-api-pdx.php';
+wa_pdx_clear_config();

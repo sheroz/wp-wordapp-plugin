@@ -19,27 +19,19 @@
  * Domain Path:       /languages
  */
 
+require_once plugin_dir_path( __FILE__ ) . 'includes/wa-api-pdx.php';
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-wordapp-seo-activator.php
- */
 function activate_wordapp_seo() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordapp-seo-activator.php';
-	Wordapp_Seo_Activator::activate();
+    wa_pdx_clear_config();
 }
 
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-wordapp-seo-deactivator.php
- */
 function deactivate_wordapp_seo() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordapp-seo-deactivator.php';
-	Wordapp_Seo_Deactivator::deactivate();
+    wa_pdx_clear_config();
 }
 
 register_activation_hook( __FILE__, 'activate_wordapp_seo' );

@@ -27,6 +27,7 @@
  * @subpackage Wordapp_Seo/includes
  * @author     Sheroz Khaydarov <sheroz@wordapp.io>
  */
+require_once 'wa-api-pdx.php';
 
 class Wordapp_Seo {
 
@@ -69,8 +70,8 @@ class Wordapp_Seo {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'wordapp-seo';
-		$this->version = '0.0.1';
+		$this->plugin_name = 'Wordapp';
+		$this->version = PDX_PLUGIN_VERSION_NUMBER;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -179,8 +180,6 @@ class Wordapp_Seo {
 	 * @since    1.0.0
 	 */
 	public function run() {
-
-        require_once 'wa-api-pdx.php';
 
         $this->loader->run();
         add_action('wp_ajax_wa_pdx', 'ajax_wa_pdx' );

@@ -7,19 +7,23 @@
 
 require_once 'wa-api-pdx-const.php';
 
+function wa_pdx_clear_config()
+{
+    delete_option( PDX_CONFIG_OPTION_KEY );
+    if (PDX_LOG_ENABLE)
+    {
+        $log = "Plugin Configuration Removed.\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+}
+
 function ajax_wa_pdx() {
 
-    $token = 'q*ZNLR9+3s!cjfstz.@&KBY@4AerUc36';
     $date = new DateTime('NOW');
     $log = '';
 
     if (PDX_LOG_ENABLE)
-    {
-        $log.= "\n=====================\n";
-        $log.= "ajax_wordapp_seo():\n";
-        $log.= $date->format('Y-m-d H:i:s');
-        $log.= "\n";
-    }
+        $log.= "\n\najax_wordapp_seo(): started at ".$date->format('Y-m-d H:i:s') . "\n";
 
 //    $log.= "---- begin of headers ----\n";
 //    foreach (getallheaders() as $name => $value) {
@@ -31,9 +35,11 @@ function ajax_wa_pdx() {
 //        $log.= "token: " . $_GET['token'] . "\n";
 
     if(!empty($_GET['check-wa-pdx']))
-        wa_pdx_send_response(PDX_PLUGIN_VERSION, true);
+        wa_pdx_send_response(PDX_PLUGIN_VERSION_NUMBER, true);
 
-    $is_authorized = ($_POST['token'] && $_POST['token']==$token);
+    $cfg = get_option( PDX_CONFIG_OPTION_KEY );
+    $is_authorized = ( $cfg && $_POST['token'] && $_POST['token'] == $cfg->validation_token );
+
     if (PDX_LOG_ENABLE)
         if ($is_authorized)
             $log.= "token verification OK.\n";
@@ -64,8 +70,6 @@ function ajax_wa_pdx() {
 
         if ($cmd && !empty($cmd))
         {
-
-            // todo: not completed yet... for response test only!!!
             if ( $cmd == WA_API_PDX_CMD_CONFIG_SET )
             {
                 if (PDX_LOG_ENABLE)
@@ -180,7 +184,7 @@ function ajax_wa_pdx() {
                         'Accept-Encoding' => 'gzip, deflate',
                         'Accept-Language' => 'en-US,en;q=0.8',
                         'Content-Type' => 'application/json; charset=utf-8',
-                        'User-Agent' => PDX_PLUGIN_VERSION,
+                        'User-Agent' => PDX_PLUGIN_VERSION_TEXT,
                         'X-Api-Version' => 'application/vnd.wordapp-v1+json'
                     ),
                     'timeout' => 5,
@@ -215,7 +219,6 @@ function ajax_wa_pdx() {
 
                 $response_body = wp_remote_retrieve_body( $response );
                 if (empty($response_body)) {
-                    file_put_contents($log_file, $log, FILE_APPEND);
                     if (PDX_LOG_ENABLE)
                     {
                         $log = "Empty configuration data\n";
@@ -250,7 +253,7 @@ function ajax_wa_pdx() {
                 if (PDX_LOG_ENABLE)
                 {
                     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
-                    $log = "Restored validation_token = " . $cfg->validation_token ."\n";
+                    $log = "Received: validation_token = " . $cfg->validation_token ."\n";
                     file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                 }
 
@@ -259,7 +262,12 @@ function ajax_wa_pdx() {
 
             // check if security token and config params are set
             if ( $cmd == WA_API_PDX_CMD_CONFIG_CHECK )
-                wa_pdx_send_response('Configured.', true);
+            {
+                if (empty($cfg))
+                    wa_pdx_send_response('Not Configured', false);
+                else
+                    wa_pdx_send_response($cfg->pdx_api_version, true);
+            }
 
             if (!$is_authorized)
                 wa_pdx_send_response('Not authorized');
