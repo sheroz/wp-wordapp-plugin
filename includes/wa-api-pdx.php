@@ -80,7 +80,7 @@ function ajax_wa_pdx() {
                     wa_pdx_send_response('Invalid Data');
 
 
-                // begin: remove this !!! for first time use only
+                // begin: remove this block !!! this is for first time use only
                 $pdx_config = $params;
                 // save configuration into option table
                 update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
