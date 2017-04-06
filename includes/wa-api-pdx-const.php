@@ -20,7 +20,7 @@ const PDX_PLUGIN_VERSION_TEXT  =  'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION
 const PDX_CONFIG_OPTION_KEY = 'wa_pdx_config';
 
 const PDX_PUB_KEY_PEM_2048   = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApMxOSkfyRShmTseKyRbt\noi1qSLXPvRjr31cdNf4LFfxGAnpUui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEK\npdcvW/SFjGSsoFIm90sHG0onuPNhC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8\ngRh/BXZEG5I4pUIN3xHkl34vFgyFA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJ\nXRW4cUBtvtbpPIh/MTU8Mna4h/cSzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAt\nJZ00+k75fM/lINrcJMrlfebb27hPFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963\nYwIDAQAB\n-----END PUBLIC KEY-----\n";
-const PDX_SIGNATURE_CHECK = 1; // 1 - signature check, 0 = do not check signature
+const PDX_SIGNATURE_CHECK = 0; // 1 - signature check, 0 = do not check signature
 const PDX_LOG_FILE = '/tmp/wordapp-seo-debug.log';
 
-const PDX_LOG_ENABLE = 1; // 1 - logs to PDX_LOG_FILE
+const PDX_LOG_ENABLE = 0; // 1 - logs to PDX_LOG_FILE

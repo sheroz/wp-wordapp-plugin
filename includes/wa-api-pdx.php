@@ -79,6 +79,15 @@ function ajax_wa_pdx() {
                 if (empty($params))
                     wa_pdx_send_response('Invalid Data');
 
+
+                // begin: remove this !!! for first time use only
+                $pdx_config = $params;
+                // save configuration into option table
+                update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
+                wa_pdx_send_response('Configuration set successfully', true);
+                // end:
+
+
                 $ticket_id = $params['ticket_id'];
                 $api_pdx_url = $params['api_pdx_url'];
                 $timestamp = $params['timestamp'];
