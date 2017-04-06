@@ -10,13 +10,16 @@ require_once 'wa-api-pdx-const.php';
 function ajax_wa_pdx() {
 
     $token = 'q*ZNLR9+3s!cjfstz.@&KBY@4AerUc36';
-    $log_file = '/tmp/wordapp-seo-debug.log';
-
-    $log = "\n=====================\n";
-    $log.= "ajax_wordapp_seo():\n";
     $date = new DateTime('NOW');
-    $log.= $date->format('Y-m-d H:i:s');
-    $log.= "\n";
+    $log = '';
+
+    if (PDX_LOG_ENABLE)
+    {
+        $log.= "\n=====================\n";
+        $log.= "ajax_wordapp_seo():\n";
+        $log.= $date->format('Y-m-d H:i:s');
+        $log.= "\n";
+    }
 
 //    $log.= "---- begin of headers ----\n";
 //    foreach (getallheaders() as $name => $value) {
@@ -31,22 +34,29 @@ function ajax_wa_pdx() {
         wa_pdx_send_response(PDX_PLUGIN_VERSION, true);
 
     $is_authorized = ($_POST['token'] && $_POST['token']==$token);
-    if ($is_authorized)
-        $log.= "token verification OK.\n";
+    if (PDX_LOG_ENABLE)
+        if ($is_authorized)
+            $log.= "token verification OK.\n";
 
     $json = null;
     $data = $_POST['data'];
     if (!empty($data)) {
-        $log.= "post data: $data\n";
         $json = $data;
-        $log.= "received json: ".json_encode($json)."\n";
+        if (PDX_LOG_ENABLE)
+        {
+            $log.= "post data: $data\n";
+            $log.= "received json: ".json_encode($json)."\n";
+        }
     }
     else
-        $log.= "post data not found\n";
+        if (PDX_LOG_ENABLE)
+            $log.= "post data not found\n";
 
-    $log.= "\n";
-
-    file_put_contents($log_file, $log, FILE_APPEND);
+    if (PDX_LOG_ENABLE)
+    {
+        $log.= "\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
 
     if($json)
     {
@@ -58,7 +68,8 @@ function ajax_wa_pdx() {
             // todo: not completed yet... for response test only!!!
             if ( $cmd == WA_API_PDX_CMD_CONFIG_SET )
             {
-                $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
+                if (PDX_LOG_ENABLE)
+                    $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
 
                 $params = $json['data'];
                 if (empty($params))
@@ -71,15 +82,6 @@ function ajax_wa_pdx() {
 
                 if (empty($ticket_id) || empty($api_pdx_url))
                     wa_pdx_send_response('Invalid Params');
-
-                $reassembled_data = sprintf("%02x", $cmd);
-                $reassembled_data .= $ticket_id;
-                $reassembled_data .= $api_pdx_url;
-                $reassembled_data .= dechex($timestamp);
-
-                $reassembled_data = strtolower ( $reassembled_data);
-
-                $log.= "Reassembled data: " . $reassembled_data ."\n";
 
 /*                // test signature
                 $signed_data = '02cb861f54267b72e01b5f522a904b20ff9bd604d94a039b90d6a8ef1e10006a8ehttp://localhost:3000/api/pdx';
@@ -107,31 +109,46 @@ function ajax_wa_pdx() {
                 }
 
 */
-                if (1==0)
+                if (PDX_SIGNATURE_CHECK == 1)
                 {
+                    $reassembled_data = sprintf("%02x", $cmd);
+                    $reassembled_data .= $ticket_id;
+                    $reassembled_data .= $api_pdx_url;
+                    $reassembled_data .= dechex($timestamp);
+
+                    $reassembled_data = strtolower ( $reassembled_data);
+
                     $signature = pack("H" . strlen($signature), $signature);
                     $verified = openssl_verify($reassembled_data, $signature, PDX_PUB_KEY_PEM_2048, "SHA256");
 
-                    if ($verified == 1) {
-                        $log.= "Signature verification OK\n";
-                    } elseif ($verified == 0) {
-                        $log.= "Signature verification FAILED\n";
-                    } else {
-                        $log.= "Signature verification ugly, error checking signature\n";
+                    if (PDX_LOG_ENABLE)
+                    {
+                        $log.= "Reassembled data: " . $reassembled_data ."\n";
+                        if ($verified == 1) {
+                            $log.= "Signature verification OK\n";
+                        } elseif ($verified == 0) {
+                            $log.= "Signature verification FAILED\n";
+                        } else {
+                            $log.= "Signature verification ugly, error checking signature\n";
+                        }
+                        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                     }
-                    file_put_contents($log_file, $log, FILE_APPEND);
 
-                    if ($verified != 1 && PDX_SIGNATURE_CHECK_STRICT == 1) {
+                    if ( $verified != 1 ) {
                         wa_pdx_send_response('Signature Verification Failed');
                     }
                 }
 
-                $log= "Configuration process started...\n";
-                file_put_contents($log_file, $log, FILE_APPEND);
-
                 $api_pdx_tickets_url = $api_pdx_url . '/tickets';
-                $data_string = json_encode(array( 'ticket_id' => $ticket_id ));
 
+                if (PDX_LOG_ENABLE)
+                {
+                    $log = "Configuration process started...\n";
+                    $log.= "Knocking the door of the Wordapp Platform with ticket: $ticket_id at $api_pdx_tickets_url\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
+/*
+                $data_string = json_encode(array( 'ticket_id' => $ticket_id ));
                 $api_pdx_headers = array(
                     'Accept: application/json',
                     'Accept-Encoding: gzip, deflate',
@@ -141,7 +158,6 @@ function ajax_wa_pdx() {
                     'User-Agent: '.PDX_PLUGIN_VERSION,
                     'X-Api-Version: application/vnd.wordapp-v1+json'
                 );
-
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL,$api_pdx_tickets_url);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -154,8 +170,8 @@ function ajax_wa_pdx() {
 
                 $response = curl_exec($ch);
                 curl_close($ch);
+*/
 
-                /*
                 $args = array(
                     'method' => 'POST',
                     'httpversion' => '1.0',
@@ -168,28 +184,75 @@ function ajax_wa_pdx() {
                         'X-Api-Version' => 'application/vnd.wordapp-v1+json'
                     ),
                     'timeout' => 5,
-                    'blocking' => false,
+                    'blocking' => true,
                     'body' => json_encode(array( 'ticket_id' => $ticket_id ))
                 );
 
-                $http = new WP_Http();
-                $response = $http->request($api_pdx_tickets_url, $args);
+//                $http = new WP_Http();
+//                $response = $http->request($api_pdx_tickets_url, $args);
 
-                //$response = wp_remote_post($api_pdx_tickets_url, $args);
+                $response = wp_remote_post($api_pdx_tickets_url, $args);
 
                 if ( is_wp_error( $response ) ) {
                     $error_message = $response->get_error_message();
-                    $log = "Configuration fetch phase 2 failed. Url: $api_pdx_tickets_url\nError message: $error_message\n";
-                    file_put_contents($log_file, $log, FILE_APPEND);
+                    if (PDX_LOG_ENABLE)
+                    {
+                        $log = "Configuration fetch phase 2 failed. Url: $api_pdx_tickets_url\nError message: $error_message\n";
+                        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                    }
                     wa_pdx_send_response('Configuration fetch phase 2 failed');
                 }
-*/
-                $pdx_config = json_decode($response);
-                $log = "Configuration: validation_token = " . $pdx_config['validation_token']."\n";
-                file_put_contents($log_file, $log, FILE_APPEND);
 
-                $log = "Configuration data received: " . json_encode($response)."\n";
-                file_put_contents($log_file, $log, FILE_APPEND);
+                $response_code = wp_remote_retrieve_response_code( $response );
+                if ($response_code != 200) {
+                    if (PDX_LOG_ENABLE)
+                    {
+                        $log = "Invalid response code: $response_code\n";
+                        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                    }
+                    wa_pdx_send_response('Invalid response code');
+                }
+
+                $response_body = wp_remote_retrieve_body( $response );
+                if (empty($response_body)) {
+                    file_put_contents($log_file, $log, FILE_APPEND);
+                    if (PDX_LOG_ENABLE)
+                    {
+                        $log = "Empty configuration data\n";
+                        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                    }
+                    wa_pdx_send_response('Empty configuration data');
+                }
+
+                if (PDX_LOG_ENABLE)
+                {
+                    $log = "Configuration data received: " . $response_body ."\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
+
+                $pdx_config = json_decode( $response_body );
+
+                if (PDX_LOG_ENABLE)
+                {
+                    $log = "Configuration: validation_token = " . $pdx_config->validation_token ."\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
+
+                // save configuration into option table
+                update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
+
+                if (PDX_LOG_ENABLE)
+                {
+                    $log = "Configuration set successfully\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
+
+                if (PDX_LOG_ENABLE)
+                {
+                    $cfg = get_option( PDX_CONFIG_OPTION_KEY );
+                    $log = "Restored validation_token = " . $cfg->validation_token ."\n";
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
 
                 wa_pdx_send_response('Configuration set successfully', true);
             }
