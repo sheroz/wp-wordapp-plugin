@@ -359,7 +359,7 @@ function wa_pdx_send_response ($data, $success = false)
     wp_send_json($response);
 }
 
-function wa_pdx_cmd_content_get_list ()
+function wa_pdx_get_posts()
 {
     $args = array(
         'posts_per_page' => -1,
@@ -381,9 +381,14 @@ function wa_pdx_cmd_content_get_list ()
             'status'    => get_post_status( $post->ID )
         );
     }
-
     wp_reset_postdata();
 
+    return $data;
+}
+
+function wa_pdx_cmd_content_get_list ()
+{
+    $data = wa_pdx_get_posts();
     wa_pdx_send_response($data, true);
 }
 
@@ -403,10 +408,38 @@ function wa_pdx_cmd_content_add ($params)
 
 function wa_pdx_cmd_content_update ($params)
 {
+    $post_id = $params['id'];
+    $post_url = $params['url'];
+    $post_type = $params['type'];
+    $post_status = $params['status'];
+
+    if (empty($post_id))
+    {
+        if(!empty($post_url))
+        {
+            $posts = wa_pdx_get_posts();
+            foreach ( $posts as $post ) {
+                if ($post['url']==$post_url)
+                {
+                    $post_id = $post['id'];
+                    if (empty($post_type))
+                        $post_type = $post['type'];
+                    if (empty($post_status))
+                        $post_status = $post['status'];
+                    break;
+                }
+            }
+        }
+        else
+            wa_pdx_send_response('Empty post url');
+    }
+    if (empty($post_id))
+        wa_pdx_send_response('Invalid post url');
+
     $post = array(
-        'ID'            => $params['id'],
-        'post_type'     => $params['type'],
-        'post_status'   => $params['status'],
+        'ID'            => $post_id,
+        'post_type'     => $post_type,
+        'post_status'   => $post_status,
         'post_title'    => $params['title'],
         'post_content'  => $params['content']
     );
