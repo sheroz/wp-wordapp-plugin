@@ -33,7 +33,6 @@ function activate_wordapp_seo() {
 function deactivate_wordapp_seo() {
     wa_pdx_clear_config();
 }
-
 register_activation_hook( __FILE__, 'activate_wordapp_seo' );
 register_deactivation_hook( __FILE__, 'deactivate_wordapp_seo' );
 

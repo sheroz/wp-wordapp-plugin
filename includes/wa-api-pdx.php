@@ -7,6 +7,27 @@
 
 require_once 'wa-api-pdx-const.php';
 
+function wa_pdx_hello()
+{
+    if($_SERVER['REQUEST_METHOD'] === 'HEAD')
+    {
+        if (!empty($_SERVER['HTTP_X_WA_PDX_HELLO']))
+        {
+            $admin_ajax_url = admin_url('admin-ajax.php');
+            header('X-WA-PDX-VERSION: ' . PDX_PLUGIN_VERSION_NUMBER);
+            header('X-WA-PDX-AJAX-URL: ' . $admin_ajax_url);
+            if (PDX_LOG_ENABLE)
+            {
+                $log  = "Catched Wordapp Hello Message:\nX-WA-PDX-HELLO: ".$_SERVER['HTTP_X_WA_PDX_HELLO']."\n";
+                $log .= "Response headers added:\n";
+                $log .= 'X-WA-PDX-VERSION: ' . PDX_PLUGIN_VERSION_NUMBER . "\n";
+                $log .= 'X-WA-PDX-AJAX-URL: ' . $admin_ajax_url . "\n";
+                file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+            }
+        }
+    }
+}
+
 function wa_pdx_clear_config()
 {
     delete_option( PDX_CONFIG_OPTION_KEY );
@@ -15,6 +36,13 @@ function wa_pdx_clear_config()
         $log = "Plugin Configuration Removed.\n";
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
+}
+
+function wa_pdx_send_response ($data, $success = false)
+{
+    $response['success'] = $success;
+    $response['data'] = $data;
+    wp_send_json($response);
 }
 
 function ajax_wa_pdx() {
@@ -34,8 +62,8 @@ function ajax_wa_pdx() {
 //    if(!empty($_GET['token']))
 //        $log.= "token: " . $_GET['token'] . "\n";
 
-    if(!empty($_GET['check-wa-pdx']))
-        wa_pdx_send_response(PDX_PLUGIN_VERSION_NUMBER, true);
+//    if(!empty($_GET['check-wa-pdx']))
+//        wa_pdx_send_response(PDX_PLUGIN_VERSION_NUMBER, true);
 
     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
 
@@ -350,13 +378,6 @@ function ajax_wa_pdx() {
     }
     else
         wa_pdx_send_response('Invalid Data');
-}
-
-function wa_pdx_send_response ($data, $success = false)
-{
-    $response['success'] = $success;
-    $response['data'] = $data;
-    wp_send_json($response);
 }
 
 function wa_pdx_get_posts()
