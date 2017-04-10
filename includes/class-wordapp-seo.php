@@ -185,7 +185,12 @@ class Wordapp_Seo {
         add_action('wp', 'wa_pdx_hello' );
         add_action('wp_ajax_wa_pdx', 'ajax_wa_pdx' );
         add_action('wp_ajax_nopriv_wa_pdx', 'ajax_wa_pdx' );
-	}
+
+        // preview mode
+        // https://www.webhostinghero.com/how-to-share-a-draft-page-in-wordpress/
+        add_filter( 'posts_results', 'wa_pdx_set_query_to_draft', null, 2 );
+
+    }
 
 
 	/**

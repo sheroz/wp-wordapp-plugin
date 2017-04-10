@@ -7,6 +7,29 @@
 
 require_once 'wa-api-pdx-const.php';
 
+function wa_pdx_set_query_to_draft( $posts, &$query ) {
+
+    if ( sizeof( $posts ) != 1 )
+        return $posts;
+
+    $post_status_obj = get_post_status_object(get_post_status( $posts[0]));
+
+    if ( !$post_status_obj->name == 'draft' )
+        return $posts;
+
+    if ( $_GET['key'] != 'wordapp_preview' )
+        return $posts;
+
+    $query->_draft_post = $posts;
+
+    add_filter( 'the_posts', 'wa_pdx_show_draft_post', null, 2 );
+}
+
+function wa_pdx_show_draft_post( $posts, &$query ) {
+    remove_filter( 'the_posts', 'wa_pdx_show_draft_post', null, 2 );
+    return $query->_draft_post;
+}
+
 function wa_pdx_hello()
 {
     if($_SERVER['REQUEST_METHOD'] === 'HEAD')

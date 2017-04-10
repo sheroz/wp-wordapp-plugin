@@ -57,4 +57,5 @@ function run_wordapp_seo() {
 	$plugin->run();
 
 }
+
 run_wordapp_seo();
