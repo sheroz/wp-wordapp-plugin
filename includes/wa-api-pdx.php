@@ -17,7 +17,7 @@ function wa_pdx_set_query_to_draft( $posts, &$query ) {
     if ( !$post_status_obj->name == 'draft' )
         return $posts;
 
-    if ( $_GET['key'] != 'wordapp_preview' )
+    if ( $_GET['wa_preview'] != 1 )
         return $posts;
 
     $query->_draft_post = $posts;
@@ -432,8 +432,21 @@ function wa_pdx_get_posts()
 
 function wa_pdx_cmd_content_get_list ()
 {
-    $data = wa_pdx_get_posts();
-    wa_pdx_send_response($data, true);
+    $posts = wa_pdx_get_posts();
+    $count = count($posts);
+    for ($pos = 0; $pos < $count; $pos++)
+    {
+        if ($posts[$pos]['status'] != 'publish')
+            $posts[$pos]['preview_url'] = $posts[$pos]['url'] . "&wa_preview=1";
+        else
+            $posts[$pos]['preview_url'] = $posts[$pos]['url'];
+    }
+
+    // foreach ( $posts as $post ) {
+    //    $post['preview_url'] = $post['url'] . "&wa_preview = '1'";
+    // }
+
+    wa_pdx_send_response($posts, true);
 }
 
 function wa_pdx_cmd_content_add ($params)
