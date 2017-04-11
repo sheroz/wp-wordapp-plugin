@@ -7,27 +7,67 @@
 
 require_once 'wa-api-pdx-const.php';
 
-function wa_pdx_set_query_to_draft( $posts, &$query ) {
+function wa_pdx_filter_pre_get_posts( $query ) {
+
+    if (PDX_LOG_ENABLE)
+    {
+        $log  = "wa_pdx_filter_pre_get_posts(): Phase 1 passed\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+
+    if (
+        $query->is_main_query() &&
+        $query->is_preview() &&
+        $query->is_singular() &&
+        $query->get( '_wa_preview' )
+    ) {
+        add_filter( 'posts_results', 'wa_pdx_filter_posts_results', 10, 2 );
+
+        if (PDX_LOG_ENABLE)
+        {
+            $log  = "wa_pdx_filter_pre_get_posts(): Phase 2 passed\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+
+    }
+
+    if (PDX_LOG_ENABLE)
+    {
+        $log  = "wa_pdx_filter_pre_get_posts(): End\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+
+    return $query;
+}
+
+function wa_pdx_filter_posts_results( $posts ) {
+
+    if (PDX_LOG_ENABLE)
+    {
+        $log  = "wa_pdx_filter_posts_results(): Phase 1 passed\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+
+    remove_filter( 'posts_results', 'wa_pdx_filter_posts_results', 10 );
+
+    if ( empty( $posts ) ) {
+        return $posts;
+    }
+
 
     if ( sizeof( $posts ) != 1 )
         return $posts;
 
-    $post_status_obj = get_post_status_object(get_post_status( $posts[0]));
+    $post_id = $posts[0]->ID;
 
-    if ( !$post_status_obj->name == 'draft' )
-        return $posts;
+    $posts[0]->post_status = 'publish';
 
-    if ( $_GET['wa_preview'] != 1 )
-        return $posts;
+    // Disable comments and pings for this post.
+    add_filter( 'comments_open', '__return_false' );
+    add_filter( 'pings_open', '__return_false' );
 
-    $query->_draft_post = $posts;
+    return $posts;
 
-    add_filter( 'the_posts', 'wa_pdx_show_draft_post', null, 2 );
-}
-
-function wa_pdx_show_draft_post( $posts, &$query ) {
-    remove_filter( 'the_posts', 'wa_pdx_show_draft_post', null, 2 );
-    return $query->_draft_post;
 }
 
 function wa_pdx_hello()
@@ -437,7 +477,7 @@ function wa_pdx_cmd_content_get_list ()
     for ($pos = 0; $pos < $count; $pos++)
     {
         if ($posts[$pos]['status'] != 'publish')
-            $posts[$pos]['preview_url'] = $posts[$pos]['url'] . "&wa_preview=1";
+            $posts[$pos]['preview_url'] = $posts[$pos]['url'] . "&preview=true&wa_preview=1";
         else
             $posts[$pos]['preview_url'] = $posts[$pos]['url'];
     }
@@ -459,7 +499,6 @@ function wa_pdx_cmd_content_add ($params)
     );
 
     wp_insert_post( $post );
-
     wa_pdx_send_response('', true);
 }
 

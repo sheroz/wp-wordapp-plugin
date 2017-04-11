@@ -23,4 +23,4 @@ const PDX_PUB_KEY_PEM_2048   = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0B
 const PDX_SIGNATURE_CHECK = 0; // 1 - signature check, 0 = do not check signature
 const PDX_LOG_FILE = '/tmp/wordapp-seo-debug.log';
 
-const PDX_LOG_ENABLE = 0; // 1 - logs to PDX_LOG_FILE
+const PDX_LOG_ENABLE = 1; // 1 - logs to PDX_LOG_FILE
