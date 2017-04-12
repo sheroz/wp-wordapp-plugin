@@ -15,11 +15,15 @@ function wa_pdx_filter_pre_get_posts( $query ) {
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
 
+    $log   = "is_main_query(): " . $query->is_main_query() . "\n";
+    $log  .= "is_preview(): " . $query->is_preview() . "\n";
+    $log  .= "is_singular(): " . ($query->is_singular() ? '1':'0') . "\n";
+    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+
     if (
         $query->is_main_query() &&
         $query->is_preview() &&
-        $query->is_singular() &&
-        $query->get( '_wa_preview' )
+        $query->is_singular()
     ) {
         add_filter( 'posts_results', 'wa_pdx_filter_posts_results', 10, 2 );
 
@@ -50,15 +54,54 @@ function wa_pdx_filter_posts_results( $posts ) {
 
     remove_filter( 'posts_results', 'wa_pdx_filter_posts_results', 10 );
 
-    if ( empty( $posts ) ) {
+    if (empty($posts))
+        return $posts;
+
+    if (sizeof($posts) != 1)
+        return $posts;
+
+    $wa_preview_token = $_GET['wa_token'];
+    if (empty($wa_preview_token))
+    {
+        if (PDX_LOG_ENABLE)
+        {
+            $log = "wa_token parameter is empty\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
         return $posts;
     }
 
-
-    if ( sizeof( $posts ) != 1 )
+    $cfg = get_option(PDX_CONFIG_OPTION_KEY);
+    if (empty($cfg))
+    {
+        if (PDX_LOG_ENABLE)
+        {
+            $log  = "wa_pdx_filter_posts_results(): Empty configuration\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
         return $posts;
+    }
 
-    $post_id = $posts[0]->ID;
+    $cfg_preview_token = $cfg['preview_token'];
+    if (empty($cfg_preview_token))
+    {
+        if (PDX_LOG_ENABLE)
+        {
+            $log  = "wa_pdx_filter_posts_results(): Invalid configuration. Empty preview_token\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+        return $posts;
+    }
+
+    if ($cfg_preview_token!=$wa_preview_token)
+    {
+        if (PDX_LOG_ENABLE)
+        {
+            $log  = "wa_pdx_filter_posts_results(): Not authorized. Tokens are different\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+        return $posts;
+    }
 
     $posts[0]->post_status = 'publish';
 
@@ -66,8 +109,12 @@ function wa_pdx_filter_posts_results( $posts ) {
     add_filter( 'comments_open', '__return_false' );
     add_filter( 'pings_open', '__return_false' );
 
+    if (PDX_LOG_ENABLE)
+    {
+        $log  = "wa_pdx_filter_posts_results(): Process completed.\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
     return $posts;
-
 }
 
 function wa_pdx_hello()
@@ -193,7 +240,7 @@ function ajax_wa_pdx() {
                     wa_pdx_send_response('Invalid Data');
 
 
-                // begin: remove this block !!! this is for first time use only
+                // !!! begin: remove this block !!! this is for demo use only
                 $pdx_config = $params;
                 // save configuration into option table
                 update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
@@ -203,7 +250,7 @@ function ajax_wa_pdx() {
                     file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
                 }
                 wa_pdx_send_response('Configuration set successfully', true);
-                // end:
+                // !!!! end: remove this block !!! this is for demo use only
 
 
                 $ticket_id = $params['ticket_id'];
@@ -366,6 +413,7 @@ function ajax_wa_pdx() {
                 $pdx_config = array (
                     'pdx_api_version'=> $json_config->pdx_api_version,
                     'validation_token' => $json_config->validation_token,
+                    'preview_token' => $json_config->preview_token,
                     'timestamp' => $json_config->timestamp
                 );
 
@@ -474,10 +522,16 @@ function wa_pdx_cmd_content_get_list ()
 {
     $posts = wa_pdx_get_posts();
     $count = count($posts);
+    $cfg = get_option(PDX_CONFIG_OPTION_KEY);
+
+    $preview_token = '';
+    if (!empty($cfg))
+        $preview_token = $cfg['preview_token'];
+
     for ($pos = 0; $pos < $count; $pos++)
     {
         if ($posts[$pos]['status'] != 'publish')
-            $posts[$pos]['preview_url'] = $posts[$pos]['url'] . "&preview=true&wa_preview=1";
+            $posts[$pos]['preview_url'] = $posts[$pos]['url'] . "&preview=true&wa_token=$preview_token";
         else
             $posts[$pos]['preview_url'] = $posts[$pos]['url'];
     }
