@@ -224,11 +224,11 @@ function ajax_wa_pdx() {
 
     if($json)
     {
-        $cmd = $json['cmd'];
+        $op = $json['op'];
 
-        if ($cmd && !empty($cmd))
+        if ($op && !empty($op))
         {
-            if ( $cmd == PDX_OP_CONFIG_SET )
+            if ( $op == PDX_OP_CONFIG_SET )
             {
                 if (PDX_LOG_ENABLE)
                     $log = "--- PDX_OP_CONFIG_SET ---\n";
@@ -287,7 +287,7 @@ function ajax_wa_pdx() {
 */
                 if (PDX_SIGNATURE_CHECK == 1)
                 {
-                    $reassembled_data = sprintf("%02x", $cmd);
+                    $reassembled_data = sprintf("%02x", $op);
                     $reassembled_data .= $ticket_id;
                     $reassembled_data .= $api_pdx_url;
                     $reassembled_data .= dechex($timestamp);
@@ -441,7 +441,7 @@ function ajax_wa_pdx() {
             }
 
             // check if security token and config params are set
-            if ( $cmd == PDX_OP_CONFIG_CHECK )
+            if ( $op == PDX_OP_CONFIG_CHECK )
             {
                 if (empty($cfg))
                     wa_pdx_send_response('Not Configured', false);
@@ -452,7 +452,7 @@ function ajax_wa_pdx() {
             if (!$is_authorized)
                 wa_pdx_send_response('Not authorized');
 
-            switch ($cmd) {
+            switch ($op) {
 
                 case PDX_OP_CONTENT_GET_LIST:
                     wa_pdx_op_content_get_list();
@@ -575,7 +575,6 @@ function wa_pdx_content_update ($params)
 {
     $post_id = $params['id'];
     $post_url = $params['url'];
-    $post_title  = $params['title'];
     $post_content = $params['content'];
 
     if (empty($post_id))
@@ -590,16 +589,19 @@ function wa_pdx_content_update ($params)
 
     $post = array(
         'ID'           => $post_id,
-        'post_title'   => $post_title,
         'post_content' => $post_content
     );
 
+    $post_title  = $params['title'];
+    if (!is_null($post_title))
+        $post['post_title'] = $post_title;
+
     $post_type = $params['type'];
-    if (!empty($post_type))
+    if (!is_null($post_type))
         $post['post_type'] = $post_type;
 
     $post_status = $params['status'];
-    if (!empty($post_status))
+    if (!is_null($post_status))
         $post['post_status'] = $post_status;
 
     $success = wp_update_post($post, false)!=0;
@@ -619,10 +621,10 @@ function wa_pdx_op_content_get ($params)
 {
     if (!empty($params))
     {
-        $id = $params['id'];
-        if (!empty($id) && $id > 0)
+        $content_id = $params['content_id'];
+        if (!empty($content_id) && $content_id > 0)
         {
-            $post = get_post( $id, ARRAY_A);
+            $post = get_post( $content_id, ARRAY_A);
             if($post)
             {
                 $post['url'] = get_permalink( $post['ID'] );
@@ -630,7 +632,7 @@ function wa_pdx_op_content_get ($params)
             } else
                 wa_pdx_send_response('Content not found');
         } else
-            wa_pdx_send_response('Invalid id');
+            wa_pdx_send_response('Invalid content id');
     } else
         wa_pdx_send_response('Empty data parameter');
 }
