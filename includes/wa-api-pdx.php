@@ -12,13 +12,11 @@ function wa_pdx_filter_pre_get_posts( $query ) {
     if (PDX_LOG_ENABLE)
     {
         $log  = "wa_pdx_filter_pre_get_posts(): Phase 1 passed\n";
+        $log  .= "is_main_query(): " . $query->is_main_query() . "\n";
+        $log  .= "is_preview(): " . $query->is_preview() . "\n";
+        $log  .= "is_singular(): " . ($query->is_singular() ? '1':'0') . "\n";
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
-
-    $log   = "is_main_query(): " . $query->is_main_query() . "\n";
-    $log  .= "is_preview(): " . $query->is_preview() . "\n";
-    $log  .= "is_singular(): " . ($query->is_singular() ? '1':'0') . "\n";
-    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
 
     if (
         $query->is_main_query() &&
@@ -230,10 +228,10 @@ function ajax_wa_pdx() {
 
         if ($cmd && !empty($cmd))
         {
-            if ( $cmd == WA_API_PDX_CMD_CONFIG_SET )
+            if ( $cmd == PDX_OP_CONFIG_SET )
             {
                 if (PDX_LOG_ENABLE)
-                    $log = "--- WA_API_PDX_CMD_CONFIG_SET ---\n";
+                    $log = "--- PDX_OP_CONFIG_SET ---\n";
 
                 $params = $json['data'];
                 if (empty($params))
@@ -443,7 +441,7 @@ function ajax_wa_pdx() {
             }
 
             // check if security token and config params are set
-            if ( $cmd == WA_API_PDX_CMD_CONFIG_CHECK )
+            if ( $cmd == PDX_OP_CONFIG_CHECK )
             {
                 if (empty($cfg))
                     wa_pdx_send_response('Not Configured', false);
@@ -456,28 +454,32 @@ function ajax_wa_pdx() {
 
             switch ($cmd) {
 
-                case WA_API_PDX_CMD_CONTENT_GET_LIST:
-                    wa_pdx_cmd_content_get_list();
+                case PDX_OP_CONTENT_GET_LIST:
+                    wa_pdx_op_content_get_list();
                     break;
 
-                case WA_API_PDX_CMD_CONTENT_ADD:
-                    wa_pdx_cmd_content_add($json['data']);
+                case PDX_OP_CONTENT_ADD:
+                    wa_pdx_op_content_add($json['data']);
                     break;
 
-                case WA_API_PDX_CMD_CONTENT_UPDATE:
-                    wa_pdx_cmd_content_update($json['data']);
+                case PDX_OP_CONTENT_UPDATE:
+                    wa_pdx_op_content_update($json['data']);
                     break;
 
-                case WA_API_PDX_CMD_CONTENT_GET:
-                    wa_pdx_cmd_content_get($json['data']);
+                case PDX_OP_CONTENT_GET:
+                    wa_pdx_op_content_get($json['data']);
                     break;
 
-                case WA_API_PDX_CMD_MEDIA_GET_LIST:
-                    wa_pdx_cmd_media_get_list();
+                case PDX_OP_MEDIA_GET_LIST:
+                    wa_pdx_op_media_get_list();
                     break;
 
-                case WA_API_PDX_CMD_MEDIA_ADD:
-                    wa_pdx_cmd_media_add($json['data']);
+                case PDX_OP_MEDIA_ADD:
+                    wa_pdx_op_media_add($json['data']);
+                    break;
+
+                case PDX_OP_PREPARE_PREVIEW:
+                    wa_pdx_op_prepare_preview($json['data']);
                     break;
 
                 default:
@@ -518,7 +520,7 @@ function wa_pdx_get_posts()
     return $data;
 }
 
-function wa_pdx_cmd_content_get_list ()
+function wa_pdx_op_content_get_list ()
 {
     $posts = wa_pdx_get_posts();
     $count = count($posts);
@@ -543,7 +545,7 @@ function wa_pdx_cmd_content_get_list ()
     wa_pdx_send_response($posts, true);
 }
 
-function wa_pdx_cmd_content_add ($params)
+function wa_pdx_op_content_add ($params)
 {
     $post = array(
         'post_type'     => $params['type'],
@@ -556,49 +558,64 @@ function wa_pdx_cmd_content_add ($params)
     wa_pdx_send_response('', true);
 }
 
-function wa_pdx_cmd_content_update ($params)
+function wa_pdx_find_post_by_url ($post_url)
+{
+    if(empty($post_url))
+        return null;
+
+    $posts = wa_pdx_get_posts();
+    foreach ($posts as $post)
+        if ($post['url'] == $post_url)
+            return $post['id'];
+
+    return null;
+}
+
+function wa_pdx_content_update ($params)
 {
     $post_id = $params['id'];
     $post_url = $params['url'];
-    $post_type = $params['type'];
-    $post_status = $params['status'];
+    $post_title  = $params['title'];
+    $post_content = $params['content'];
 
     if (empty($post_id))
     {
-        if(!empty($post_url))
-        {
-            $posts = wa_pdx_get_posts();
-            foreach ( $posts as $post ) {
-                if ($post['url']==$post_url)
-                {
-                    $post_id = $post['id'];
-                    if (empty($post_type))
-                        $post_type = $post['type'];
-                    if (empty($post_status))
-                        $post_status = $post['status'];
-                    break;
-                }
-            }
-        }
-        else
+        if(empty($post_url))
             wa_pdx_send_response('Empty post url');
+
+        $post_id = wa_pdx_find_post_by_url ($post_url);
+        if (empty($post_id))
+            wa_pdx_send_response('Cannot find post by url: ' . $post_url);
     }
-    if (empty($post_id))
-        wa_pdx_send_response('Invalid post url');
 
     $post = array(
-        'ID'            => $post_id,
-        'post_type'     => $post_type,
-        'post_status'   => $post_status,
-        'post_title'    => $params['title'],
-        'post_content'  => $params['content']
+        'ID'           => $post_id,
+        'post_title'   => $post_title,
+        'post_content' => $post_content
     );
 
+    $post_type = $params['type'];
+    if (!empty($post_type))
+        $post['post_type'] = $post_type;
+
+    $post_status = $params['status'];
+    if (!empty($post_status))
+        $post['post_status'] = $post_status;
+
     $success = wp_update_post($post, false)!=0;
-    wa_pdx_send_response('', $success);
+    if (!$success)
+        return null;
+
+    return $post_id;
 }
 
-function wa_pdx_cmd_content_get ($params)
+function wa_pdx_op_content_update ($params)
+{
+    $post_id = wa_pdx_content_update ($params);
+    wa_pdx_send_response('', $post_id != null);
+}
+
+function wa_pdx_op_content_get ($params)
 {
     if (!empty($params))
     {
@@ -618,7 +635,7 @@ function wa_pdx_cmd_content_get ($params)
         wa_pdx_send_response('Empty data parameter');
 }
 
-function wa_pdx_cmd_media_add ($params)
+function wa_pdx_op_media_add ($params)
 {
 
     $jsonFile = $params['file'];
@@ -661,7 +678,7 @@ function wa_pdx_cmd_media_add ($params)
         wa_pdx_send_response('File upload error! wp_upload_bits()');
 }
 
-function wa_pdx_cmd_media_get_list ()
+function wa_pdx_op_media_get_list ()
 {
 
     $data = array ();
@@ -697,4 +714,28 @@ function wa_pdx_cmd_media_get_list ()
         wp_reset_postdata();
     }
     wa_pdx_send_response($data, true);
+}
+
+function wa_pdx_op_prepare_preview ($params)
+{
+    $preview_url = null;
+    $post_id = wa_pdx_content_update ($params);
+    if (!empty($post_id))
+    {
+        $cfg = get_option(PDX_CONFIG_OPTION_KEY);
+        $preview_token = '';
+        if (!empty($cfg))
+            $preview_token = $cfg['preview_token'];
+
+        $post_url = get_permalink($post_id);
+        $preview_url = $post_url;
+
+        $post_status = get_post_status($post_id);
+        if ($post_status != 'publish')
+            $preview_url = $post_url . "&preview=true&wa_token=$preview_token";
+
+        wa_pdx_send_response($preview_url, true);
+    }
+    else
+        wa_pdx_send_response('Invalid Post ID');
 }
