@@ -655,7 +655,7 @@ function wa_pdx_content_update ($params)
     $success = wp_update_post($post, false)!=0;
 
     // integrate with Yoast SEO
-    // http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
+    // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
     if( function_exists( 'wpseo_set_value' ) ) {
 
         if (!is_null($post_title))
@@ -666,6 +666,10 @@ function wa_pdx_content_update ($params)
         $focus_keyword = $params['focus_keyword'];
         if (!is_null($focus_keyword))
             update_post_meta( $post_id, '_yoast_wpseo_focuskw', $focus_keyword );
+
+    //    if (!is_null($post_url))
+    //        update_post_meta( $post_id, '_yoast_wpseo_canonical', $post_url );
+
     }
 
     if (!$success)
