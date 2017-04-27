@@ -648,6 +648,10 @@ function wa_pdx_content_update ($params)
     if (!is_null($post_status))
         $post['post_status'] = $post_status;
 
+    $post_excerpt = $params['description'];
+    if (!is_null($post_excerpt))
+        $post['post_excerpt'] = $post_excerpt;
+
     $success = wp_update_post($post, false)!=0;
     if (!$success)
         return null;
