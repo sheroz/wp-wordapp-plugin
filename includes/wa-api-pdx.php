@@ -1,6 +1,6 @@
 <?php
 /**
- * User: sheroz
+ * Author: Sheroz Khaydarov
  * Date: 20/03/2017
  * Time: 08:29
  */
@@ -527,6 +527,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_media_add($json['data']);
                     break;
 
+                case PDX_OP_MEDIA_ADD_FROM_URL:
+                    wa_pdx_op_media_add_from_url($json['data']);
+                    break;
+
                 case PDX_OP_PREPARE_PREVIEW:
                     wa_pdx_op_prepare_preview($json['data']);
                     break;
@@ -706,45 +710,102 @@ function wa_pdx_op_content_get ($params)
 
 function wa_pdx_op_media_add ($params)
 {
-
     $jsonFile = $params['file'];
     $alt = $params['alt'];
     $caption = $params['caption'];
 
-    $filename = $jsonFile['name'];
+    $file_name = $jsonFile['name'];
     $bits = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $jsonFile['body']));
 
     $parent_post_id = null;
 
-    $upload_file = wp_upload_bits($filename, null, $bits);
-    if (!$upload_file['error']) {
+    $upload = wp_upload_bits($file_name, null, $bits);
+    if( !empty( $upload['error'] ) )
+        wa_pdx_send_response('Media upload error! wp_upload_bits()');
 
-        $wp_filetype = wp_check_filetype($filename, null );
-        $attachment = array(
-            'post_excerpt' => $caption,
-            'post_mime_type' => $wp_filetype['type'],
-            'post_parent' => $parent_post_id,
-            'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
+    $file_path = $upload['file'];
+    $file_type = wp_check_filetype( $file_name, null );
+    $attachment = array(
+        'post_excerpt' => $caption,
+        'post_mime_type' => $file_type['type'],
+        'post_parent' => $parent_post_id,
+        'post_title' => preg_replace('/\.[^.]+$/', '', $file_name),
+        'post_content' => '',
+        'post_status' => 'inherit'
+    );
 
-        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $parent_post_id );
-        if (!is_wp_error($attachment_id)) {
-//                      require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-            $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
-            wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+    $attachment_id = wp_insert_attachment( $attachment, $file_path, $parent_post_id );
+    if (is_wp_error($attachment_id))
+        wa_pdx_send_response('Media upload error! wp_insert_attachment()');
 
-            if (add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
-                update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
-            }
+    require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
-            wa_pdx_send_response('', true);
+    $attachment_data = wp_generate_attachment_metadata($attachment_id, $file_path);
+    wp_update_attachment_metadata( $attachment_id,  $attachment_data );
 
-        } else
-            wa_pdx_send_response($data = 'File upload error! wp_insert_attachment()');
-    } else
-        wa_pdx_send_response('File upload error! wp_upload_bits()');
+    if (add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
+        update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
+    }
+    wa_pdx_send_response(wp_prepare_attachment_for_js( $attachment_id ), true);
+}
+
+function wa_pdx_op_media_add_from_url ($params)
+{
+    $url = $params['url'];
+    $alt = $params['alt'];
+    $caption = $params['caption'];
+
+    // https://gist.github.com/m1r0/f22d5237ee93bcccb0d9#file-gistfile1-php
+
+    $parent_post_id = null;
+
+    if( !class_exists( 'WP_Http' ) )
+        include_once( ABSPATH . WPINC . '/class-http.php' );
+
+    $http = new WP_Http();
+    $response = $http->request( $url );
+    if( $response['response']['code'] != 200 )
+        wa_pdx_send_response('Url download error!');
+
+    $bits = $response['body'];
+    $upload = wp_upload_bits( basename($url), null, $bits);
+    if( !empty( $upload['error'] ) )
+        wa_pdx_send_response('Media upload error! wp_upload_bits()');
+
+    $file_path = $upload['file'];
+    $file_name = basename( $file_path );
+    $file_type = wp_check_filetype( $file_name, null );
+    $attachment_title = sanitize_file_name( pathinfo( $file_name, PATHINFO_FILENAME ) );
+    $wp_upload_dir = wp_upload_dir();
+
+    $attachment = array(
+        'guid'				=> $wp_upload_dir['url'] . '/' . $file_name,
+        'post_mime_type'    => $file_type['type'],
+        'post_title'	    => $attachment_title,
+        'post_content'	    => '',
+        'post_status'	    => 'inherit',
+        'post_excerpt'      => $caption,
+        'post_parent'       => $parent_post_id
+    );
+
+    // Create the attachment
+    $attachment_id = wp_insert_attachment( $attachment, $file_path, $parent_post_id );
+    if (is_wp_error($attachment_id))
+        wa_pdx_send_response($data = 'Media upload error! wp_insert_attachment()');
+
+    require_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+    // Define attachment metadata
+    $attachment_data = wp_generate_attachment_metadata($attachment_id, $file_path);
+
+    // Assign metadata to attachment
+    wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+
+    if (add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
+        update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
+    }
+
+    wa_pdx_send_response(wp_prepare_attachment_for_js( $attachment_id ), true);
 }
 
 function wa_pdx_op_media_get_list ()
