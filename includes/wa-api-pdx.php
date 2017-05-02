@@ -755,8 +755,6 @@ function wa_pdx_op_media_add_from_url ($params)
     $alt = $params['alt'];
     $caption = $params['caption'];
 
-    // https://gist.github.com/m1r0/f22d5237ee93bcccb0d9#file-gistfile1-php
-
     $parent_post_id = null;
 
     if( !class_exists( 'WP_Http' ) )
@@ -768,7 +766,11 @@ function wa_pdx_op_media_add_from_url ($params)
         wa_pdx_send_response('Url download error!');
 
     $bits = $response['body'];
-    $upload = wp_upload_bits( basename($url), null, $bits);
+
+    $parts = parse_url($url);
+    $file_name = basename($parts['path']);
+
+    $upload = wp_upload_bits( $file_name, null, $bits);
     if( !empty( $upload['error'] ) )
         wa_pdx_send_response('Media upload error! wp_upload_bits()');
 
