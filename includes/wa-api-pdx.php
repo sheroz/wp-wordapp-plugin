@@ -195,10 +195,15 @@ function wa_pdx_clear_config()
     }
 }
 
-function wa_pdx_send_response ($data, $success = false)
+function wa_pdx_send_response ($msg, $success = false)
 {
     $response['success'] = $success;
-    $response['data'] = $data;
+
+    if ($success)
+        $response['data'] = $msg;
+    else
+        $response['error'] = $msg;
+
     wp_send_json($response);
 }
 
@@ -230,11 +235,9 @@ function ajax_wa_pdx() {
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
 
-
     $validation_token = '';
     if (!empty($_POST['token']))
         $validation_token = $_POST['token'];
-
 
     $cfg_token = $cfg['validation_token'];
     if (PDX_LOG_ENABLE)
@@ -595,15 +598,62 @@ function wa_pdx_op_content_get_list ()
 
 function wa_pdx_op_content_add ($params)
 {
+    wa_pdx_content_add($params);
+    wa_pdx_send_response('', true);
+}
+
+function wa_pdx_content_add ($params)
+{
+    $post_content = $params['content'];
+
     $post = array(
-        'post_type'     => $params['type'],
-        'post_status'   => $params['status'],
-        'post_title'    => $params['title'],
-        'post_content'  => $params['content']
+        'post_content' => $post_content
     );
 
-    wp_insert_post( $post );
-    wa_pdx_send_response('', true);
+    $post_title  = $params['title'];
+    if (!is_null($post_title))
+        $post['post_title'] = $post_title;
+
+    $post_type = $params['type'];
+    if (!is_null($post_type))
+        $post_type = "page";
+    $post['post_type'] = $post_type;
+
+    $post_status = $params['status'];
+    if (!is_null($post_status))
+        $post_status = "draft";
+    $post['post_status'] = $post_status;
+
+    $post_meta_description = $params['description'];
+    if (!is_null($post_meta_description))
+        $post['post_excerpt'] = $post_meta_description;
+
+    $post_id = wp_insert_post($post);
+    $success = $post_id!=0;
+
+    // integrate with Yoast SEO
+    // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
+    if( function_exists( 'wpseo_set_value' ) ) {
+
+        if (!is_null($post_title))
+            update_post_meta( $post_id, '_yoast_wpseo_title', $post_title );
+        if (!is_null($post_meta_description))
+            update_post_meta( $post_id, '_yoast_wpseo_metadesc', $post_meta_description );
+
+        $focus_keyword = $params['focus_keyword'];
+        if (!is_null($focus_keyword))
+            update_post_meta( $post_id, '_yoast_wpseo_focuskw', $focus_keyword );
+
+        //    if (!is_null($post_url))
+        //        update_post_meta( $post_id, '_yoast_wpseo_canonical', $post_url );
+
+    }
+
+    if (!$success)
+        return null;
+
+    return $post_id;
+
 }
 
 function wa_pdx_find_post_by_url ($post_url)
@@ -756,6 +806,8 @@ function wa_pdx_op_media_add_from_url ($params)
     $caption = $params['caption'];
 
     $parent_post_id = null;
+    $parts = parse_url($url);
+    $file_name = basename($parts['path']);
 
     if( !class_exists( 'WP_Http' ) )
         include_once( ABSPATH . WPINC . '/class-http.php' );
@@ -766,9 +818,6 @@ function wa_pdx_op_media_add_from_url ($params)
         wa_pdx_send_response('Url download error!');
 
     $bits = $response['body'];
-
-    $parts = parse_url($url);
-    $file_name = basename($parts['path']);
 
     $upload = wp_upload_bits( $file_name, null, $bits);
     if( !empty( $upload['error'] ) )
@@ -790,17 +839,13 @@ function wa_pdx_op_media_add_from_url ($params)
         'post_parent'       => $parent_post_id
     );
 
-    // Create the attachment
     $attachment_id = wp_insert_attachment( $attachment, $file_path, $parent_post_id );
     if (is_wp_error($attachment_id))
         wa_pdx_send_response($data = 'Media upload error! wp_insert_attachment()');
 
     require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
-    // Define attachment metadata
     $attachment_data = wp_generate_attachment_metadata($attachment_id, $file_path);
-
-    // Assign metadata to attachment
     wp_update_attachment_metadata( $attachment_id,  $attachment_data );
 
     if (add_post_meta($attachment_id, '_wp_attachment_image_alt', $alt, true)){
@@ -869,10 +914,31 @@ function wa_pdx_generate_preview_url ($post_id)
 function wa_pdx_op_prepare_preview ($params)
 {
     $preview_url = null;
-    $post_id = wa_pdx_content_update ($params);
+    $post_url = $params['url'];
+
+    if(empty($post_url))
+       $post_id = wa_pdx_content_add ($params);
+    else
+       $post_id = wa_pdx_content_update ($params);
+
     if (empty($post_id))
         wa_pdx_send_response('Invalid Post ID');
 
      $preview_url = wa_pdx_generate_preview_url ($post_id);
-     wa_pdx_send_response($preview_url, true);
+     $post_url = get_permalink($post_id);
+
+     $data = array (
+         'url' => $post_url,
+         'preview_url' => $preview_url
+     );
+
+     wa_pdx_send_response($data, true);
 }
+
+// get_sample_permalink( int $id, string $title = null, string $name = null )
+// https://developer.wordpress.org/reference/functions/get_sample_permalink/
+
+// $post_id = 45; //specify post id here
+// $post = get_post($post_id);
+// $slug = $post->post_name;
+
