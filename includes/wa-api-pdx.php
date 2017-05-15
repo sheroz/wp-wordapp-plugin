@@ -685,6 +685,69 @@ function wa_pdx_content_update ($params)
             wa_pdx_send_response('Cannot find post by url: ' . $post_url);
     }
 
+    $look_for_markers = true;
+    if ($look_for_markers) {
+        $post = get_post($post_id, ARRAY_A);
+        if (!is_null($post))
+        {
+            $content = $post['post_content'];
+            if (!empty($content))
+            {
+                $marker_pos_start = strpos ($content, PDX_MARKER_CONTENT_BEGIN , 0);
+                if ($marker_pos_start !== false) {
+                    $h1_replace = true;
+                    if ($h1_replace) {
+                        $h1_content_start = strpos ($content, '<h1' , 0);
+                        if ($h1_content_start === false)
+                            $h1_content_start = strpos ($content, '<H1' , 0);
+                        if ($h1_content_start !== false) {
+                            // look for h1 tag closer '>'
+                            $h1_content_start = strpos($content, '>', $h1_content_start);
+                            if ($h1_content_start !== false) {
+                                $h1_content_start += 1;
+                                $h1_content_end = strpos($content, '<', $h1_content_start);
+                                if ($h1_content_end !== false) {
+                                    $h1_content_len = $h1_content_end - $h1_content_start;
+
+                                    $h1_wa_start_outer = strpos($post_content, '<h1', 0);
+                                    if ($h1_wa_start_outer === false)
+                                        $h1_wa_start = strpos($post_content, '<H1', 0);
+                                    if ($h1_wa_start_outer !== false) {
+                                        // look for h1 tag closer '>'
+                                        $h1_wa_start_inner = strpos($post_content, '>', $h1_wa_start_outer);
+                                        if ($h1_wa_start_inner !== false) {
+                                            $h1_wa_start_inner += 1;
+                                            $h1_wa_end_inner = strpos($post_content, '<', $h1_wa_start_inner);
+                                            if ($h1_wa_end_inner !== false) {
+                                                $h1_wa_end_outer = strpos($post_content, '>', $h1_wa_end_inner);
+                                                $h1_wa_len_outer = $h1_wa_end_outer - $h1_wa_start_outer + 1;
+                                                $h1_wa_len_inner = $h1_wa_end_inner - $h1_wa_start_inner;
+                                                $h1_wa = substr($post_content, $h1_wa_start_inner, $h1_wa_len_inner);
+                                                $post_content = substr_replace($post_content, '', $h1_wa_start_outer, $h1_wa_len_outer);
+                                                $content = substr_replace($content, $h1_wa, $h1_content_start, $h1_content_len);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    $marker_pos_start = strpos ($content, PDX_MARKER_CONTENT_BEGIN , 0);
+                    $marker_pos_end = strpos ($content, PDX_MARKER_CONTENT_END , $marker_pos_start);
+                    if ($marker_pos_end !== false) {
+                        $marker_content_start = $marker_pos_start + strlen(PDX_MARKER_CONTENT_BEGIN);
+                        $marker_content_len = $marker_pos_end - $marker_content_start;
+                        $post_content = substr_replace($content, $post_content, $marker_content_start, $marker_content_len);
+                    }
+
+                }
+            }
+
+        }
+    }
+
     $post = array(
         'ID'           => $post_id,
         'post_content' => $post_content
