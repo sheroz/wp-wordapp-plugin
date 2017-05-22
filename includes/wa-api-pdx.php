@@ -825,43 +825,6 @@ function wa_pdx_op_content_get ($params)
         wa_pdx_send_response('Empty data parameter');
 }
 
-
-function wa_pdx_op_meta_get_list ($params)
-{
-    if (empty($params))
-        wa_pdx_send_response('Empty data parameter');
-
-    $content_id = $params['content_id'];
-    if (!empty($content_id) && $content_id > 0)
-    {
-        //$fields = get_post_custom($content_id);
-        //wa_pdx_send_response($fields, true);
-        //$meta = get_metadata('post', $content_id);
-
-        $meta = get_post_meta($content_id, '', true);
-        if (is_array($meta))
-        {
-            $out = array();
-            foreach($meta as $k => $v) {
-                if (is_array($v))
-                {
-                    $r = array();
-                    foreach($v as $k2 => $v2) {
-                        $r[$k2] = maybe_unserialize($v2);
-                    }
-                    $out[$k] = $r;
-                }
-                else
-                    $out[$k] = maybe_unserialize($v);
-            }
-            $meta = $out;
-        }
-        wa_pdx_send_response($meta, true);
-    }
-    else
-        wa_pdx_send_response('Invalid content id');
-}
-
 function wa_pdx_op_media_add ($params)
 {
     $jsonFile = $params['file'];
@@ -1039,10 +1002,76 @@ function wa_pdx_op_prepare_preview ($params)
      wa_pdx_send_response($data, true);
 }
 
+function wa_pdx_op_meta_get_list ($params)
+{
+    if (empty($params))
+        wa_pdx_send_response('Empty data parameter');
+
+    $content_id = $params['content_id'];
+    if (!empty($content_id) && $content_id > 0)
+    {
+        //$fields = get_post_custom($content_id);
+        //wa_pdx_send_response($fields, true);
+        //$meta = get_metadata('post', $content_id);
+
+        /*
+        $meta = get_post_meta($content_id, '', true);
+        if (is_array($meta))
+        {
+            $out = array();
+            foreach($meta as $k => $v) {
+                if (is_array($v))
+                {
+                    $r = array();
+                    foreach($v as $k2 => $v2) {
+                        $r[$k2] = maybe_unserialize($v2);
+                    }
+                    $out[$k] = $r;
+                }
+                else
+                    $out[$k] = maybe_unserialize($v);
+            }
+            $meta = $out;
+        }
+        */
+
+        $i = array (
+            'ct_0_subrating_group[desc_sub11]'  => 'loren ipsum11',
+            'ct_0_subrating_group[desc2_sub11]' => 'loren ipsum21',
+            'ct_0_subrating_group[qc_title1]' => 'Web App2',
+            'ct_0_subrating_group[qc_title2]' => 'Android2',
+            'ct_0_subrating_group[qc_title3]' => 'Windows2'
+        );
+
+        $meta = array();
+        foreach($i as $k => $v) {
+            $k = str_replace('[','|', $k);
+            $k = str_replace(']','|', $k);
+            $t = explode('|', $k );
+            if(is_array($t) && count($t)>=2)
+            {
+                if (!isset($meta[$t[0]]))
+                    $meta[$t[0]] = array();
+                $meta[$t[0]][$t[1]] = $v;
+            }
+            else
+                $meta[$k] = $v;
+        }
+
+        $k = 'ct_0_subrating_group';
+        update_post_meta($content_id, $k, $meta[$k]);
+        $meta = get_post_meta($content_id, $k, true);
+
+
+        wa_pdx_send_response($meta, true);
+    }
+    else
+        wa_pdx_send_response('Invalid content id');
+}
+
 // get_sample_permalink( int $id, string $title = null, string $name = null )
 // https://developer.wordpress.org/reference/functions/get_sample_permalink/
 
 // $post_id = 45; //specify post id here
 // $post = get_post($post_id);
 // $slug = $post->post_name;
-
