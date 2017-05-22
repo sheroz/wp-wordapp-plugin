@@ -182,7 +182,7 @@ class Wordapp_Seo {
 	public function run() {
 
         $this->loader->run();
-        add_action('wp', 'wa_pdx_hello' );
+        add_action('init', 'wa_pdx_hello' );
         add_action('wp_ajax_wa_pdx', 'ajax_wa_pdx' );
         add_action('wp_ajax_nopriv_wa_pdx', 'ajax_wa_pdx' );
 

@@ -538,6 +538,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_prepare_preview($json['data']);
                     break;
 
+                case PDX_OP_META_GET_LIST:
+                    wa_pdx_op_meta_get_list($json['data']);
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }
@@ -819,6 +823,43 @@ function wa_pdx_op_content_get ($params)
             wa_pdx_send_response('Invalid content id');
     } else
         wa_pdx_send_response('Empty data parameter');
+}
+
+
+function wa_pdx_op_meta_get_list ($params)
+{
+    if (empty($params))
+        wa_pdx_send_response('Empty data parameter');
+
+    $content_id = $params['content_id'];
+    if (!empty($content_id) && $content_id > 0)
+    {
+        //$fields = get_post_custom($content_id);
+        //wa_pdx_send_response($fields, true);
+        //$meta = get_metadata('post', $content_id);
+
+        $meta = get_post_meta($content_id, '', true);
+        if (is_array($meta))
+        {
+            $out = array();
+            foreach($meta as $k => $v) {
+                if (is_array($v))
+                {
+                    $r = array();
+                    foreach($v as $k2 => $v2) {
+                        $r[$k2] = maybe_unserialize($v2);
+                    }
+                    $out[$k] = $r;
+                }
+                else
+                    $out[$k] = maybe_unserialize($v);
+            }
+            $meta = $out;
+        }
+        wa_pdx_send_response($meta, true);
+    }
+    else
+        wa_pdx_send_response('Invalid content id');
 }
 
 function wa_pdx_op_media_add ($params)
