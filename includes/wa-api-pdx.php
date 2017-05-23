@@ -542,6 +542,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_meta_get_list($json['data']);
                     break;
 
+                case PDX_OP_META_UPDATE:
+                    wa_pdx_op_meta_update($json['data']);
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }
@@ -1035,6 +1039,22 @@ function wa_pdx_op_meta_get_list ($params)
         }
         */
 
+        $meta = get_post_meta($content_id, '', true);
+        wa_pdx_send_response($meta, true);
+    }
+    else
+        wa_pdx_send_response('Invalid content id');
+}
+
+function wa_pdx_op_meta_update ($params)
+{
+    if (empty($params))
+        wa_pdx_send_response('Empty data parameter');
+
+    $content_id = $params['content_id'];
+    if (!empty($content_id) && $content_id > 0)
+    {
+
         $i = array (
             'ct_0_subrating_group[desc_sub11]'  => 'loren ipsum11',
             'ct_0_subrating_group[desc2_sub11]' => 'loren ipsum21',
@@ -1045,10 +1065,9 @@ function wa_pdx_op_meta_get_list ($params)
 
         $meta = array();
         foreach($i as $k => $v) {
-            $k = str_replace('[','|', $k);
-            $k = str_replace(']','|', $k);
-            $t = explode('|', $k );
-            if(is_array($t) && count($t)>=2)
+            $k = trim(str_replace(array('[',']'),' ', $k));
+            $t = explode(' ', $k );
+            if(is_array($t) && count($t)==2)
             {
                 if (!isset($meta[$t[0]]))
                     $meta[$t[0]] = array();
@@ -1061,7 +1080,6 @@ function wa_pdx_op_meta_get_list ($params)
         $k = 'ct_0_subrating_group';
         update_post_meta($content_id, $k, $meta[$k]);
         $meta = get_post_meta($content_id, $k, true);
-
 
         wa_pdx_send_response($meta, true);
     }
