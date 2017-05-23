@@ -1070,7 +1070,7 @@ function wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_ke
     if (function_exists('aiosp_meta')) {
         if (!is_null($title))
             update_post_meta($post_id, '_aioseop_title', $title);
-        if (!is_null(_aioseop_description))
+        if (!is_null($description))
             update_post_meta($post_id, '_aioseop_description', $description);
         if (!is_null($focus_keyword))
             update_post_meta($post_id, '_aioseop_keywords', $focus_keyword);
