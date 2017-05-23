@@ -1067,12 +1067,13 @@ function wa_pdx_op_meta_update ($params)
                 $meta[$k] = $v;
         }
 
+        $result = '';
         foreach($meta as $k => $v) {
             if (!update_post_meta($content_id, $k, $v))
-                wa_pdx_send_response('Can not update field: '.$k);
+                $result .= "Field(s) not updated: $k \n";
         }
 
-        wa_pdx_send_response('', true);
+        wa_pdx_send_response($result, true);
     }
     else
         wa_pdx_send_response('Invalid content id');
