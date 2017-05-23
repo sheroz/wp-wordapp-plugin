@@ -17,10 +17,10 @@ const PDX_OP_MEDIA_ADD          =   9;
 const PDX_OP_MEDIA_ADD_FROM_URL =   10;
 const PDX_OP_MEDIA_UPDATE       =   11;
 const PDX_OP_PREPARE_PREVIEW    =   12;
-const PDX_OP_META_GET_LIST      =   13;
+const PDX_OP_META_GET           =   13;
 const PDX_OP_META_UPDATE        =   14;
 
-const PDX_PLUGIN_VERSION_NUMBER  =  '0.3.5';
+const PDX_PLUGIN_VERSION_NUMBER  =  '0.3.6';
 const PDX_PLUGIN_VERSION_TEXT  =  'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION_NUMBER;
 const PDX_CONFIG_OPTION_KEY = 'wa_pdx_config';
 

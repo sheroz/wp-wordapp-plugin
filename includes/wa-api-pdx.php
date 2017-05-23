@@ -538,8 +538,8 @@ function ajax_wa_pdx() {
                     wa_pdx_op_prepare_preview($json['data']);
                     break;
 
-                case PDX_OP_META_GET_LIST:
-                    wa_pdx_op_meta_get_list($json['data']);
+                case PDX_OP_META_GET:
+                    wa_pdx_op_meta_get($json['data']);
                     break;
 
                 case PDX_OP_META_UPDATE:
@@ -1006,7 +1006,7 @@ function wa_pdx_op_prepare_preview ($params)
      wa_pdx_send_response($data, true);
 }
 
-function wa_pdx_op_meta_get_list ($params)
+function wa_pdx_op_meta_get ($params)
 {
     if (empty($params))
         wa_pdx_send_response('Empty data parameter');
@@ -1018,7 +1018,6 @@ function wa_pdx_op_meta_get_list ($params)
         //wa_pdx_send_response($fields, true);
         //$meta = get_metadata('post', $content_id);
 
-        /*
         $meta = get_post_meta($content_id, '', true);
         if (is_array($meta))
         {
@@ -1037,9 +1036,6 @@ function wa_pdx_op_meta_get_list ($params)
             }
             $meta = $out;
         }
-        */
-
-        $meta = get_post_meta($content_id, '', true);
         wa_pdx_send_response($meta, true);
     }
     else
@@ -1055,16 +1051,10 @@ function wa_pdx_op_meta_update ($params)
     if (!empty($content_id) && $content_id > 0)
     {
 
-        $i = array (
-            'ct_0_subrating_group[desc_sub11]'  => 'loren ipsum11',
-            'ct_0_subrating_group[desc2_sub11]' => 'loren ipsum21',
-            'ct_0_subrating_group[qc_title1]' => 'Web App2',
-            'ct_0_subrating_group[qc_title2]' => 'Android2',
-            'ct_0_subrating_group[qc_title3]' => 'Windows2'
-        );
+        $i_meta = $params['meta'];
 
         $meta = array();
-        foreach($i as $k => $v) {
+        foreach($i_meta as $k => $v) {
             $k = trim(str_replace(array('[',']'),' ', $k));
             $t = explode(' ', $k );
             if(is_array($t) && count($t)==2)
@@ -1077,11 +1067,12 @@ function wa_pdx_op_meta_update ($params)
                 $meta[$k] = $v;
         }
 
-        $k = 'ct_0_subrating_group';
-        update_post_meta($content_id, $k, $meta[$k]);
-        $meta = get_post_meta($content_id, $k, true);
+        foreach($meta as $k => $v) {
+            if (!update_post_meta($content_id, $k, $v))
+                wa_pdx_send_response('Can not update field: '.$k);
+        }
 
-        wa_pdx_send_response($meta, true);
+        wa_pdx_send_response('', true);
     }
     else
         wa_pdx_send_response('Invalid content id');
