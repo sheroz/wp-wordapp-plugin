@@ -1031,10 +1031,27 @@ function wa_pdx_op_meta_update ($params)
             {
                 if (!isset($meta[$t[0]]))
                     $meta[$t[0]] = array();
-                $meta[$t[0]][$t[1]] = $v;
+
+                if (is_array($v)) {
+                    $meta[$t[0]][$t[1]] = array();
+                    foreach ($v as $a_k => $a_v) {
+                        $meta[$t[0]][$t[1]][$a_k] = $a_v;
+                    }
+                }
+                else {
+                    $meta[$t[0]][$t[1]] = $v;
+                }
+            } else {
+                if (is_array($v)) {
+                    $meta[$k] = array();
+                    foreach ($v as $a_k => $a_v) {
+                        $meta[$k][$a_k] = $a_v;
+                    }
+                }
+                else {
+                    $meta[$k] = $v;
+                }
             }
-            else
-                $meta[$k] = $v;
         }
 
         $result = '';
