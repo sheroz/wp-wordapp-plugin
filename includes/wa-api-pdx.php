@@ -247,7 +247,7 @@ function ajax_wa_pdx() {
 
     }
 
-    $is_authorized = ( !empty($cfg_token) && ($cfg_token == $validation_token));
+    $is_authorized = ( !empty($cfg_token) && ($cfg_token === $validation_token));
     if (PDX_LOG_ENABLE)
         if ($is_authorized)
             $log.= "token verification OK.\n";
@@ -261,7 +261,8 @@ function ajax_wa_pdx() {
         if (PDX_LOG_ENABLE)
         {
             $log.= "post data: $data\n";
-            $log.= "received json: ".json_encode($json)."\n";
+            $log.= "post data by print_r()\n--- Begin print_r():\n".print_r($data, true)."\n--- End print_r():\n";
+            $log.= "received json after json_encode: ".json_encode($json)."\n";
         }
     }
     else
@@ -1020,12 +1021,10 @@ function wa_pdx_op_meta_update ($params)
     $content_id = $params['content_id'];
     if (!empty($content_id) && $content_id > 0)
     {
-
         $i_meta = $params['meta'];
-
         $meta = array();
         foreach($i_meta as $k => $v) {
-            $k = trim(str_replace(array('[',']'),' ', $k));
+            $k = trim(str_replace(array('[',']'),' ', trim($k)));
             $t = explode(' ', $k );
             if(is_array($t) && count($t)==2)
             {
@@ -1034,30 +1033,53 @@ function wa_pdx_op_meta_update ($params)
 
                 if (is_array($v)) {
                     $meta[$t[0]][$t[1]] = array();
-                    foreach ($v as $a_k => $a_v) {
+                    foreach ($v as $a_k => $a_v)
                         $meta[$t[0]][$t[1]][$a_k] = $a_v;
-                    }
                 }
-                else {
+                else
                     $meta[$t[0]][$t[1]] = $v;
-                }
-            } else {
+            }
+            else {
                 if (is_array($v)) {
                     $meta[$k] = array();
                     foreach ($v as $a_k => $a_v) {
                         $meta[$k][$a_k] = $a_v;
                     }
                 }
-                else {
+                else
                     $meta[$k] = $v;
-                }
             }
         }
 
-        $result = '';
+        if (PDX_LOG_ENABLE)
+        {
+            $log = "wa_pdx_op_meta_update (), meta dump:\n--- Begin print_r():\n".print_r($meta, true)."\n--- End print_r():\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+
+        $skipped = array();
         foreach($meta as $k => $v) {
+            // take a care for other non provided fields
+            // non provided fields should stay as is
+            $old = get_post_meta($content_id, $k, true);
+            if (is_array($old) && is_array($v))
+            {
+                foreach($old as $k_o => $v_o) {
+                    if (!isset($v[$k_o])) {
+                        $v[$k_o] = $v_o;
+                    }
+                }
+            }
+
             if (!update_post_meta($content_id, $k, $v))
-                $result .= "Field(s) not updated: $k \n";
+                $skipped[] = $k;
+        }
+
+        $result = 'OK';
+        if (!empty($skipped)) {
+            $result .= '. Skipped field(s): ';
+            foreach($skipped as $v)
+                $result .= $v.' ';
         }
 
         wa_pdx_send_response($result, true);
@@ -1068,7 +1090,6 @@ function wa_pdx_op_meta_update ($params)
 
 function wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword)
 {
-
     // Integration with Yoast SEO
     // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
     if (function_exists('wpseo_set_value')) {
@@ -1101,3 +1122,5 @@ function wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_ke
 // $post_id = 45; //specify post id here
 // $post = get_post($post_id);
 // $slug = $post->post_name;
+
+// https://www.smashingmagazine.com/2011/03/ten-things-every-wordpress-plugin-developer-should-know/

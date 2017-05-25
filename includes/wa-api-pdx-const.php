@@ -20,7 +20,7 @@ const PDX_OP_PREPARE_PREVIEW    =   12;
 const PDX_OP_META_GET           =   13;
 const PDX_OP_META_UPDATE        =   14;
 
-const PDX_PLUGIN_VERSION_NUMBER  =  '0.3.9';
+const PDX_PLUGIN_VERSION_NUMBER  =  '0.4.4';
 const PDX_PLUGIN_VERSION_TEXT  =  'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION_NUMBER;
 const PDX_CONFIG_OPTION_KEY = 'wa_pdx_config';
 
@@ -39,7 +39,7 @@ const PDX_SIGNATURE_CHECK = 1;
 // parameter:  PDX_LOG_ENABLE
 // values: 1 - logs to PDX_LOG_FILE, 0 - disable logs
 const PDX_LOG_ENABLE = 0;
-const PDX_LOG_FILE = '/tmp/wordapp-seo-debug.log';
+const PDX_LOG_FILE = '/var/www/html/tmp/wordapp-seo.log';
 
 /*
 
