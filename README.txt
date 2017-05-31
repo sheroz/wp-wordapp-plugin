@@ -6,7 +6,7 @@ Stable tag: 4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Wordapp plugin connects your WordPress site with Wordapp Platform.
+The Wordapp Plugin connects your site to the Wordapp Platform.
 
 == Description ==
 
