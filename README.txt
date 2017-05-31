@@ -6,11 +6,12 @@ Stable tag: 4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Wordapp plugin connects your WordPress site with Wordapp Platform
+Wordapp plugin connects your WordPress site with Wordapp Platform.
 
 == Description ==
 
 Wordapp is a free word-processing and publishing platform for e-commerce that lets you manage and control your content creation with a crowd of writers and editors suited to your job.
+
 The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.
 
 For more information please visit http://www.wordapp.io
