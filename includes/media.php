@@ -101,14 +101,23 @@ function wa_pdx_op_media_add_from_url ($params)
     wa_pdx_send_response(wp_prepare_attachment_for_js( $attachment_id ), true);
 }
 
-function wa_pdx_op_media_get_list ()
+function wa_pdx_op_media_list ($params)
 {
 
     $data = array ();
 //                $base_url = wp_upload_dir();
 //                $base_url = $base_url['baseurl'];
 
-    $args = array( 'post_type' => 'attachment', 'posts_per_page' => -1, 'post_status' => 'any', 'post_parent' => null );
+    $args = array();
+    if (empty($params)) {
+        $args['post_type'] = 'attachment';
+        $args['posts_per_page'] = -1;
+        $args['post_status'] = 'any';
+        $args['post_parent'] = null;
+    }
+    else {
+        // todo: parse params and add to $args
+    }
     $attachments = get_posts( $args );
     if ( $attachments ) {
         foreach ( $attachments as $attachment ) {

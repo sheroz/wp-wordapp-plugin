@@ -38,14 +38,19 @@ function wa_pdx_find_post_by_url ($post_url)
     return null;
 }
 
-function wa_pdx_get_posts()
+function wa_pdx_get_posts($params)
 {
-    $args = array(
-        'posts_per_page' => -1,
-        'orderby' => array('type','ID'),
-        'post_type' => array('post','page'),
-        'post_status' => 'publish,pending,draft,private,trash'
-    );
+
+    $args = array();
+    if (empty($params))
+    {
+        $args['posts_per_page'] =  -1;
+        $args['orderby'] = array('type','ID');
+        $args['post_type'] = array('post','page');
+        $args['post_status'] = 'publish,pending,draft,private,trash';
+    } else {
+        // todo: parse params and add to $args
+    }
 //  'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
 
     $data = array ();

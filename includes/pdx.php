@@ -101,46 +101,48 @@ function ajax_wa_pdx() {
             if (!$is_authorized)
                 wa_pdx_send_response('Not authorized');
 
+            $params = $json['data'];
+
             switch ($op) {
 
-                case PDX_OP_CONTENT_GET_LIST:
-                    wa_pdx_op_content_get_list();
+                case PDX_OP_CONTENT_LIST:
+                    wa_pdx_op_content_list($params);
                     break;
 
                 case PDX_OP_CONTENT_ADD:
-                    wa_pdx_op_content_add($json['data']);
+                    wa_pdx_op_content_add($params);
                     break;
 
                 case PDX_OP_CONTENT_UPDATE:
-                    wa_pdx_op_content_update($json['data']);
+                    wa_pdx_op_content_update($params);
                     break;
 
                 case PDX_OP_CONTENT_GET:
-                    wa_pdx_op_content_get($json['data']);
+                    wa_pdx_op_content_get($params);
                     break;
 
-                case PDX_OP_MEDIA_GET_LIST:
-                    wa_pdx_op_media_get_list();
+                case PDX_OP_MEDIA_LIST:
+                    wa_pdx_op_media_list($params);
                     break;
 
                 case PDX_OP_MEDIA_ADD:
-                    wa_pdx_op_media_add($json['data']);
+                    wa_pdx_op_media_add($params);
                     break;
 
                 case PDX_OP_MEDIA_ADD_FROM_URL:
-                    wa_pdx_op_media_add_from_url($json['data']);
+                    wa_pdx_op_media_add_from_url($params);
                     break;
 
                 case PDX_OP_PREPARE_PREVIEW:
-                    wa_pdx_op_prepare_preview($json['data']);
+                    wa_pdx_op_prepare_preview($params);
                     break;
 
                 case PDX_OP_META_GET:
-                    wa_pdx_op_meta_get($json['data']);
+                    wa_pdx_op_meta_get($params);
                     break;
 
                 case PDX_OP_META_UPDATE:
-                    wa_pdx_op_meta_update($json['data']);
+                    wa_pdx_op_meta_update($params);
                     break;
 
                 default:

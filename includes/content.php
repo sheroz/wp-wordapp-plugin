@@ -4,14 +4,14 @@
  * Date: 20/03/2017 Time: 08:29
  */
 
-function wa_pdx_op_content_get_list ()
+function wa_pdx_op_content_list ($params)
 {
     $cfg = get_option(PDX_CONFIG_OPTION_KEY);
     if (empty($cfg))
         wa_pdx_send_response('Invalid Configuration');
 
     $preview_token = $cfg['preview_token'];
-    $posts = wa_pdx_get_posts();
+    $posts = wa_pdx_get_posts($params);
     $count = count($posts);
     for ($pos = 0; $pos < $count; $pos++)
     {
