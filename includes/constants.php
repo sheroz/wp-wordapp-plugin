@@ -19,7 +19,6 @@ const PDX_OP_WP_POST_META_UPDATE    =   18;
 const PDX_OP_WP_MEDIA_LIST          =   20;
 const PDX_OP_WP_MEDIA_ADD           =   21;
 const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
-const PDX_OP_WP_MEDIA_UPDATE        =   23;
 const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 

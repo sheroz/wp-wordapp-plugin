@@ -39,3 +39,8 @@ To upload the plugin through WordPress, instead of FTP:
 
 = 1.0.0 (2017-05-29): =
 * Initial Public Release
+
+= 1.0.1 (2017-06-01): =
+* PDX protocol modified
+* Added support for custom post types
+* Added support for post authors
