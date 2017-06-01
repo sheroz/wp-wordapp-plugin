@@ -44,3 +44,6 @@ To upload the plugin through WordPress, instead of FTP:
 * PDX protocol modified
 * Added support for custom post types
 * Added support for post authors
+
+= 1.0.2 (2017-06-01): =
+* Added support for post templates
