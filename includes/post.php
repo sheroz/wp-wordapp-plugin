@@ -39,15 +39,27 @@ function wa_pdx_op_post_list ($params)
     wa_pdx_send_response($posts, true);
 }
 
-function wa_pdx_post_update_template($post_id, $template) {
+function wa_pdx_post_update_template($post_id, $name) {
     if ($post_id && $post_id > 0) {
-        if (!is_null($template)) {
-            $post = array(
-                'ID'           => $post_id,
-                'page_template' => $template
-            );
-            wp_update_post($post, false);
-            update_post_meta($post_id, '_wp_page_template', array($template));
+        if (!is_null($name)) {
+            $template_id = null;
+            $templates = get_page_templates();
+            if ( $templates ) {
+                foreach ( $templates as $k => $v ) {
+                    if ($k == $name) {
+                        $template_id = $v;
+                        break;
+                    }
+                }
+            }
+            if ($template_id) {
+                $post = array(
+                    'ID'           => $post_id,
+                    'page_template' => $template_id
+                );
+                wp_update_post($post, false);
+                update_post_meta($post_id, '_wp_page_template', array($template_id));
+            }
         }
     }
 }
