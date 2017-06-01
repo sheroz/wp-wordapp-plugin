@@ -4,22 +4,26 @@
  * Date: 20/03/2017 Time: 08:29
  */
 
-const PDX_OP_ANALYZE_SITE       =   1;
-const PDX_OP_CONFIG_CHECK       =   2;
-const PDX_OP_CONFIG_SET         =   3;
-const PDX_OP_CONTENT_LIST       =   4;
-const PDX_OP_CONTENT_ADD        =   5;
-const PDX_OP_CONTENT_GET        =   6;
-const PDX_OP_CONTENT_UPDATE     =   7;
-const PDX_OP_MEDIA_LIST         =   8;
-const PDX_OP_MEDIA_ADD          =   9;
-const PDX_OP_MEDIA_ADD_FROM_URL =   10;
-const PDX_OP_MEDIA_UPDATE       =   11;
-const PDX_OP_PREPARE_PREVIEW    =   12;
-const PDX_OP_META_GET           =   13;
-const PDX_OP_META_UPDATE        =   14;
+const PDX_OP_ANALYZE_SITE           =   1;
+const PDX_OP_WP_CONFIG_SET          =   2;
+const PDX_OP_WP_CONFIG_CHECK        =   3;
+const PDX_OP_WP_POST_LIST           =   10;
+const PDX_OP_WP_POST_ADD            =   11;
+const PDX_OP_WP_POST_GET            =   12;
+const PDX_OP_WP_POST_UPDATE         =   13;
+const PDX_OP_WP_POST_TYPE_LIST      =   14;
+const PDX_OP_WP_POST_STATUS_LIST    =   15;
+const PDX_OP_WP_POST_TEMPLATE_LIST  =   16;
+const PDX_OP_WP_POST_META_GET       =   17;
+const PDX_OP_WP_POST_META_UPDATE    =   18;
+const PDX_OP_WP_MEDIA_LIST          =   20;
+const PDX_OP_WP_MEDIA_ADD           =   21;
+const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
+const PDX_OP_WP_MEDIA_UPDATE        =   23;
+const PDX_OP_WP_USER_LIST           =   30;
+const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.0.0';
+const PDX_PLUGIN_VERSION_NUMBER = '1.0.1';
 const PDX_PLUGIN_VERSION_TEXT   = 'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION_NUMBER;
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
 

@@ -4,7 +4,22 @@
  * Date: 20/03/2017 Time: 08:29
  */
 
-function wa_pdx_op_content_list ($params)
+function wa_pdx_op_post_type_list(){
+    $post_types = get_post_types();
+    wa_pdx_send_response($post_types, true);
+}
+
+function wa_pdx_op_post_status_list(){
+    $stati = get_post_stati();
+    wa_pdx_send_response($stati, true);
+}
+
+function wa_pdx_op_post_template_list(){
+    $templates = get_page_templates();
+    wa_pdx_send_response($templates, true);
+}
+
+function wa_pdx_op_post_list ($params)
 {
     $cfg = get_option(PDX_CONFIG_OPTION_KEY);
     if (empty($cfg))
@@ -24,13 +39,13 @@ function wa_pdx_op_content_list ($params)
     wa_pdx_send_response($posts, true);
 }
 
-function wa_pdx_op_content_add ($params)
+function wa_pdx_op_post_add ($params)
 {
-    wa_pdx_content_add($params);
+    wa_pdx_post_add($params);
     wa_pdx_send_response('', true);
 }
 
-function wa_pdx_content_add ($params)
+function wa_pdx_post_add ($params)
 {
     $post_content = $params['content'];
 
@@ -69,7 +84,7 @@ function wa_pdx_content_add ($params)
 
 }
 
-function wa_pdx_content_update ($params)
+function wa_pdx_post_update ($params)
 {
     $post_id = $params['id'];
     $post_url = $params['url'];
@@ -180,13 +195,13 @@ function wa_pdx_content_update ($params)
     return $post_id;
 }
 
-function wa_pdx_op_content_update ($params)
+function wa_pdx_op_post_update ($params)
 {
-    $post_id = wa_pdx_content_update ($params);
+    $post_id = wa_pdx_post_update ($params);
     wa_pdx_send_response('', $post_id != null);
 }
 
-function wa_pdx_op_content_get ($params)
+function wa_pdx_op_post_get ($params)
 {
     if (!empty($params))
     {

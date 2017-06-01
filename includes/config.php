@@ -74,7 +74,7 @@ function wa_pdx_op_config_set ($params)
     */
     if (PDX_SIGNATURE_CHECK == 1)
     {
-        $reassembled_data = sprintf("%02x", PDX_OP_CONFIG_SET);
+        $reassembled_data = sprintf("%02x", PDX_OP_WP_CONFIG_SET);
         $reassembled_data .= $ticket_id;
         $reassembled_data .= $api_pdx_url;
         $reassembled_data .= dechex($timestamp);

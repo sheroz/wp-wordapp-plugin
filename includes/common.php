@@ -38,6 +38,11 @@ function wa_pdx_find_post_by_url ($post_url)
     return null;
 }
 
+function wa_pdx_op_user_list() {
+    $users = get_users();
+    wa_pdx_send_response($users, true);
+}
+
 function wa_pdx_get_posts($params)
 {
 
@@ -46,8 +51,8 @@ function wa_pdx_get_posts($params)
     {
         $args['posts_per_page'] =  -1;
         $args['orderby'] = array('type','ID');
-        $args['post_type'] = array('post','page');
-        $args['post_status'] = 'publish,pending,draft,private,trash';
+        $args['post_type'] = get_post_types();
+        $args['post_status'] = get_post_stati();
     } else {
         // todo: parse params and add to $args
     }

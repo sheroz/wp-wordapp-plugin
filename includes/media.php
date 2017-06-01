@@ -87,7 +87,7 @@ function wa_pdx_op_media_add_from_url ($params)
 
     $attachment_id = wp_insert_attachment( $attachment, $file_path, $parent_post_id );
     if (is_wp_error($attachment_id))
-        wa_pdx_send_response($data = 'Media upload error! wp_insert_attachment()');
+        wa_pdx_send_response('Media upload error! wp_insert_attachment()');
 
     require_once( ABSPATH . 'wp-admin/includes/image.php' );
 

@@ -7,7 +7,7 @@
 require plugin_dir_path( __FILE__ ) . 'common.php';
 require plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'constants.php';
-require plugin_dir_path( __FILE__ ) . 'content.php';
+require plugin_dir_path( __FILE__ ) . 'post.php';
 require plugin_dir_path( __FILE__ ) . 'hello.php';
 require plugin_dir_path( __FILE__ ) . 'integrations.php';
 require plugin_dir_path( __FILE__ ) . 'media.php';
@@ -88,10 +88,10 @@ function ajax_wa_pdx() {
 
         if ($op && !empty($op))
         {
-            if ( $op == PDX_OP_CONFIG_SET ) {
+            if ( $op == PDX_OP_WP_CONFIG_SET ) {
                 wa_pdx_op_config_set($json['data']);
             }
-            else if ( $op == PDX_OP_CONFIG_CHECK ) {
+            else if ( $op == PDX_OP_WP_CONFIG_CHECK ) {
                 if (empty($cfg))
                     wa_pdx_send_response('Not Configured', false);
                 else
@@ -105,44 +105,60 @@ function ajax_wa_pdx() {
 
             switch ($op) {
 
-                case PDX_OP_CONTENT_LIST:
-                    wa_pdx_op_content_list($params);
+                case PDX_OP_WP_POST_LIST:
+                    wa_pdx_op_post_list($params);
                     break;
 
-                case PDX_OP_CONTENT_ADD:
-                    wa_pdx_op_content_add($params);
+                case PDX_OP_WP_POST_ADD:
+                    wa_pdx_op_post_add($params);
                     break;
 
-                case PDX_OP_CONTENT_UPDATE:
-                    wa_pdx_op_content_update($params);
+                case PDX_OP_WP_POST_UPDATE:
+                    wa_pdx_op_post_update($params);
                     break;
 
-                case PDX_OP_CONTENT_GET:
-                    wa_pdx_op_content_get($params);
+                case PDX_OP_WP_POST_GET:
+                    wa_pdx_op_post_get($params);
                     break;
 
-                case PDX_OP_MEDIA_LIST:
+                case PDX_OP_WP_MEDIA_LIST:
                     wa_pdx_op_media_list($params);
                     break;
 
-                case PDX_OP_MEDIA_ADD:
+                case PDX_OP_WP_MEDIA_ADD:
                     wa_pdx_op_media_add($params);
                     break;
 
-                case PDX_OP_MEDIA_ADD_FROM_URL:
+                case PDX_OP_WP_MEDIA_ADD_FROM_URL:
                     wa_pdx_op_media_add_from_url($params);
                     break;
 
-                case PDX_OP_PREPARE_PREVIEW:
+                case PDX_OP_WP_PREPARE_PREVIEW:
                     wa_pdx_op_prepare_preview($params);
                     break;
 
-                case PDX_OP_META_GET:
+                case PDX_OP_WP_POST_META_GET:
                     wa_pdx_op_meta_get($params);
                     break;
 
-                case PDX_OP_META_UPDATE:
+                case PDX_OP_WP_POST_META_UPDATE:
                     wa_pdx_op_meta_update($params);
+                    break;
+
+                case PDX_OP_WP_POST_TYPE_LIST:
+                    wa_pdx_op_post_type_list();
+                    break;
+
+                case PDX_OP_WP_POST_STATUS_LIST:
+                    wa_pdx_op_post_status_list();
+                    break;
+
+                case PDX_OP_WP_POST_TEMPLATE_LIST:
+                    wa_pdx_op_post_template_list();
+                    break;
+
+                case PDX_OP_WP_USER_LIST:
+                    wa_pdx_op_user_list();
                     break;
 
                 default:

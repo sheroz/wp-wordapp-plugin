@@ -151,9 +151,9 @@ function wa_pdx_op_prepare_preview ($params)
     $post_url = $params['url'];
 
     if(empty($post_url))
-        $post_id = wa_pdx_content_add ($params);
+        $post_id = wa_pdx_post_add ($params);
     else
-        $post_id = wa_pdx_content_update ($params);
+        $post_id = wa_pdx_post_update ($params);
 
     if (empty($post_id))
         wa_pdx_send_response('Invalid Post ID');
