@@ -39,10 +39,52 @@ function wa_pdx_op_post_list ($params)
     wa_pdx_send_response($posts, true);
 }
 
-function wa_pdx_op_post_add ($params)
-{
-    wa_pdx_post_add($params);
-    wa_pdx_send_response('', true);
+function wa_pdx_post_update_template($post_id, $template) {
+    if ($post_id && $post_id > 0) {
+        if (!is_null($template)) {
+            $post = array(
+                'ID'           => $post_id,
+                'page_template' => $template
+            );
+            wp_update_post($post, false);
+            update_post_meta($post_id, '_wp_page_template', array($template));
+        }
+    }
+}
+
+function wa_pdx_post_process_params ($post, $params, $add = false) {
+
+    $post_title  = $params['title'];
+    if (!is_null($post_title))
+        $post['post_title'] = $post_title;
+
+    $post_type = $params['type'];
+    if (!is_null($post_type))
+        $post['post_type'] = $post_type;
+    else
+        if($add)
+            $post['post_type'] = 'page';
+
+    $post_status = $params['status'];
+    if (!is_null($post_status))
+        $post['post_status'] = $post_status;
+    else
+        if($add)
+            $post['post_status'] = 'draft';
+
+    $publisher = $params['publisher'];
+    if (!is_null($publisher))
+    {
+        $user = get_user_by( 'login', $publisher );
+        if ($user)
+            $post['post_author'] = $user->ID;
+    }
+
+    $post_meta_description = $params['description'];
+    if (!is_null($post_meta_description))
+        $post['post_excerpt'] = $post_meta_description;
+
+    return $post;
 }
 
 function wa_pdx_post_add ($params)
@@ -53,29 +95,18 @@ function wa_pdx_post_add ($params)
         'post_content' => $post_content
     );
 
-    $post_title  = $params['title'];
-    if (!is_null($post_title))
-        $post['post_title'] = $post_title;
-
-    $post_type = $params['type'];
-    if (!is_null($post_type))
-        $post_type = "page";
-    $post['post_type'] = $post_type;
-
-    $post_status = $params['status'];
-    if (!is_null($post_status))
-        $post_status = "draft";
-    $post['post_status'] = $post_status;
-
-    $post_meta_description = $params['description'];
-    if (!is_null($post_meta_description))
-        $post['post_excerpt'] = $post_meta_description;
+    $post = wa_pdx_post_process_params ($post, $params, true);
 
     $post_id = wp_insert_post($post);
     $success = $post_id!=0;
 
+    if ($success)
+        wa_pdx_post_update_template($post_id, $params['template']);
+
     $focus_keyword = $params['focus_keyword'];
-    wa_pdx_seo_plugins_integrate ($post_id, $post_title, $post_meta_description, $focus_keyword);
+    $title = $params['title'];
+    $description = $params['description'];
+    wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword);
 
     if (!$success)
         return null;
@@ -168,26 +199,17 @@ function wa_pdx_post_update ($params)
         'post_content' => $post_content
     );
 
-    $post_title  = $params['title'];
-    if (!is_null($post_title))
-        $post['post_title'] = $post_title;
-
-    $post_type = $params['type'];
-    if (!is_null($post_type))
-        $post['post_type'] = $post_type;
-
-    $post_status = $params['status'];
-    if (!is_null($post_status))
-        $post['post_status'] = $post_status;
-
-    $post_meta_description = $params['description'];
-    if (!is_null($post_meta_description))
-        $post['post_excerpt'] = $post_meta_description;
-
+    $post = wa_pdx_post_process_params ($post, $params);
     $success = wp_update_post($post, false)!=0;
 
+    if ($success)
+        wa_pdx_post_update_template($post_id, $params['template']);
+
+
     $focus_keyword = $params['focus_keyword'];
-    wa_pdx_seo_plugins_integrate ($post_id, $post_title, $post_meta_description, $focus_keyword);
+    $title = $params['title'];
+    $description = $params['description'];
+    wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword);
 
     if (!$success)
         return null;
@@ -195,28 +217,54 @@ function wa_pdx_post_update ($params)
     return $post_id;
 }
 
+function wa_pdx_op_post_add ($params)
+{
+    $post_id = wa_pdx_post_add($params);
+    if ($post_id)
+    {
+        $post = get_post( $post_id, ARRAY_A);
+        if($post)
+        {
+            $post['url'] = get_permalink( $post['ID'] );
+            wa_pdx_send_response($post, true);
+        } else
+            wa_pdx_send_response('Internal Error. Post not found');
+    } else
+        wa_pdx_send_response('Internal Error. Post not added');
+}
+
 function wa_pdx_op_post_update ($params)
 {
     $post_id = wa_pdx_post_update ($params);
-    wa_pdx_send_response('', $post_id != null);
+    if ($post_id)
+    {
+        $post = get_post( $post_id, ARRAY_A);
+        if($post)
+        {
+            $post['url'] = get_permalink( $post['ID'] );
+            wa_pdx_send_response($post, true);
+        } else
+            wa_pdx_send_response('Internal Error. Post not found');
+    } else
+        wa_pdx_send_response('Internal Error. Post not updated');
 }
 
 function wa_pdx_op_post_get ($params)
 {
     if (!empty($params))
     {
-        $content_id = $params['content_id'];
-        if (!empty($content_id) && $content_id > 0)
+        $post_id = $params['id'];
+        if (!empty($post_id) && $post_id > 0)
         {
-            $post = get_post( $content_id, ARRAY_A);
+            $post = get_post( $post_id, ARRAY_A);
             if($post)
             {
                 $post['url'] = get_permalink( $post['ID'] );
                 wa_pdx_send_response($post, true);
             } else
-                wa_pdx_send_response('Content not found');
+                wa_pdx_send_response('Post not found');
         } else
-            wa_pdx_send_response('Invalid content id');
+            wa_pdx_send_response('Invalid post id');
     } else
         wa_pdx_send_response('Empty data parameter');
 }
