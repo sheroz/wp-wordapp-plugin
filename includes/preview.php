@@ -1,10 +1,10 @@
 <?php
 /**
  * @author Sheroz Khaydarov <sheroz@wordapp.io>
- * @copyright Wordapp, 2017. http://wordapp.io
  * @license GNU General Public License, version 2
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  * @since 1.0.0
+ * @copyright Wordapp, 2017. http://wordapp.io
  */
 
 /**

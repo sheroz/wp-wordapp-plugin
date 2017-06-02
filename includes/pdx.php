@@ -1,7 +1,11 @@
 <?php
+
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 08:29
+ * @author Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license GNU General Public License, version 2
+ * @license http://www.gnu.org/licenses/gpl-2.0.html
+ * @since 1.0.0
+ * @copyright Wordapp, 2017. http://wordapp.io
  */
 
 require plugin_dir_path( __FILE__ ) . 'common.php';
@@ -14,6 +18,16 @@ require plugin_dir_path( __FILE__ ) . 'media.php';
 require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
 
+/**
+ * @internal
+ *
+ * Main function which processes request from Wordapp Platform.
+ *
+ * @param array $_POST The HTTP POST parameters passed from Wordapp Platform.
+ *
+ * @return mixed JSON that indicates success/failure of the operation,
+ *                or JSON that indicates an error occurred.
+ */
 function ajax_wa_pdx() {
 
     $date = new DateTime('NOW');
