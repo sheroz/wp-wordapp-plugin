@@ -1,9 +1,23 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
+/**
+ * Integration with SEO plugins.
+ *
+ * @param int $post_id Post id.
+ * @param string $title Meta title.
+ * @param string $description Meta description.
+ * @param string $focus_keyword Focus keyword.
+ *
+ * @return void
+ */
 function wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword)
 {
     // Integration with Yoast SEO

@@ -1,9 +1,23 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
+/**
+ * @api
+ *
+ * API Meta Get Operation.
+ *
+ * @param array $params The operation parameters passed from Wordapp Platform.
+ *
+ * @return mixed JSON that indicates success/failure of the operation,
+ *                or JSON that indicates an error occurred.
+ */
 function wa_pdx_op_meta_get ($params)
 {
     if (empty($params))
@@ -40,6 +54,16 @@ function wa_pdx_op_meta_get ($params)
         wa_pdx_send_response('Invalid content id');
 }
 
+/**
+ * @api
+ *
+ * API Meta Update Operation.
+ *
+ * @param array $params The operation parameters passed from Wordapp Platform.
+ *
+ * @return mixed JSON that indicates success/failure of the operation,
+ *                or JSON that indicates an error occurred.
+ */
 function wa_pdx_op_meta_update ($params)
 {
     if (empty($params))

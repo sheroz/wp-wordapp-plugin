@@ -1,7 +1,20 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
+ */
+
+/**
+ * Process HTTP HEAD 'Hello' message which is sent by Wordapp Platform to discover if plugin is installed
+ *
+ * @var string X_WA_PDX_HELLO       request, Hello Message HTTP header
+ * @var string X-WA-PDX-VERSION     response, Plugin version HTTP header
+ * @var string X-WA-PDX-AJAX-URL    response, Plugin AJAX Url HTTP header
+ * @var string X-WA-PDX-WP-VERSION  response, WordPress Version HTTP header
  */
 
 function wa_pdx_hello()
