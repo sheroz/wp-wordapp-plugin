@@ -205,8 +205,9 @@ function wa_pdx_generate_preview_url ($post_id)
  *
  * @param array $params The parameters passed from Wordapp.
  *
- * @return mixed JSON that indicates success/failure of the operation,
- *                or JSON that indicates an error occurred.
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
  */
 function wa_pdx_op_prepare_preview ($params)
 {

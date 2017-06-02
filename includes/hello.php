@@ -16,7 +16,6 @@
  * @var string X-WA-PDX-AJAX-URL    response, Plugin AJAX Url HTTP header
  * @var string X-WA-PDX-WP-VERSION  response, WordPress Version HTTP header
  */
-
 function wa_pdx_hello()
 {
     if($_SERVER['REQUEST_METHOD'] === 'HEAD')

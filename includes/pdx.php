@@ -26,8 +26,9 @@ require plugin_dir_path( __FILE__ ) . 'preview.php';
  *
  * @param array $_POST The HTTP POST parameters passed from Wordapp Platform.
  *
- * @return mixed JSON that indicates success/failure of the operation,
- *                or JSON that indicates an error occurred.
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
  */
 function ajax_wa_pdx() {
 

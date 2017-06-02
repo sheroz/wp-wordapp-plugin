@@ -15,8 +15,9 @@
  *
  * @param array $params The operation parameters passed from Wordapp Platform.
  *
- * @return mixed JSON that indicates success/failure of the operation,
- *                or JSON that indicates an error occurred.
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
  */
 function wa_pdx_op_meta_get ($params)
 {
