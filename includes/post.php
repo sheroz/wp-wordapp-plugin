@@ -1,24 +1,67 @@
 <?php
+
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
+/**
+ * @api
+ *
+ * Retrieve list of all post types.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_type_list(){
     $post_types = get_post_types();
     wa_pdx_send_response($post_types, true);
 }
 
+/**
+ * @api
+ *
+ * Retrieve list of all post statuses.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_status_list(){
     $stati = get_post_stati();
     wa_pdx_send_response($stati, true);
 }
 
+/**
+ * @api
+ *
+ * Retrieve list of all templates of active theme.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_template_list(){
     $templates = get_page_templates();
     wa_pdx_send_response($templates, true);
 }
 
+/**
+ * @api
+ *
+ * Retrieve list of posts matching criteria.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_list ($params)
 {
     $cfg = get_option(PDX_CONFIG_OPTION_KEY);
@@ -39,6 +82,15 @@ function wa_pdx_op_post_list ($params)
     wa_pdx_send_response($posts, true);
 }
 
+/**
+ * @internal
+ *
+ * Updates post template.
+ *
+ * @param int $post_id The post id to assign template.
+ * @param string $name The template name to assign.
+ *
+ */
 function wa_pdx_post_update_template($post_id, $name) {
     if ($post_id && $post_id > 0) {
         if (!is_null($name)) {
@@ -64,6 +116,16 @@ function wa_pdx_post_update_template($post_id, $name) {
     }
 }
 
+/**
+ * @internal
+ *
+ * Process post parameters.
+ *
+ * @param array $post The initial parameters.
+ * @param array $params The parameters to parse.
+ *
+ * @return array The altered post parameters
+ */
 function wa_pdx_post_process_params ($post, $params, $add = false) {
 
     $post_title  = $params['title'];
@@ -99,6 +161,15 @@ function wa_pdx_post_process_params ($post, $params, $add = false) {
     return $post;
 }
 
+/**
+ * @internal
+ *
+ * Add a new post.
+ *
+ * @param array $params The post parameters.
+ *
+ * @return int|null The post id of the added post
+ */
 function wa_pdx_post_add ($params)
 {
     $post_content = $params['content'];
@@ -127,6 +198,15 @@ function wa_pdx_post_add ($params)
 
 }
 
+/**
+ * @internal
+ *
+ * Update a post.
+ *
+ * @param array $params The post parameters.
+ *
+ * @return int|null The post id of the added post
+ */
 function wa_pdx_post_update ($params)
 {
     $post_id = $params['id'];
@@ -229,6 +309,17 @@ function wa_pdx_post_update ($params)
     return $post_id;
 }
 
+/**
+ * @api
+ *
+ * Add a new post.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_add ($params)
 {
     $post_id = wa_pdx_post_add($params);
@@ -245,6 +336,17 @@ function wa_pdx_op_post_add ($params)
         wa_pdx_send_response('Internal Error. Post not added');
 }
 
+/**
+ * @api
+ *
+ * Update a post.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_update ($params)
 {
     $post_id = wa_pdx_post_update ($params);
@@ -261,6 +363,18 @@ function wa_pdx_op_post_update ($params)
         wa_pdx_send_response('Internal Error. Post not updated');
 }
 
+/**
+ * @api
+ *
+ * Get a post.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *                      The post id must be given in 'id' field.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_post_get ($params)
 {
     if (!empty($params))

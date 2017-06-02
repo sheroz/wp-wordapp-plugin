@@ -1,9 +1,21 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
+/**
+ * @internel
+ *
+ * Clear of all stored configuration data.
+ * Removes all configuration data from the WordPress option storage.
+ * Called internally when plugin activated, deactivated and uninstalled.
+ *
+ */
 function wa_pdx_config_clear()
 {
     delete_option( PDX_CONFIG_OPTION_KEY );
@@ -14,6 +26,17 @@ function wa_pdx_config_clear()
     }
 }
 
+/**
+ * @api
+ *
+ * Configuration Set. Initiated from Wordapp Platform to configure plugin for further operations.
+ *
+ * @param array $params The operation parameters passed from Wordapp Platform.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_config_set ($params)
 {
     if (PDX_LOG_ENABLE) {
