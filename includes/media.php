@@ -1,9 +1,25 @@
 <?php
+
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
+/**
+ * @api
+ *
+ * Add media file to the media library.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_media_add ($params)
 {
     $jsonFile = $params['file'];
@@ -45,6 +61,17 @@ function wa_pdx_op_media_add ($params)
     wa_pdx_send_response(wp_prepare_attachment_for_js( $attachment_id ), true);
 }
 
+/**
+ * @api
+ *
+ * Download a media file from url and add to the media library.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_media_add_from_url ($params)
 {
     $url = $params['url'];
@@ -101,6 +128,17 @@ function wa_pdx_op_media_add_from_url ($params)
     wa_pdx_send_response(wp_prepare_attachment_for_js( $attachment_id ), true);
 }
 
+/**
+ * @api
+ *
+ * Retrieve list of media files matching criteria.
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_media_list ($params)
 {
 
