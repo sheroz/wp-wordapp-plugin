@@ -1,9 +1,21 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * @author Sheroz Khaydarov <sheroz@wordapp.io>
+ * @copyright Wordapp, 2017. http://wordapp.io
+ * @license GNU General Public License, version 2
+ * @license http://www.gnu.org/licenses/gpl-2.0.html
+ * @since 1.0.0
  */
 
+/**
+ * @internal
+ *
+ * Filter function for preview hook. This hook function is called after the query variable object is created, but before the actual query is run.
+ *
+ * @param object $query The WP_Query object by reference.
+ *
+ * @return object Returns the passed query object.
+ */
 function wa_pdx_filter_pre_get_posts( $query )
 {
     if (PDX_LOG_ENABLE)
@@ -33,6 +45,15 @@ function wa_pdx_filter_pre_get_posts( $query )
     return $query;
 }
 
+/**
+ * @internal
+ *
+ * Filter function for preview hook. Filters the raw post results array, prior to status checks.
+ *
+ * @param array $posts The post results array.
+ *
+ * @return array The altered posts array.
+ */
 function wa_pdx_filter_posts_results( $posts )
 {
     if (PDX_LOG_ENABLE)
@@ -107,6 +128,16 @@ function wa_pdx_filter_posts_results( $posts )
     return $posts;
 }
 
+/**
+ * @internal
+ *
+ * Generates preview access token.
+ *
+ * @param int $post_id The post id to generate preview access token.
+ * @param string $preview_token The security token for preview. This token sets up by configuration process.
+ *
+ * @return string Generated preview access token.
+ */
 function wa_pdx_generate_preview_access_token ($post_id, $preview_token)
 {
     // pat means: Preview Access Token
@@ -122,11 +153,31 @@ function wa_pdx_generate_preview_access_token ($post_id, $preview_token)
     return $wa_pat;
 }
 
+/**
+ * @internal
+ *
+ * Checks if provided token gives access for preview.
+ *
+ * @param int $post_id The post id to check access for preview.
+ * @param string $wa_pat The preview access token.
+ * @param string $preview_token The security token for preview. This token sets up by configuration process.
+ *
+ * @return bool Whether preview access is allowed.
+ */
 function wa_pdx_check_preview_access_token ($post_id, $wa_pat, $preview_token)
 {
     return substr($wa_pat, 0, strlen($preview_token)) === $preview_token;
 }
 
+/**
+ * @internal
+ *
+ * Generates preview url.
+ *
+ * @param int $post_id The post id to generate preview url.
+ *
+ * @return string Preview url.
+ */
 function wa_pdx_generate_preview_url ($post_id)
 {
     $params = array();
@@ -145,6 +196,16 @@ function wa_pdx_generate_preview_url ($post_id)
     return wa_pdx_add_url_params($post_url , $params);
 }
 
+/**
+ * @api
+ *
+ * Prepare for preview
+ *
+ * @param array $params The parameters passed from Wordapp.
+ *
+ * @return string JSON that indicates success/failure of the operation,
+ *                or JSON that indicates an error occurred.
+ */
 function wa_pdx_op_prepare_preview ($params)
 {
     $preview_url = null;
