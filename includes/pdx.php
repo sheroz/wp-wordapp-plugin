@@ -22,7 +22,7 @@ require plugin_dir_path( __FILE__ ) . 'preview.php';
 /**
  * @internal
  *
- * Main function which processes request from Wordapp Platform.
+ * The main entry point which parses AJAX requests and calls appropriate functions.
  *
  * @param array $_POST The HTTP POST parameters passed from Wordapp Platform.
  *

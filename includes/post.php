@@ -12,7 +12,7 @@
 /**
  * @api
  *
- * Retrieve list of all post types.
+ * Retrieves list of all post types.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -26,7 +26,7 @@ function wa_pdx_op_post_type_list(){
 /**
  * @api
  *
- * Retrieve list of all post statuses.
+ * Retrieves list of all post statuses.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -40,7 +40,7 @@ function wa_pdx_op_post_status_list(){
 /**
  * @api
  *
- * Retrieve list of all templates of active theme.
+ * Retrieves list of all templates of active theme.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -54,7 +54,7 @@ function wa_pdx_op_post_template_list(){
 /**
  * @api
  *
- * Retrieve list of posts matching criteria.
+ * Retrieves list of posts matching criteria.
  *
  * @param array $params The parameters passed from Wordapp.
  *
@@ -119,7 +119,7 @@ function wa_pdx_post_update_template($post_id, $name) {
 /**
  * @internal
  *
- * Process post parameters.
+ * Processes post parameters.
  *
  * @param array $post The initial parameters.
  * @param array $params The parameters to parse.
@@ -164,7 +164,7 @@ function wa_pdx_post_process_params ($post, $params, $add = false) {
 /**
  * @internal
  *
- * Add a new post.
+ * Adds a new post.
  *
  * @param array $params The post parameters.
  *
@@ -201,7 +201,7 @@ function wa_pdx_post_add ($params)
 /**
  * @internal
  *
- * Update a post.
+ * Updates a post.
  *
  * @param array $params The post parameters.
  *
@@ -312,7 +312,7 @@ function wa_pdx_post_update ($params)
 /**
  * @api
  *
- * Add a new post.
+ * Adds new post.
  *
  * @param array $params The parameters passed from Wordapp.
  *
@@ -339,7 +339,7 @@ function wa_pdx_op_post_add ($params)
 /**
  * @api
  *
- * Update a post.
+ * Updates post by post id or url.
  *
  * @param array $params The parameters passed from Wordapp.
  *
@@ -366,7 +366,7 @@ function wa_pdx_op_post_update ($params)
 /**
  * @api
  *
- * Get a post.
+ * Gets a post.
  *
  * @param array $params The parameters passed from Wordapp.
  *                      The post id must be given in 'id' field.

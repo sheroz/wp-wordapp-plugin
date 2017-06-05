@@ -131,9 +131,9 @@ function wa_pdx_op_media_add_from_url ($params)
 /**
  * @api
  *
- * Retrieve list of media files matching criteria.
+ * Retrieves list of media files matching the query criteria.
  *
- * @param array $params The parameters passed from Wordapp.
+ * @param array $params The query criteria.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,

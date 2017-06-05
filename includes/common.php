@@ -82,9 +82,9 @@ function wa_pdx_op_user_list() {
 /**
  * @internal
  *
- * Retrieve list of posts matching criteria.
+ * Retrieves list of posts matching criteria.
  *
- * @param array  The query parameters. See https://developer.wordpress.org/reference/classes/wp_query/parse_query/
+ * @param array $params The query parameters. See https://developer.wordpress.org/reference/classes/wp_query/parse_query/
  *
  * @return array The posts found.
  */

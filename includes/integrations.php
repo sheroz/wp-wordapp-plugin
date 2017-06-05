@@ -9,7 +9,8 @@
  */
 
 /**
- * Integration with SEO plugins.
+ * Integration with SEO related plugins.
+ * Yoast SEO, All in One SEO Pack
  *
  * @param int $post_id Post id.
  * @param string $title Meta title.

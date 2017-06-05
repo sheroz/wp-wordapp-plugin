@@ -12,7 +12,8 @@
 /**
  * @internal
  *
- * Filter function for preview hook. This hook function is called after the query variable object is created, but before the actual query is run.
+ * Filter function for preview hook.
+ * This hook function is called after the query variable object is created, but before the actual query is run.
  *
  * @param object $query The WP_Query object by reference.
  *
@@ -50,7 +51,8 @@ function wa_pdx_filter_pre_get_posts( $query )
 /**
  * @internal
  *
- * Filter function for preview hook. Filters the raw post results array, prior to status checks.
+ * Filter function for preview hook.
+ * Filters the raw post results array, prior to status checks.
  *
  * @param array $posts The post results array.
  *
@@ -201,7 +203,7 @@ function wa_pdx_generate_preview_url ($post_id)
 /**
  * @api
  *
- * Prepare for preview
+ * Prepares for preview
  *
  * @param array $params The parameters passed from Wordapp.
  *

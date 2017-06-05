@@ -11,7 +11,7 @@
 /**
  * @internel
  *
- * Clear of all stored configuration data.
+ * Clear configuration data.
  * Removes all configuration data from the WordPress option storage.
  * Called internally when plugin activated, deactivated and uninstalled.
  *
@@ -29,7 +29,7 @@ function wa_pdx_config_clear()
 /**
  * @api
  *
- * Configuration Set. Initiated from Wordapp Platform to configure plugin for further operations.
+ * Sets configuration. Initiated from Wordapp Platform to configure plugin for further operations.
  *
  * @param array $params The operation parameters passed from Wordapp Platform.
  *
