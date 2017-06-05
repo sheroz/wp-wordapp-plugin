@@ -1,7 +1,13 @@
 <?php
 /**
- * Author: Sheroz Khaydarov <sheroz@wordapp.io>
- * Date: 20/03/2017 Time: 08:29
+ * Wordapp plugin constants.
+ *
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
  */
 
 const PDX_OP_ANALYZE_SITE           =   1;

@@ -1,6 +1,7 @@
 <?php
-
 /**
+ * Post related functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -10,9 +11,29 @@
  */
 
 /**
- * @api
+ * Finds post by url.
  *
+ * @param string $post_url The url to find.
+ *
+ * @return int|null The post id found.
+ */
+function wa_pdx_find_post_by_url ($post_url)
+{
+    if(empty($post_url))
+        return null;
+
+    $posts = wa_pdx_get_posts();
+    foreach ($posts as $post)
+        if ($post['url'] == $post_url)
+            return $post['id'];
+
+    return null;
+}
+
+/**
  * Retrieves list of all post types.
+ *
+ * @api
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -24,9 +45,9 @@ function wa_pdx_op_post_type_list(){
 }
 
 /**
- * @api
- *
  * Retrieves list of all post statuses.
+ *
+ * @api
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -38,9 +59,9 @@ function wa_pdx_op_post_status_list(){
 }
 
 /**
- * @api
- *
  * Retrieves list of all templates of active theme.
+ *
+ * @api
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -52,11 +73,11 @@ function wa_pdx_op_post_template_list(){
 }
 
 /**
- * @api
- *
  * Retrieves list of posts matching criteria.
  *
- * @param array $params The parameters passed from Wordapp.
+ * @api
+ *
+ * @param array $params Parameters passed from Wordapp.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -83,9 +104,9 @@ function wa_pdx_op_post_list ($params)
 }
 
 /**
- * @internal
+ * Updates post template option.
  *
- * Updates post template.
+ * @internal
  *
  * @param int $post_id The post id to assign template.
  * @param string $name The template name to assign.
@@ -117,12 +138,13 @@ function wa_pdx_post_update_template($post_id, $name) {
 }
 
 /**
- * @internal
- *
  * Processes post parameters.
  *
- * @param array $post The initial parameters.
- * @param array $params The parameters to parse.
+ * @internal
+ *
+ * @param array $post Initial post parameters.
+ * @param array $params Parameters to parse.
+ * @param bool $add Add default params for empty ones.
  *
  * @return array The altered post parameters
  */
@@ -162,9 +184,9 @@ function wa_pdx_post_process_params ($post, $params, $add = false) {
 }
 
 /**
- * @internal
- *
  * Adds a new post.
+ *
+ * @internal
  *
  * @param array $params The post parameters.
  *
@@ -199,13 +221,13 @@ function wa_pdx_post_add ($params)
 }
 
 /**
- * @internal
+ * Updates a post by post id or url.
  *
- * Updates a post.
+ * @internal
  *
  * @param array $params The post parameters.
  *
- * @return int|null The post id of the added post
+ * @return int|null The post id of the updated post
  */
 function wa_pdx_post_update ($params)
 {
@@ -310,11 +332,11 @@ function wa_pdx_post_update ($params)
 }
 
 /**
- * @api
- *
  * Adds new post.
  *
- * @param array $params The parameters passed from Wordapp.
+ * @api
+ *
+ * @param array $params Parameters passed from Wordapp.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -337,9 +359,9 @@ function wa_pdx_op_post_add ($params)
 }
 
 /**
- * @api
- *
  * Updates post by post id or url.
+ *
+ * @api
  *
  * @param array $params The parameters passed from Wordapp.
  *
@@ -364,11 +386,11 @@ function wa_pdx_op_post_update ($params)
 }
 
 /**
+ * Gets a post by id.
+ *
  * @api
  *
- * Gets a post.
- *
- * @param array $params The parameters passed from Wordapp.
+ * @param array $params Parameters passed from Wordapp.
  *                      The post id must be given in 'id' field.
  *
  * @return mixed JSON that indicates success/failure status

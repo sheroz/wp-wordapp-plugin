@@ -1,5 +1,7 @@
 <?php
 /**
+ * Configuration related functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -9,12 +11,10 @@
  */
 
 /**
+ * Clears configuration data.
+ * Removes Wordapp plugin related configuration data from the WordPress option storage. Called internally when plugin activated, deactivated or uninstalled.
+ *
  * @internel
- *
- * Clear configuration data.
- * Removes all configuration data from the WordPress option storage.
- * Called internally when plugin activated, deactivated and uninstalled.
- *
  */
 function wa_pdx_config_clear()
 {
@@ -27,9 +27,10 @@ function wa_pdx_config_clear()
 }
 
 /**
- * @api
+ * Sets configuration.
+ * This operation is initiated from Wordapp Platform to configure plugin for further data exchange operations.
  *
- * Sets configuration. Initiated from Wordapp Platform to configure plugin for further operations.
+ * @api
  *
  * @param array $params The operation parameters passed from Wordapp Platform.
  *

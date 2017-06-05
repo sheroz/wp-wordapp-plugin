@@ -1,5 +1,7 @@
 <?php
 /**
+ * Common functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -9,7 +11,7 @@
  */
 
 /**
- * Generates random hex string.
+ * Generates random hex string by given length.
  *
  * @param int $len Required random string length.
  *
@@ -26,9 +28,9 @@ function wa_pdx_random_hex_string($len)
 }
 
 /**
- * Send a JSON response back to an AJAX request, and die().
+ * Sends JSON response and closes HTTP request.
  *
- * @param mixed $msg    The 'data' or 'error' field in JSON response.
+ * @param mixed $msg    Value of the 'data' or 'error' field in JSON response.
  *                      When $success = true then 'data' = $msg.
  *                      When $success = false then 'error' = $msg.
  *
@@ -48,31 +50,11 @@ function wa_pdx_send_response ($msg, $success = false)
 }
 
 /**
- * Finds post by url
+ * Gets users list.
  *
- * @param string $post_url The url to find.
- *
- * @return int|null The post id found.
- */
-function wa_pdx_find_post_by_url ($post_url)
-{
-    if(empty($post_url))
-        return null;
-
-    $posts = wa_pdx_get_posts();
-    foreach ($posts as $post)
-        if ($post['url'] == $post_url)
-            return $post['id'];
-
-    return null;
-}
-
-/**
  * @api
  *
- * API Get User List
- *
- * @return int|null The post id found.
+ * @return array Users list.
  */
 function wa_pdx_op_user_list() {
     $users = get_users();
@@ -80,9 +62,9 @@ function wa_pdx_op_user_list() {
 }
 
 /**
- * @internal
- *
  * Retrieves list of posts matching criteria.
+ *
+ * @internal
  *
  * @param array $params The query parameters. See https://developer.wordpress.org/reference/classes/wp_query/parse_query/
  *
@@ -120,9 +102,9 @@ function wa_pdx_get_posts($params)
 }
 
 /**
- * @internal
- *
  * Adds query parameter(s) to url.
+ *
+ * @internal
  *
  * @param string $url The Url to add query parameter(s)
  * @param array|string The query parameter(s) to add

@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Wordapp Plugin for WordPress.
  *
  * @link              http://wordapp.io
  * @since             1.0.0

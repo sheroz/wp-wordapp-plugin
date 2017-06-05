@@ -1,5 +1,7 @@
 <?php
 /**
+ * Post meta functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -9,11 +11,11 @@
  */
 
 /**
+ * Post meta get operation.
+ *
  * @api
  *
- * API Meta Get Operation.
- *
- * @param array $params The operation parameters passed from Wordapp Platform.
+ * @param array $params Operation parameters passed from Wordapp Platform.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -56,11 +58,11 @@ function wa_pdx_op_meta_get ($params)
 }
 
 /**
+ * Post meta update operation.
+ *
  * @api
  *
- * API Meta Update Operation.
- *
- * @param array $params The operation parameters passed from Wordapp Platform.
+ * @param array $params Operation parameters passed from Wordapp Platform.
  *
  * @return mixed JSON that indicates success/failure of the operation,
  *                or JSON that indicates an error occurred.

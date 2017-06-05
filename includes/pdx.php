@@ -1,14 +1,5 @@
 <?php
 
-/**
- * @author      Sheroz Khaydarov <sheroz@wordapp.io>
- * @license     GNU General Public License, version 2
- * @license     http://www.gnu.org/licenses/gpl-2.0.html
- * @copyright   Wordapp, 2017
- * @link        http://wordapp.io
- * @since       1.0.0
- */
-
 require plugin_dir_path( __FILE__ ) . 'common.php';
 require plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'constants.php';
@@ -20,11 +11,23 @@ require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
 
 /**
+ * The AJAX entry point of the Wordapp plugin.
+ *
+ * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        http://wordapp.io
+ * @since       1.0.0
+ */
+
+/**
+ * The AJAX entry point.
+ * Parses AJAX requests and calls appropriate functions.
+ *
  * @internal
  *
- * The main entry point which parses AJAX requests and calls appropriate functions.
- *
- * @param array $_POST The HTTP POST parameters passed from Wordapp Platform.
+ * @param array $_POST HTTP POST parameters passed from Wordapp Platform.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,

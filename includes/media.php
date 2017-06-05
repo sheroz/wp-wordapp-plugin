@@ -1,6 +1,7 @@
 <?php
-
 /**
+ * Media related functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -10,11 +11,11 @@
  */
 
 /**
+ * Adds media file to the media library.
+ *
  * @api
  *
- * Add media file to the media library.
- *
- * @param array $params The parameters passed from Wordapp.
+ * @param array $params Parameters passed from Wordapp.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -62,11 +63,11 @@ function wa_pdx_op_media_add ($params)
 }
 
 /**
+ * Downloads media file from url and add to the media library.
+ *
  * @api
  *
- * Download a media file from url and add to the media library.
- *
- * @param array $params The parameters passed from Wordapp.
+ * @param array $params Parameters passed from Wordapp.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,
@@ -129,11 +130,11 @@ function wa_pdx_op_media_add_from_url ($params)
 }
 
 /**
- * @api
- *
  * Retrieves list of media files matching the query criteria.
  *
- * @param array $params The query criteria.
+ * @api
+ *
+ * @param array $params Query criteria.
  *
  * @return mixed JSON that indicates success/failure status
  *               of the operation in 'success' field,

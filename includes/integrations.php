@@ -1,5 +1,7 @@
 <?php
 /**
+ * Third party integrations
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -10,7 +12,7 @@
 
 /**
  * Integration with SEO related plugins.
- * Yoast SEO, All in One SEO Pack
+ * Supported plugins: Yoast SEO, All in One SEO Pack
  *
  * @param int $post_id Post id.
  * @param string $title Meta title.

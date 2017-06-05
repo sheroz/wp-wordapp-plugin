@@ -1,6 +1,7 @@
 <?php
-
 /**
+ * Preview related functions.
+ *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -10,10 +11,10 @@
  */
 
 /**
- * @internal
- *
  * Filter function for preview hook.
  * This hook function is called after the query variable object is created, but before the actual query is run.
+ *
+ * @internal
  *
  * @param object $query The WP_Query object by reference.
  *
@@ -49,10 +50,10 @@ function wa_pdx_filter_pre_get_posts( $query )
 }
 
 /**
- * @internal
- *
  * Filter function for preview hook.
  * Filters the raw post results array, prior to status checks.
+ *
+ * @internal
  *
  * @param array $posts The post results array.
  *
@@ -133,9 +134,9 @@ function wa_pdx_filter_posts_results( $posts )
 }
 
 /**
- * @internal
- *
  * Generates preview access token.
+ *
+ * @internal
  *
  * @param int $post_id The post id to generate preview access token.
  * @param string $preview_token The security token for preview. This token sets up by configuration process.
@@ -158,9 +159,9 @@ function wa_pdx_generate_preview_access_token ($post_id, $preview_token)
 }
 
 /**
- * @internal
- *
  * Checks if provided token gives access for preview.
+ *
+ * @internal
  *
  * @param int $post_id The post id to check access for preview.
  * @param string $wa_pat The preview access token.
@@ -174,9 +175,9 @@ function wa_pdx_check_preview_access_token ($post_id, $wa_pat, $preview_token)
 }
 
 /**
- * @internal
- *
  * Generates preview url.
+ *
+ * @internal
  *
  * @param int $post_id The post id to generate preview url.
  *
@@ -201,9 +202,9 @@ function wa_pdx_generate_preview_url ($post_id)
 }
 
 /**
- * @api
+ * Prepares unpublished post for preview
  *
- * Prepares for preview
+ * @api
  *
  * @param array $params The parameters passed from Wordapp.
  *
