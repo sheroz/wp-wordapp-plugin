@@ -130,7 +130,7 @@ function wa_pdx_op_media_add_from_url ($params)
 }
 
 /**
- * Retrieves list of media files matching the query criteria.
+ * Retrieves list of items in media library by query criteria.
  *
  * @api
  *

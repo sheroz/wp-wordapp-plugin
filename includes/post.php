@@ -73,7 +73,7 @@ function wa_pdx_op_post_template_list(){
 }
 
 /**
- * Retrieves list of posts matching criteria.
+ * Retrieves list of posts by query criteria.
  *
  * @api
  *
