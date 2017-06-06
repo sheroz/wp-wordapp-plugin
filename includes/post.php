@@ -11,6 +11,44 @@
  */
 
 /**
+ * Retrieves list of posts matching by query criteria.
+ *
+ * @param array $params The query parameters. See https://developer.wordpress.org/reference/classes/wp_query/parse_query/
+ *
+ * @return array The posts found.
+ */
+function wa_pdx_get_posts($params)
+{
+    $args = array();
+    if (empty($params))
+    {
+        $args['posts_per_page'] =  -1;
+        $args['orderby'] = array('type','ID');
+        $args['post_type'] = get_post_types();
+        $args['post_status'] = get_post_stati();
+    } else {
+        // todo: parse params and add to $args
+    }
+//  'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
+
+    $data = array ();
+
+    $posts = get_posts($args);
+    foreach ( $posts as $post ) {
+        $data[] = array(
+            'id'        => $post->ID,
+            'url'       => get_permalink( $post->ID ),
+            'type'      => $post->post_type,
+            'name'      => $post->post_name,
+            'title'     => $post->post_title,
+            'status'    => get_post_status( $post->ID )
+        );
+    }
+    wp_reset_postdata();
+    return $data;
+}
+
+/**
  * Finds post by url.
  *
  * @param string $post_url The url to find.
@@ -22,7 +60,7 @@ function wa_pdx_find_post_by_url ($post_url)
     if(empty($post_url))
         return null;
 
-    $posts = wa_pdx_get_posts();
+    $posts = wa_pdx_get_posts(null);
     foreach ($posts as $post)
         if ($post['url'] == $post_url)
             return $post['id'];
@@ -112,73 +150,146 @@ function wa_pdx_op_post_list ($params)
  * @param string $name The template name to assign.
  *
  */
-function wa_pdx_post_update_template($post_id, $name) {
-    if ($post_id && $post_id > 0) {
-        if (!is_null($name)) {
-            $template_id = null;
-            $templates = get_page_templates();
-            if ( $templates ) {
-                foreach ( $templates as $k => $v ) {
-                    if ($k == $name) {
-                        $template_id = $v;
-                        break;
-                    }
+function wa_pdx_post_update_template($post_id, $params) {
+
+    $template_name = null;
+    if ($params['options'])
+        $template_name = $params['options']['wp_template'];
+
+    if ($post_id && $post_id > 0 && $template_name)
+    {
+        $template_id = null;
+        $templates = get_page_templates();
+        if ( $templates ) {
+            foreach ( $templates as $k => $v ) {
+                if ($k == $template_name) {
+                    $template_id = $v;
+                    break;
                 }
             }
-            if ($template_id) {
-                $post = array(
-                    'ID'           => $post_id,
-                    'page_template' => $template_id
-                );
-                wp_update_post($post, false);
-                update_post_meta($post_id, '_wp_page_template', array($template_id));
-            }
         }
+        if ($template_id) {
+            $post = array(
+                'ID'           => $post_id,
+                'page_template' => $template_id
+            );
+            wp_update_post($post, false);
+            update_post_meta($post_id, '_wp_page_template', array($template_id));
+        }
+
     }
 }
 
 /**
  * Processes post parameters.
  *
- * @internal
- *
- * @param array $post Initial post parameters.
  * @param array $params Parameters to parse.
  * @param bool $add Add default params for empty ones.
  *
  * @return array The altered post parameters
  */
-function wa_pdx_post_process_params ($post, $params, $add = false) {
+function wa_pdx_post_process_params ($params, $add = false) {
 
-    $post_title  = $params['title'];
-    if (!is_null($post_title))
-        $post['post_title'] = $post_title;
+    $nodes = $params['nodes'];
+    // $post_content = $params['html'];
+    $post_title  = $params['meta_title'];
 
-    $post_type = $params['type'];
-    if (!is_null($post_type))
-        $post['post_type'] = $post_type;
-    else
-        if($add)
-            $post['post_type'] = 'page';
+    $post_content = '';
+    foreach ( $nodes as $node ) {
 
-    $post_status = $params['status'];
-    if (!is_null($post_status))
-        $post['post_status'] = $post_status;
-    else
-        if($add)
-            $post['post_status'] = 'draft';
+        $type = $node['type'];
+        $text = $node['text'];
+        $html_tag = $node['html_tag'];
 
-    $publisher = $params['publisher'];
-    if (!is_null($publisher))
-    {
-        $user = get_user_by( 'login', $publisher );
-        if ($user)
-            $post['post_author'] = $user->ID;
+        if ($type == 'h1') {
+            if (empty($post_content)) {
+                $post_title = $text;
+            } else {
+                $post_content .= $html_tag;
+            }
+        } else if($type != 'title' && $type != 'description') {
+            $post_content .= $html_tag;
+        }
     }
 
-    $post_meta_description = $params['description'];
+    $post = array(
+        'post_content' => $post_content
+    );
+
+    if (!is_null($post_title)) {
+        $post['post_title'] = $post_title;
+        // $post['post_name'] = sanitize_title($post_title);
+    }
+
+    $post_meta_description = $params['meta_description'];
     if (!is_null($post_meta_description))
         $post['post_excerpt'] = $post_meta_description;
+
+    $options =  $params['options'];
+    if ($options) {
+        $post_type = $options['wp_type'];
+        if (!is_null($post_type))
+            $post['post_type'] = $post_type;
+
+        $post_status = $options['wp_status'];
+        if (!is_null($post_status))
+            $post['post_status'] = $post_status;
+
+        $publisher = $options['wp_author'];
+        if (!is_null($publisher))
+        {
+            $user = get_user_by( 'login', $publisher );
+            if ($user)
+                $post['post_author'] = $user->ID;
+        }
+
+        $schedule = $options['wp_schedule'];
+        if (!is_null($schedule)) {
+            $date = DateTime::createFromFormat('Y-m-d H:i', $schedule);
+            if ($date) {
+                $schedule_timestamp = $date->getTimestamp();
+                $post_date = date('Y-m-d H:i:s',$schedule_timestamp);
+                $post['post_date'] = $post_date;
+                $post['post_date_gmt'] = get_gmt_from_date($post_date);
+                $post['edit_date'] = 'true';
+            } else {
+                wa_pdx_send_response('Invalid date (required as Y-m-d H:i ) format : ' . $schedule);
+            }
+        }
+
+        $category = $options['wp_category'];
+        if (!is_null($category)) {
+            $category_obj = get_category_by_slug( $category );
+            if ($category_obj)
+                $post['post_category'] = array( $category_obj->term_id );
+        }
+
+        $tags = $options['wp_tags'];
+        if (!is_null($tags)) {
+            $keys = explode(',', $tags);
+            $tag_keys = array();
+            foreach($keys as $key) {
+                $key = trim($key);
+                if (!empty($key))
+                    $tag_keys[] = $key;
+            }
+            $post['tags_input'] = $tag_keys;
+        }
+
+    }
+
+    if($add) {
+        if (empty($post['post_type']))
+            $post['post_type'] = 'page';
+        if (empty($post['post_status']))
+            $post['post_status'] = 'draft';
+    }
+
+    if (PDX_LOG_ENABLE)
+    {
+        $log= "\nProcessed params:\n".print_r($post,true)."\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
 
     return $post;
 }
@@ -186,44 +297,27 @@ function wa_pdx_post_process_params ($post, $params, $add = false) {
 /**
  * Adds a new post.
  *
- * @internal
- *
  * @param array $params The post parameters.
  *
  * @return int|null The post id of the added post
  */
 function wa_pdx_post_add ($params)
 {
-    $post_content = $params['content'];
-
-    $post = array(
-        'post_content' => $post_content
-    );
-
-    $post = wa_pdx_post_process_params ($post, $params, true);
-
+    $post = wa_pdx_post_process_params ($params, true);
     $post_id = wp_insert_post($post);
-    $success = $post_id!=0;
-
-    if ($success)
-        wa_pdx_post_update_template($post_id, $params['template']);
-
-    $focus_keyword = $params['focus_keyword'];
-    $title = $params['title'];
-    $description = $params['description'];
-    wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword);
-
-    if (!$success)
-        return null;
-
-    return $post_id;
-
+    if ($post_id != 0) {
+        wa_pdx_post_update_template($post_id, $params);
+        $focus_keyword = $params['focus_keyword'];
+        $meta_title = $params['meta_title'];
+        $meta_description = $params['meta_description'];
+        wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description, $focus_keyword);
+        return $post_id;
+    }
+    return null;
 }
 
 /**
  * Updates a post by post id or url.
- *
- * @internal
  *
  * @param array $params The post parameters.
  *
@@ -233,7 +327,6 @@ function wa_pdx_post_update ($params)
 {
     $post_id = $params['id'];
     $post_url = $params['url'];
-    $post_content = $params['content'];
 
     if (empty($post_id))
     {
@@ -245,12 +338,15 @@ function wa_pdx_post_update ($params)
             wa_pdx_send_response('Cannot find post by url: ' . $post_url);
     }
 
-    $look_for_markers = true;
+    $post = wa_pdx_post_process_params ($params);
+    $post_content = $post['post_content'];
+
+    $look_for_markers = false;
     if ($look_for_markers) {
-        $post = get_post($post_id, ARRAY_A);
-        if (!is_null($post))
+        $post_old = get_post($post_id, ARRAY_A);
+        if (!is_null($post_old))
         {
-            $content = $post['post_content'];
+            $content = $post_old['post_content'];
             if (!empty($content))
             {
                 $marker_pos_start = strpos ($content, PDX_MARKER_CONTENT_BEGIN , 0);
@@ -308,27 +404,18 @@ function wa_pdx_post_update ($params)
         }
     }
 
-    $post = array(
-        'ID'           => $post_id,
-        'post_content' => $post_content
-    );
+    $post['ID'] = $post_id;
+    $post['post_content'] = $post_content;
 
-    $post = wa_pdx_post_process_params ($post, $params);
-    $success = wp_update_post($post, false)!=0;
-
-    if ($success)
-        wa_pdx_post_update_template($post_id, $params['template']);
-
-
-    $focus_keyword = $params['focus_keyword'];
-    $title = $params['title'];
-    $description = $params['description'];
-    wa_pdx_seo_plugins_integrate ($post_id, $title, $description, $focus_keyword);
-
-    if (!$success)
-        return null;
-
-    return $post_id;
+    if (wp_update_post($post, false) != 0) {
+        wa_pdx_post_update_template($post_id, $params);
+        $focus_keyword = $params['focus_keyword'];
+        $meta_title = $params['meta_title'];
+        $meta_description = $params['meta_description'];
+        wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description, $focus_keyword);
+        return $post_id;
+    }
+    return null;
 }
 
 /**

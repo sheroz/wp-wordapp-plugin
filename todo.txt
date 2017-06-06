@@ -5,3 +5,14 @@ H1 -> title
 schedule datetime
 category text
 tags text
+
+wp_type         post, page
+wp_status       draft, publish
+wp_author       username (as login)
+wp_template     default (template name)
+wp_schedule     date time ( formatted as Y-m-d H:i, 2017-06-25 09:00)
+wp_category     text (1 item)
+wp_tags         text (comma separated items)
+
+
+wp_type, wp_status, wp_author, wp_template, wp_schedule, wp_category, wp_tags

@@ -14,8 +14,6 @@
  * Filter function for preview hook.
  * This hook function is called after the query variable object is created, but before the actual query is run.
  *
- * @internal
- *
  * @param object $query The WP_Query object by reference.
  *
  * @return object Returns the passed query object.
@@ -52,8 +50,6 @@ function wa_pdx_filter_pre_get_posts( $query )
 /**
  * Filter function for preview hook.
  * Filters the raw post results array, prior to status checks.
- *
- * @internal
  *
  * @param array $posts The post results array.
  *
@@ -136,8 +132,6 @@ function wa_pdx_filter_posts_results( $posts )
 /**
  * Generates preview access token.
  *
- * @internal
- *
  * @param int $post_id The post id to generate preview access token.
  * @param string $preview_token The security token for preview. This token sets up by configuration process.
  *
@@ -161,8 +155,6 @@ function wa_pdx_generate_preview_access_token ($post_id, $preview_token)
 /**
  * Checks if provided token gives access for preview.
  *
- * @internal
- *
  * @param int $post_id The post id to check access for preview.
  * @param string $wa_pat The preview access token.
  * @param string $preview_token The security token for preview. This token sets up by configuration process.
@@ -176,8 +168,6 @@ function wa_pdx_check_preview_access_token ($post_id, $wa_pat, $preview_token)
 
 /**
  * Generates preview url.
- *
- * @internal
  *
  * @param int $post_id The post id to generate preview url.
  *

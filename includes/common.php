@@ -62,49 +62,7 @@ function wa_pdx_op_user_list() {
 }
 
 /**
- * Retrieves list of posts matching criteria.
- *
- * @internal
- *
- * @param array $params The query parameters. See https://developer.wordpress.org/reference/classes/wp_query/parse_query/
- *
- * @return array The posts found.
- */
-function wa_pdx_get_posts($params)
-{
-
-    $args = array();
-    if (empty($params))
-    {
-        $args['posts_per_page'] =  -1;
-        $args['orderby'] = array('type','ID');
-        $args['post_type'] = get_post_types();
-        $args['post_status'] = get_post_stati();
-    } else {
-        // todo: parse params and add to $args
-    }
-//  'post_status' => 'publish,pending,draft,auto-draft,future,private,inherit,trash'
-
-    $data = array ();
-
-    $posts = get_posts($args);
-    foreach ( $posts as $post ) {
-        $data[] = array(
-            'id'        => $post->ID,
-            'url'       => get_permalink( $post->ID ),
-            'type'      => $post->post_type,
-            'title'     => $post->post_title,
-            'status'    => get_post_status( $post->ID )
-        );
-    }
-    wp_reset_postdata();
-    return $data;
-}
-
-/**
  * Adds query parameter(s) to url.
- *
- * @internal
  *
  * @param string $url The Url to add query parameter(s)
  * @param array|string The query parameter(s) to add

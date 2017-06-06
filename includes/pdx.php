@@ -56,10 +56,7 @@ function ajax_wa_pdx() {
     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
 
     if (PDX_LOG_ENABLE)
-    {
         $log.= "config set: " . json_encode($cfg) ."\n";
-        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
-    }
 
     $validation_token = '';
     if (!empty($_POST['token']))
@@ -85,11 +82,7 @@ function ajax_wa_pdx() {
     if (!empty($data)) {
         $json = $data;
         if (PDX_LOG_ENABLE)
-        {
-            $log.= "post data: $data\n";
             $log.= "post data by print_r()\n--- Begin print_r():\n".print_r($data, true)."\n--- End print_r():\n";
-            $log.= "received json after json_encode: ".json_encode($json)."\n";
-        }
     }
     else
         if (PDX_LOG_ENABLE)

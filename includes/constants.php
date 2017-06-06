@@ -28,7 +28,7 @@ const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
 const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.0.2';
+const PDX_PLUGIN_VERSION_NUMBER = '1.0.3';
 const PDX_PLUGIN_VERSION_TEXT   = 'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION_NUMBER;
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
 
