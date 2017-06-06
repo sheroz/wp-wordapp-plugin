@@ -47,3 +47,9 @@ To upload the plugin through WordPress, instead of FTP:
 
 = 1.0.2 (2017-06-01): =
 * Added support for post templates
+
+= 1.0.3 (2017-06-06): =
+* Added support for post schedule
+* Added support for post category
+* Added support for post tags
+* Bug fixes
