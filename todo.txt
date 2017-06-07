@@ -1,18 +1,11 @@
 
-Mon-Tu:
-H1 -> title
-
-schedule datetime
-category text
-tags text
-
-wp_type         post, page
-wp_status       draft, publish
-wp_author       username (as login)
-wp_template     default (template name)
-wp_schedule     date time ( formatted as Y-m-d H:i, 2017-06-25 09:00)
-wp_category     text (1 item)
-wp_tags         text (comma separated items)
-
-
-wp_type, wp_status, wp_author, wp_template, wp_schedule, wp_category, wp_tags
+wp_type             post, page (+all registered types)
+wp_status           draft, publish (+all registered types)
+wp_author           username (WordPress login name)
+wp_template         Template name from WordPress theme
+wp_schedule         Formatted datetime in text as [Year-Month-Day Hour:Minute], ex.: 2017-06-07 09:00
+wp_category         Category name from WordPress
+wp_tags             Comma separated tag items
+wp_thumbnail_mid    number, Media item id from WordPress Media Library for Featured image
+wp_thumbnail_tin    number, Template item sequence number from Wordapp Template for Featured image
+wp_thumbnail_url    External url for Featured image
