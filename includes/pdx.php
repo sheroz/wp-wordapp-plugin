@@ -104,10 +104,14 @@ function ajax_wa_pdx() {
                 wa_pdx_op_config_set($json['data']);
             }
             else if ( $op == PDX_OP_WP_CONFIG_CHECK ) {
-                if (empty($cfg))
-                    wa_pdx_send_response('Not Configured', false);
-                else
-                    wa_pdx_send_response($cfg->pdx_api_version, true);
+                global $wp_version;
+                wa_pdx_send_response(array (
+                    'configured'    => !empty($cfg),
+                    'authorized'    => $is_authorized,
+                    'ajax-url'      => admin_url('admin-ajax.php'),
+                    'plugin-version'   => PDX_PLUGIN_VERSION_NUMBER,
+                    'wp-version'    => $wp_version
+                ), true);
             }
 
             if (!$is_authorized)

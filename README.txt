@@ -1,8 +1,8 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.0.1
-Tested up to: 4.7.5
-Stable tag: 4.7
+Tested up to: 4.8
+Stable tag: 4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,3 +53,6 @@ To upload the plugin through WordPress, instead of FTP:
 * Added support for post category
 * Added support for post tags
 * Bug fixes
+
+= 1.1.0 (2017-06-12): =
+* Added support for HEAD / custom headers restricted environments
