@@ -56,3 +56,10 @@ To upload the plugin through WordPress, instead of FTP:
 
 = 1.1.0 (2017-06-12): =
 * Added support for HEAD / custom headers restricted environments
+
+= 1.1.1 (2017-06-14): =
+* Added support for PHP versions older than 5.6 (removed const string concatenations)
+
+= 1.2.0 (2017-06-14): =
+* Added Server IP based option to verify sender
+* Security bug fixes

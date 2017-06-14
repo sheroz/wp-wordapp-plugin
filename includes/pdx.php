@@ -11,7 +11,7 @@ require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
 
 /**
- * The AJAX entry point of the Wordapp plugin.
+ * The main AJAX entry point of the Wordapp plugin.
  *
  * @author      Sheroz Khaydarov <sheroz@wordapp.io>
  * @license     GNU General Public License, version 2
@@ -22,7 +22,7 @@ require plugin_dir_path( __FILE__ ) . 'preview.php';
  */
 
 /**
- * The AJAX entry point.
+ * The main AJAX entry point of the Wordapp plugin.
  * Parses AJAX requests and calls appropriate functions.
  *
  * @internal
@@ -39,19 +39,7 @@ function ajax_wa_pdx() {
     $log = '';
 
     if (PDX_LOG_ENABLE)
-        $log.= "\n\najax_wordapp_seo(): started at ".$date->format('Y-m-d H:i:s') . "\n";
-
-//    $log.= "---- begin of headers ----\n";
-//    foreach (getallheaders() as $name => $value) {
-//        $log.= "$name: $value\n";
-//    }
-//    $log.= "---- end of headers ----\n";
-
-//    if(!empty($_GET['token']))
-//        $log.= "token: " . $_GET['token'] . "\n";
-
-//    if(!empty($_GET['check-wa-pdx']))
-//        wa_pdx_send_response(PDX_PLUGIN_VERSION_NUMBER, true);
+        $log.= "\n**********\najax_wa_pdx(): started at ".$date->format('Y-m-d H:i:s') . "\n";
 
     $cfg = get_option( PDX_CONFIG_OPTION_KEY );
 
@@ -102,16 +90,8 @@ function ajax_wa_pdx() {
         {
             if ( $op == PDX_OP_WP_CONFIG_SET ) {
                 wa_pdx_op_config_set($json['data']);
-            }
-            else if ( $op == PDX_OP_WP_CONFIG_CHECK ) {
-                global $wp_version;
-                wa_pdx_send_response(array (
-                    'configured'    => !empty($cfg),
-                    'authorized'    => $is_authorized,
-                    'ajax-url'      => admin_url('admin-ajax.php'),
-                    'plugin-version'   => PDX_PLUGIN_VERSION_NUMBER,
-                    'wp-version'    => $wp_version
-                ), true);
+            } elseif ( $op == PDX_OP_WP_CONFIG_CHECK ) {
+                wa_pdx_op_config_check();
             }
 
             if (!$is_authorized)

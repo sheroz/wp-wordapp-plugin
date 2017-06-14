@@ -27,6 +27,23 @@ function wa_pdx_config_clear()
 }
 
 /**
+ * Checks configuration data.
+ *
+ * @return mixed The non-confidential information about plugin status
+ */
+function wa_pdx_op_config_check()
+{
+    global $wp_version;
+    $cfg = get_option( PDX_CONFIG_OPTION_KEY );
+    wa_pdx_send_response(array (
+        'configured'        => !empty($cfg),
+        'ajax-url'          => admin_url('admin-ajax.php'),
+        'plugin-version'    => PDX_PLUGIN_VERSION_NUMBER,
+        'wp-version'        => $wp_version
+    ), true);
+}
+
+/**
  * Sets configuration.
  * This operation is initiated from Wordapp Platform to configure plugin for further data exchange operations.
  *
@@ -48,24 +65,10 @@ function wa_pdx_op_config_set ($params)
     if (empty($params))
         wa_pdx_send_response('Invalid Data');
 
-    // ----------
-    // !!! begin: remove this block !!! this is for demo use only
-    $pdx_config = $params;
-    // save configuration into option table
-    update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
-    if (PDX_LOG_ENABLE)
-    {
-        $log = "direct config set: " . json_encode($pdx_config) ."\n";
-        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
-    }
-    wa_pdx_send_response('Configuration set successfully', true);
-    // !!!! end: remove this block !!! this is for demo use only
-    // ----------
-
-    $ticket_id = $params['ticket_id'];
+    $ticket_id   = $params['ticket_id'];
     $api_pdx_url = $params['api_pdx_url'];
-    $timestamp = $params['timestamp'];
-    $signature = $params['signature'];
+    $timestamp   = $params['timestamp'];
+    $signature   = $params['signature'];
 
     if (empty($ticket_id) || empty($api_pdx_url))
         wa_pdx_send_response('Invalid Params');
@@ -96,7 +99,8 @@ function wa_pdx_op_config_set ($params)
                     }
 
     */
-    if (PDX_SIGNATURE_CHECK == 1)
+
+    if (PDX_CONFIG_VALIDATE_SIGNATURE == 1)
     {
         $reassembled_data = sprintf("%02x", PDX_OP_WP_CONFIG_SET);
         $reassembled_data .= $ticket_id;
@@ -112,11 +116,11 @@ function wa_pdx_op_config_set ($params)
         {
             $log = "Reassembled data: " . $reassembled_data ."\n";
             if ($verified == 1) {
-                $log.= "Signature verification OK\n";
+                $log.= "Signature verification result: OK.\n";
             } elseif ($verified == 0) {
-                $log.= "Signature verification FAILED\n";
+                $log.= "Signature verification result: FAILED.\n";
             } else {
-                $log.= "Signature verification ugly, error checking signature\n";
+                $log.= "Signature verification result: Unknown Error.\n";
             }
             file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
         }
@@ -124,6 +128,36 @@ function wa_pdx_op_config_set ($params)
         if ( $verified != 1 ) {
             wa_pdx_send_response('Signature Verification Failed');
         }
+    }
+
+    if (PDX_CONFIG_VALIDATE_IP == 1)
+    {
+        $sender = $_SERVER['REMOTE_ADDR'];
+        $ips = explode(' ', PDX_CONFIG_SERVER_IP);
+        $found = false;
+        foreach ($ips as $ip) {
+            if ($found = ($sender==$ip))
+                break;
+        }
+        if (!$found)
+            wa_pdx_send_response('IP Verification Failed:' . $_SERVER['REMOTE_ADDR']);
+    }
+
+    if (PDX_CONFIG_PUSH == 1)
+    {
+        $cfg = get_option( PDX_CONFIG_OPTION_KEY );
+        if (empty($cfg)) {
+            $pdx_config = $params['config'];
+            update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
+        } else
+            wa_pdx_send_response('Configuration push ignored. Already configured.');
+
+        if (PDX_LOG_ENABLE)
+        {
+            $log = "direct config set: " . json_encode($pdx_config) ."\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+        wa_pdx_send_response('Configuration set successfully', true);
     }
 
     $api_pdx_tickets_url = $api_pdx_url . '/tickets';
@@ -167,7 +201,7 @@ function wa_pdx_op_config_set ($params)
             'Accept-Encoding' => 'gzip, deflate',
             'Accept-Language' => 'en-US,en;q=0.8',
             'Content-Type' => 'application/json; charset=utf-8',
-            'User-Agent' => PDX_PLUGIN_VERSION_TEXT,
+            'User-Agent'   => 'Wordapp Plugin Version ' . PDX_PLUGIN_VERSION_NUMBER,
             'X-Api-Version' => 'application/vnd.wordapp-v1+json'
         ),
         'timeout' => 5,
