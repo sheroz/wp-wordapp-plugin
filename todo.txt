@@ -4,25 +4,31 @@
 
 3. test: wordapp - template fields
 
-4. feature: wordapp - enabling auto configuration when preview/approve (task) or publishing (orders)
+4. feature: plugin - support for featured image (first S3 based image will go as a featured image)
 
-5. feature: wordapp - readiness state (installed/configured) of plugin on publishing/preview panels
+=======
 
-6. feature: wordapp domain library - group options for analyzing and configuration
+Backlog:
+
+1. feature: wordapp - enabling auto configuration when preview/approve (task) or publishing (orders)
+
+2. feature: wordapp - readiness state (installed/configured) of plugin on publishing/preview panels
+
+3. feature: wordapp domain library - group options for analyzing and configuration
 (+ implementation as a background sidekiq task)
 
-7. feature: wordapp domain library - group analyzing and configuration by uploading TSVa file and getting processing results in TSV format
+4. feature: wordapp domain library - group analyzing and configuration by uploading TSVa file and getting processing results in TSV format
 
-8. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
+5. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
 (ex: X headers are stripped, wordpress behind cache, wordpress behind proxy and etc. Sample case: yourate)
 
-9. feature: plugin - support for setting of front page option
+6. feature: plugin - support for setting of front page option
 
-10. feature: plugin - support for style/css attributes (from template fields)
+7. feature: plugin - support for style/css attributes (from template fields)
 
-11. feature: plugin - support for duplicating of post/page including all meta attributes
+8. feature: plugin - support for duplicating of post/page including all meta attributes
 
-12. feature: plugin - support for custom extensions
+9. feature: plugin - support for custom extensions
 This feature allows building of custom extensions of wordapp plugin by external developers.
 Wordapp team will develop and improve plugin's core features according to wordpress's standard options.
 Custom plugin extension will rely on the wordapp plugin's exported API functions and implements custom business solutions.
