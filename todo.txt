@@ -1,11 +1,33 @@
+1. bugfix: plugin - scheduling time
 
-wp_type             post, page (+all registered types)
-wp_status           draft, publish (+all registered types)
-wp_author           username (WordPress login name)
-wp_template         Template name from WordPress theme
-wp_schedule         Formatted datetime in text as [Year-Month-Day Hour:Minute], ex.: 2017-06-07 09:00
-wp_category         Category name from WordPress
-wp_tags             Comma separated tag items
-wp_thumbnail_mid    number, Media item id from WordPress Media Library for Featured image
-wp_thumbnail_tin    number, Template item sequence number from Wordapp Template for Featured image
-wp_thumbnail_url    External url for Featured image
+2. bugfix: plugin - broken links (<a> tags are broken after transfer)
+
+3. test: wordapp - template fields
+
+4. feature: wordapp - enabling auto configuration when preview/approve (task) or publishing (orders)
+
+5. feature: wordapp - readiness state (installed/configured) of plugin on publishing/preview panels
+
+6. feature: wordapp domain library - group options for analyzing and configuration
+(+ implementation as a background sidekiq task)
+
+7. feature: wordapp domain library - group analyzing and configuration by uploading TSVa file and getting processing results in TSV format
+
+8. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
+(ex: X headers are not permitted, wordpress behind cache, wordpress behind proxy etc. Sample case: yourate)
+
+9. feature: plugin - support for setting of front page option
+
+10. feature: plugin - support for style/css attributes (from templ ate fields)
+
+11. feature: plugin - support for duplicating of post/page including all meta attributes
+
+12. feature: plugin - support for custom extensions
+This feature allows building of custom extensions of wordapp plugin by external developers.
+Wordapp team will develop and improve plugin's core features according to wordpress's standard options.
+Custom plugin extension will rely on the wordapp plugin's exported API functions and implements custom business solutions.
+For example, in yourate's case there would be installed 2 plugins in wordpress:
+    - wordapp plugin (1)
+    - wordapp-yourate extension (2)
+Extending of the core plugin in this way gives possibility to support any number of custom business requirements by developing custom extensions by outsource/freelance developers and keeps wordapp team's focus on supporting of standard wordpress features only.
+When wordapp team upgrades the published version of the core plugin in wordpress repo, it should try to keep a backward compatibility with the previously developed extensions. Except of security related critical modifications, all unsupported functions/parameters should be declared as deprecated and should be removed after major version upgrade or when some agreed time has been passed.
