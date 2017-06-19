@@ -22,7 +22,7 @@ Backlog:
 5. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
 (ex: X headers are stripped, wordpress behind cache, wordpress behind proxy and etc. Sample case: yourate)
 
-6. feature: plugin - support for setting of front page option
+6. feature: plugin - support for setting of front page
 
 7. feature: plugin - support for style/css attributes (from template fields)
 
@@ -30,10 +30,10 @@ Backlog:
 
 9. feature: plugin - support for custom extensions
 This feature allows building of custom extensions of wordapp plugin by external developers.
-Wordapp team will develop and improve plugin's core features according to wordpress's standard options.
+Wordapp team will develop and improve plugin's core functions according to support standard options of WordPress.
 Custom plugin extension will rely on the wordapp plugin's exported API functions and implements custom business solutions.
 For example, in yourate's case there would be installed 2 plugins in wordpress:
     - wordapp plugin (1)
     - wordapp-yourate extension (2)
 Extending of the core plugin in this way gives possibility to support any number of custom business requirements by developing custom extensions by outsource/freelance developers and keeps wordapp team's focus on supporting of standard wordpress features only.
-When wordapp team upgrades the published version of the plugin in wordpress repo, it should try to keep backward compatibility with the previously developed extensions. Except of security related critical modifications, all unsupported functions/parameters should be declared as deprecated and should be removed after major version upgrade or when some agreed time has been passed.
+When wordapp team upgrades the published version of the plugin in WordPress Plugin Directory, it should try to keep backward compatibility with the previously developed extensions. Except of security related critical modifications, all unsupported functions/parameters should be declared as deprecated and should be removed after major version upgrade or when some agreed time has been passed.
