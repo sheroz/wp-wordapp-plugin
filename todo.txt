@@ -14,7 +14,7 @@
 7. feature: wordapp domain library - group analyzing and configuration by uploading TSVa file and getting processing results in TSV format
 
 8. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
-(ex: X headers are not permitted, wordpress behind cache, wordpress behind proxy etc. Sample case: yourate)
+(ex: X headers are stripped, wordpress behind cache, wordpress behind proxy and etc. Sample case: yourate)
 
 9. feature: plugin - support for setting of front page option
 
