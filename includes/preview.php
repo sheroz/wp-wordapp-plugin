@@ -20,6 +20,9 @@
  */
 function wa_pdx_filter_pre_get_posts( $query )
 {
+    if (PDX_CONFIG_SCHEDULE_PUBLISH_MISSED == 1)
+        wa_pdx_validate_scheduled_posts();
+
     if (PDX_LOG_ENABLE)
     {
         $log  = "wa_pdx_filter_pre_get_posts(): Phase 1 passed\n";

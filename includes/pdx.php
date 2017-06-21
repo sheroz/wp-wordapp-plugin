@@ -9,6 +9,7 @@ require plugin_dir_path( __FILE__ ) . 'integrations.php';
 require plugin_dir_path( __FILE__ ) . 'media.php';
 require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
+require plugin_dir_path( __FILE__ ) . 'schedule.php';
 
 /**
  * The main AJAX entry point of the Wordapp plugin.

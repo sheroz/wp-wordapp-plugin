@@ -29,7 +29,9 @@ const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.2.1';
+
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
+const PDX_SCHEDULED_OPTION_KEY     = 'wa_pdx_future';
 
 const PDX_MARKER_CONTENT_BEGIN  = '<!-- Wordapp-Marker-Begin: Content -->';
 const PDX_MARKER_CONTENT_END    = '<!-- Wordapp-Marker-End: Content -->';
@@ -53,6 +55,10 @@ const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
 // Works only for fresh install without prior configuration
 // After completing configuration process, set it back to 0
 const PDX_CONFIG_PUSH = 1;
+
+// parameter: PDX_CONFIG_SCHEDULE_PUBLISH_MISSED
+// values: 1 - Looks for scheduled posts with missed date and publishes them, 0 = disable check
+const PDX_CONFIG_SCHEDULE_PUBLISH_MISSED = 1;
 
 // parameter:  PDX_LOG_ENABLE
 // values: 1 - logs to PDX_LOG_FILE, 0 - disable logs
