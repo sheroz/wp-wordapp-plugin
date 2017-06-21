@@ -190,25 +190,26 @@ function wa_pdx_post_update_template($post_id, $params) {
  */
 function wa_pdx_post_process_params ($params, $add = false) {
 
-    $nodes = $params['nodes'];
-    // $post_content = $params['html'];
-    $post_title  = $params['meta_title'];
-
-    $post_content = '';
-    foreach ( $nodes as $node ) {
-
-        $type = $node['type'];
-        $text = $node['text'];
-        $html_tag = $node['html_tag'];
-
-        if ($type == 'h1') {
-            if (empty($post_content)) {
-                $post_title = $text;
-            } else {
-                $post_content .= $html_tag;
+    $post_title = $params['meta_title'];
+    $post_content = $params['html'];
+    if (empty($html_content)) {
+        $post_content = '';
+        $nodes = $params['nodes'];
+        if (!empty($nodes)) {
+            foreach ( $nodes as $node ) {
+                $type = $node['type'];
+                $text = $node['text'];
+                $html_tag = $node['html_tag'];
+                if ($type == 'h1') {
+                    if (empty($post_content)) {
+                        $post_title = $text;
+                    } else {
+                        $post_content .= $html_tag;
+                    }
+                } else if($type != 'title' && $type != 'description') {
+                    $post_content .= $html_tag;
+                }
             }
-        } else if($type != 'title' && $type != 'description') {
-            $post_content .= $html_tag;
         }
     }
 
@@ -217,7 +218,7 @@ function wa_pdx_post_process_params ($params, $add = false) {
     );
 
     if (!is_null($post_title)) {
-        $post['post_title'] = $post_title;
+        $post['post_title'] = sanitize_title($post_title);
         // $post['post_name'] = sanitize_title($post_title);
     }
 
@@ -247,11 +248,22 @@ function wa_pdx_post_process_params ($params, $add = false) {
         if (!is_null($schedule)) {
             $date = DateTime::createFromFormat('Y-m-d H:i', $schedule);
             if ($date) {
+
                 $schedule_timestamp = $date->getTimestamp();
                 $post_date = date('Y-m-d H:i:s',$schedule_timestamp);
+                $post_date_gmt = get_gmt_from_date($post_date);
                 $post['post_date'] = $post_date;
-                $post['post_date_gmt'] = get_gmt_from_date($post_date);
+                $post['post_date_gmt'] = $post_date_gmt;
                 $post['edit_date'] = 'true';
+                $post['post_status'] = 'future';
+
+                if (PDX_LOG_ENABLE)
+                {
+                    $log  = 'post_date: ' . $post_date . PHP_EOL;
+                    $log .= 'post_date_gmt: ' . $post_date_gmt . PHP_EOL;
+                    file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+                }
+
             } else {
                 wa_pdx_send_response('Invalid date (required as Y-m-d H:i ) format : ' . $schedule);
             }
