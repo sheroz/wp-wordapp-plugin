@@ -66,5 +66,5 @@ After installation and activation of plugin in your site, please contact wordapp
 * Security bug fixes
 
 = 1.2.1 (2017-06-21): =
-* Support for dual (html / element node based) contents. html has precedence
+* Support for dual (html / element node based) contents. html has a precedence
 * Bug fix with post schedule
