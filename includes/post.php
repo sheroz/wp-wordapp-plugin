@@ -181,6 +181,35 @@ function wa_pdx_post_update_template($post_id, $params) {
 }
 
 /**
+ * Update post's meta related parameters.
+ *
+ * @since 1.2.2
+
+ * @param int $post_id Post ID
+ * @param array $params Parameters to parse.
+ *
+ */
+function wa_pdx_post_update_metas($post_id, $params)
+{
+    $metas = array();
+    $options =  $params['options'];
+    if ($options) {
+        $thumbnail_id = $options['wp_thumbnail_mid'];
+        if (!is_null($thumbnail_id)) {
+            $metas['_thumbnail_id'] = $thumbnail_id;
+        }
+
+    }
+
+    if ($post_id && $post_id > 0 && !empty($metas))
+    {
+        foreach ( $metas as $k => $v ) {
+            update_post_meta($post_id, $k, $v);
+        }
+    }
+}
+
+/**
  * Processes post parameters.
  *
  * @param array $params Parameters to parse.
@@ -288,6 +317,12 @@ function wa_pdx_post_process_params ($params, $add = false) {
             $post['tags_input'] = $tag_keys;
         }
 
+        $slug = $options['wp_slug'];
+        if (!is_null($slug)) {
+            $post_name = $slug; //  wp_unique_post_slug( $slug, $post_ID, $post_status, $post_type, $post_parent );
+            $post['post_name'] = $post_name;
+        }
+
     }
 
     if($add) {
@@ -319,6 +354,8 @@ function wa_pdx_post_add ($params)
     $post_id = wp_insert_post($post);
     if ($post_id != 0) {
         wa_pdx_post_update_template($post_id, $params);
+        wa_pdx_post_update_metas($post_id, $params);
+
         $focus_keyword = $params['focus_keyword'];
         $meta_title = $params['meta_title'];
         $meta_description = $params['meta_description'];
@@ -421,6 +458,8 @@ function wa_pdx_post_update ($params)
 
     if (wp_update_post($post, false) != 0) {
         wa_pdx_post_update_template($post_id, $params);
+        wa_pdx_post_update_metas($post_id, $params);
+
         $focus_keyword = $params['focus_keyword'];
         $meta_title = $params['meta_title'];
         $meta_description = $params['meta_description'];

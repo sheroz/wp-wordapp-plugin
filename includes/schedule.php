@@ -11,10 +11,12 @@
  */
 
 /**
- * Workaround to fix Wordpress's 'missed schedule' error.
+ * Workaround to fix WordPress's 'missed schedule' error.
  *
- * Looks for scheduled posts with missed date and publishes them
- * Next call will be validated after 15 minutes to prevent extra loads for hosting server
+ * @since       1.2.1
+ *
+ * Looks for scheduled posts with missed dates and publishes them
+ * Next call will be validated in 15 minutes interval to prevent resource utilization of the hosting server
  */
 
 function wa_pdx_validate_scheduled_posts ()
