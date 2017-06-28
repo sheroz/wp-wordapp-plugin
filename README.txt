@@ -68,3 +68,6 @@ After installation and activation of plugin in your site, please contact wordapp
 = 1.2.1 (2017-06-21): =
 * Support for dual (html / element node based) contents. html has a precedence
 * Bug fix with post schedule
+
+= 1.2.2 (2017-06-28): =
+* Support for featured image
