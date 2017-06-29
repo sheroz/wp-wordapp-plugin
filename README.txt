@@ -77,3 +77,4 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.4 (2017-06-29): =
 * Removed configuration clean-up after uninstalling, activating and deactivating of plugin
+
