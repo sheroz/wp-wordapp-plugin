@@ -31,4 +31,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/pdx.php';
-wa_pdx_config_clear();
+// Seems at this stage it is not practical to clean configuration after uninstalling,
+// otherwise we need to configure plugins again
+// wa_pdx_config_clear();

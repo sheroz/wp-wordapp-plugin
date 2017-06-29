@@ -126,7 +126,7 @@ function wa_pdx_op_config_set ($params)
         }
 
         if ( $verified != 1 ) {
-            wa_pdx_send_response('Signature Verification Failed');
+            wa_pdx_send_response('Signature verification failed.');
         }
     }
 
@@ -145,12 +145,11 @@ function wa_pdx_op_config_set ($params)
 
     if (PDX_CONFIG_PUSH == 1)
     {
-        $cfg = get_option( PDX_CONFIG_OPTION_KEY );
-        if (empty($cfg)) {
-            $pdx_config = $params['config'];
-            update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
-        } else
-            wa_pdx_send_response('Configuration push ignored. Already configured.');
+        $pdx_config = $params['config'];
+        if (empty($pdx_config))
+            wa_pdx_send_response('Invalid configuration parameter.');
+
+        update_option( PDX_CONFIG_OPTION_KEY, $pdx_config );
 
         if (PDX_LOG_ENABLE)
         {

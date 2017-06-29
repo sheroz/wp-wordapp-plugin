@@ -71,3 +71,9 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.2 (2017-06-28): =
 * Support for featured image
+
+= 1.2.3 (2017-06-29): =
+* Multi-site installation related configuration improvement.
+
+= 1.2.4 (2017-06-29): =
+* Removed configuration clean-up after uninstalling, activating and deactivating of plugin
