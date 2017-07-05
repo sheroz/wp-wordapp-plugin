@@ -10,30 +10,61 @@
 
 Backlog:
 
-1. feature: wordapp - enabling auto configuration when preview/approve (task) or publishing (orders)
+(!!!) There is a strong need on discussing and determining the exact plans about using of  plugin.
+Plugin now used in production. We have 1000+ content orders and 200+ domains to transfer content by plugin.
 
-2. feature: wordapp - readiness state (installed/configured) of plugin on publishing/preview panels
+We need to agree on:
+ 1. What we have
+ 2. What we need
+ 3. What is missed
+ 4. Testing, priorities on bug fixes and improvements.
 
-3. feature: wordapp domain library - group options for analyzing and configuration
-(+ implementation as a background sidekiq task)
+According to the experience we had, there is a backlog of ideas, requests and wishes:
 
-4. feature: wordapp domain library - group analyzing and configuration by uploading TSVa file and getting processing results in TSV format
+1. Feature: wordapp - option to auto configuration of plugin when preview/approve (task feed edit) or 'Mark as published' (content orders list panel)
 
-5. feature: plugin - plugin's settings page for wordpress admins to enable visually controlling of plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
+2. Feature: wordapp - readiness state (installed/configured) of plugin on publishing->preview panels
+These features would extent self-service operations for publishers to automate content transfer by using Wordapp plugin
+---
+
+3. Feature (self-service / automate manual process): option for analyzing and auto-configuration of plugins on project basis
+Wordapp managers and admins (+ self-service for plublisher?) would be able to auto-configure all installed plugins for the domains,
+which are used in current project.
+There would be button on project panel, click it and have all plugins for the domains on this project auto-configured.
+We have script written for this. Now we run it manually on production server.
+
+4. Feature (self-service / automate manual process): wordapp domain library - bulk options for analyzing domains and configuration of installed plugins
+On domain list there would be checkbox in first column on each domain.
+Check domains and on top CEM button select 'Analyze and Configuration' option
+We have script written for this. Now we run it manually on production server.
+(+ implementation as a background sidekiq task).
+
+5. Feature (self-service / automate manual process): wordapp domain library - bulk analyzing and configuration by uploading TSVa file and getting processing results in TSV format.
+Wordapp managers and admins would be able to auto-configure all installed plugins listed in tsv file.
+The same as 4. but you can upload domains list to process as tsv file.
+
+6. Feature: Plugin part - plugin's settings page for wordpress admins to enable visually see the plugin's readiness state (configured/ready) and manually setting configuration options when auto configuration is not possible.
 (ex: X headers are stripped, wordpress behind cache, wordpress behind proxy and etc. Sample case: yourate)
 
-6. feature: plugin - support for setting of front page
+7. Feature: Plugin part - support for setting of front page
 
-7. feature: plugin - support for style/css attributes (from template fields)
+8. Feature: Plugin part - support for style/css attributes (from template fields)
 
-8. feature: plugin - support for duplicating of post/page including all meta attributes
+9. Feature: Plugin part - support for duplicating of post/page including all meta attributes
 
-9. feature: plugin - support for custom extensions
+10. Feature: Plugin part - support for custom extensions
 This feature allows building of custom extensions of wordapp plugin by external developers.
 Wordapp team will develop and improve plugin's core functions according to support standard options of WordPress.
 Custom plugin extension will rely on the wordapp plugin's exported API functions and implements custom business solutions.
 For example, in yourate's case there would be installed 2 plugins in wordpress:
-    - wordapp plugin (1)
-    - wordapp-yourate extension (2)
-Extending of the core plugin in this way gives possibility to support any number of custom business requirements by developing custom extensions by outsource/freelance developers and keeps wordapp team's focus on supporting of standard wordpress features only.
-When wordapp team upgrades the published version of the plugin in WordPress Plugin Directory, it should try to keep backward compatibility with the previously developed extensions. Except of security related critical modifications, all unsupported functions/parameters should be declared as deprecated and should be removed after major version upgrade or when some agreed time has been passed.
+    - Wordapp plugin (1)
+    - Wordapp-yourate extension (2)
+Extending of the core plugin by this way enables support any number of custom business requirements by
+developing extensions by outsource/freelance developers.
+This allows the wordapp team keep focus on standard, content related features for wordpress integration.
+When wordapp team upgrades the published version of the core plugin in WordPress Plugin Directory,
+it should keep backward compatibility with the previously developed foreign extensions.
+Except of security related and critical modifications, all unsupported functions/parameters should be declared as deprecated
+and keeping supported for some period.
+The deprecated functions/parameters should be removed after major version upgrade of plugin or when agreed/stated period
+for the deprecation has been passed.

@@ -225,6 +225,17 @@ function wa_pdx_post_process_params ($params, $add = false) {
         $post_content = '';
         $nodes = $params['nodes'];
         if (!empty($nodes)) {
+            if (PDX_LOG_ENABLE)
+            {
+                $log= "\nNodes: Before sort:\n".print_r($nodes,true)."\n";
+                file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+            }
+            ksort($nodes); // sort nodes on sequence
+            if (PDX_LOG_ENABLE)
+            {
+                $log= "\nNodes: After sort:\n".print_r($nodes,true)."\n";
+                file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+            }
             foreach ( $nodes as $node ) {
                 $type = $node['type'];
                 $text = $node['text'];
@@ -316,12 +327,13 @@ function wa_pdx_post_process_params ($params, $add = false) {
             }
             $post['tags_input'] = $tag_keys;
         }
-
+/*
         $slug = $options['wp_slug'];
         if (!is_null($slug)) {
             $post_name = $slug; //  wp_unique_post_slug( $slug, $post_ID, $post_status, $post_type, $post_parent );
             $post['post_name'] = $post_name;
         }
+*/
 
     }
 

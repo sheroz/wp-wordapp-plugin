@@ -78,3 +78,6 @@ After installation and activation of plugin in your site, please contact wordapp
 = 1.2.4 (2017-06-29): =
 * Removed configuration clean-up after uninstalling, activating and deactivating of plugin
 
+= 1.2.5 (2017-07-05): =
+* Bug fix: ensure of content items to be rebuilt by sequence number
+* An experimental WP Slug support disabled
