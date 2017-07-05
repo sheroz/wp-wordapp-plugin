@@ -258,7 +258,7 @@ function wa_pdx_post_process_params ($params, $add = false) {
     );
 
     if (!is_null($post_title)) {
-        $post['post_title'] = sanitize_title($post_title);
+        $post['post_title'] = $post_title;
         // $post['post_name'] = sanitize_title($post_title);
     }
 

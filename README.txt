@@ -81,3 +81,6 @@ After installation and activation of plugin in your site, please contact wordapp
 = 1.2.5 (2017-07-05): =
 * Bug fix: ensure of content items to be rebuilt by sequence number
 * An experimental WP Slug support disabled
+
+= 1.2.6 (2017-07-05): =
+* Bug fix: title corrupted
