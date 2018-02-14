@@ -10,6 +10,8 @@
  * @since       1.0.0
  */
 
+ $wa_pdx_options = \wa_pdx\Settings::get_options();
+
 const PDX_OP_ANALYZE_SITE           =   1;
 const PDX_OP_WP_CONFIG_SET          =   2;
 const PDX_OP_WP_CONFIG_CHECK        =   3;
@@ -43,12 +45,16 @@ const PDX_PUB_KEY_PEM_2048   = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0B
 
 // parameter: PDX_CONFIG_VALIDATE_SIGNATURE
 // values: 1 - validate sender by digital signature check, 0 = do not validate by signature
-const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
+// const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
+define('PDX_CONFIG_VALIDATE_SIGNATURE', $wa_pdx_options['validate_signature']);
 
 // parameter: PDX_CONFIG_VALIDATE_IP
 // values: 1 - validate sender by IP address, 0 = do not validate IP
-const PDX_CONFIG_VALIDATE_IP = 1;
-const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
+// const PDX_CONFIG_VALIDATE_IP = 1;
+define('PDX_CONFIG_VALIDATE_IP', $wa_pdx_options['validate_ip']);
+
+// const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
+define('PDX_CONFIG_SERVER_IP', preg_replace('/,\s*/', ' ', $wa_pdx_options['server_ip'])); // convert csv to space seperated values
 
 // parameter: PDX_CONFIG_PUSH
 // values: 1 - server push configuration, 0 = use a preferred and secure ticket based mechanism

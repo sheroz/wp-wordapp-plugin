@@ -1,5 +1,6 @@
 <?php
 
+require plugin_dir_path( __FILE__ ) . 'settings.php';
 require plugin_dir_path( __FILE__ ) . 'common.php';
 require plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'constants.php';

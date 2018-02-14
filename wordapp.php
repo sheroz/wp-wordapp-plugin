@@ -34,3 +34,4 @@ add_action( 'init', 'wa_pdx_hello' );
 add_action( 'wp_ajax_wa_pdx', 'ajax_wa_pdx' );
 add_action( 'wp_ajax_nopriv_wa_pdx', 'ajax_wa_pdx' );
 add_filter( 'pre_get_posts', 'wa_pdx_filter_pre_get_posts' );
+wa_pdx_load_admin(plugin_basename( __FILE__ ));
