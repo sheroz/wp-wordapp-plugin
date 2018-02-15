@@ -93,6 +93,12 @@ function wa_pdx_add_url_params ($url, $params)
     return $url . $query;
 }
 
+/**
+ * Loads the settings page of Wordapp Plugin
+ *
+ * @param  string $plugin_name
+ * @return void
+ */
 function wa_pdx_load_admin($plugin_name) {
 
 	if ( ! defined( 'DOING_AJAX' ) && is_admin() ) {
@@ -104,6 +110,6 @@ function wa_pdx_load_admin($plugin_name) {
 			), $actions );
 		} );
 
-		new \wa_pdx\Settings();
+		add_action('admin_menu', 'wa_pdx_register_settings_page');
 	}
 }

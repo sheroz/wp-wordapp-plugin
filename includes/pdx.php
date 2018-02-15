@@ -1,6 +1,5 @@
 <?php
 
-require plugin_dir_path( __FILE__ ) . 'settings.php';
 require plugin_dir_path( __FILE__ ) . 'common.php';
 require plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'constants.php';
@@ -11,6 +10,7 @@ require plugin_dir_path( __FILE__ ) . 'media.php';
 require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
 require plugin_dir_path( __FILE__ ) . 'schedule.php';
+require plugin_dir_path( __FILE__ ) . 'settings.php';
 
 /**
  * The main AJAX entry point of the Wordapp plugin.

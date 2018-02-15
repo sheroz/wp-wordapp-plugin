@@ -1,295 +1,269 @@
 <?php
-/**
- * Wordapp Plugin Settings Class
- *
- * @since   1.2.7
- * @package Wordapp
- */
-namespace wa_pdx;
-
-defined( 'ABSPATH' ) or exit;
 
 /**
- * Wordapp Plugin settings class.
+ * Returns options.
  *
- * @since   1.2.7
- * @package Wordapp
+ * @return array Options array stored in the database if PDX_SETTINGS_OPTION_NAME option_name exists.
+ * Otherwise this function returns an array of default options.
+ *
  */
-class Settings {
+function wa_pdx_get_options(){
+	$options = get_option(PDX_SETTINGS_OPTION_NAME, array());
 
+	return wp_parse_args($options, array(
+		'validate_signature' => PDX_CONFIG_VALIDATE_SIGNATURE,
+		'validate_ip' => PDX_CONFIG_VALIDATE_IP,
+		'server_ip' => PDX_CONFIG_SERVER_IP,
+	));
+}
 
-	/**
-	 * This plugin's settings page slug.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    string
-	 */
-	private static $page = 'wa_pdx';
-
-	/**
-	 * This plugin's option name.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    string
-	 */
-	private static $option_name = 'wa_pdx_options';
-
-	/**
-	 * This plugin's option group name.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    string
-	 */
-	private static $option_group = 'wa_pdx_option_group';
-
-	/**
-	 * This plugin's options section name.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    string
-	 */
-	private static $section_name = 'wa_pdx_options_section';
-
-	/**
-	 * This plugin's defatuls options.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    array $options Default options.
-	 */
-	private static $default_options = array(
-		'validate_signature' => true,
-		'validate_ip' => true,
-		'server_ip' => '54.246.232.229, 54.171.165.11, 52.16.70.35',
+/**
+ * Registers settings page.
+ *
+ * @return void
+ */
+function wa_pdx_register_settings_page(){
+	add_options_page(
+		__( 'Wordapp', 'wordapp' ),
+		__( 'Wordapp', 'wordapp' ),
+		'manage_options',
+		PDX_SETTINGS_PAGE_SLUG,
+		'wa_pdx_settings_page'
 	);
 
-	/**
-	 * This plugin's settings options.
-	 *
-	 * @since  1.2.7
-	 * @access private
-	 * @var    array $options Array of this plugin settings options.
-	 */
-	private $options = array();
+	add_action( 'admin_init', 'wa_pdx_register_settings' );
+}
 
+/**
+ * Registers settings, the section for the settings, and fields.
+ *
+ * @return void
+ */
+function wa_pdx_register_settings(){
+	register_setting(
+		PDX_SETTINGS_OPTION_NAME,
+		PDX_SETTINGS_OPTION_NAME,
+		'wa_pdx_sanitize_field'
+	);
 
-	/**
-	 * Register settings and admin menu.
-	 *
-	 * @since 1.2.7
-	 * @param array $options Plugin settings options.
-	 */
-	public function __construct() {
+	add_settings_section(
+		PDX_SETTINGS_OPTION_NAME,
+		__( 'Settings', 'wordapp' ),
+		'wa_pdx_print_settings_page_info',
+		PDX_SETTINGS_PAGE_SLUG
+	);
 
-		$this->options = self::get_options();
+	$settings_fields = array(
+		'validate_signature' => array(
+			'label' => esc_html__( 'Validate Signature', 'wordapp' ),
+			'callback' => 'wa_pdx_print_validate_signature_field',
+		),
+		'validate_ip' => array(
+			'label' => esc_html__( 'Validate IP', 'wordapp' ),
+			'callback' => 'wa_pdx_print_validate_ip_field',
+		),
+		'server_ip' => array(
+			'label' => esc_html__( 'Server IPs List', 'wordapp' ),
+			'callback' => 'wa_pdx_print_server_ip_field',
+		),
+	);
 
-		add_action('admin_menu', array( $this, 'register_settings_page'));
-
+	foreach ( $settings_fields as $key => $field ) {
+		add_settings_field(
+			PDX_SETTINGS_OPTION_NAME . '['. $key . ']',
+			$field['label'],
+			$field['callback'],
+			PDX_SETTINGS_PAGE_SLUG,
+			PDX_SETTINGS_OPTION_NAME
+		);
 	}
+}
 
-	/**
-	 * Returns options
-	 *
-	 * @since  1.2.7
-	 * @return array
-	 */
-	public static function get_options() {
+/**
+ * Prints out settings page info.
+ *
+ * @return void
+ */
+function wa_pdx_print_settings_page_info(){
+	$cfg = get_option(PDX_CONFIG_OPTION_KEY);
 
-		$options = get_option(self::$option_name, array());
+	$logo_url = plugin_dir_url(dirname(__FILE__)) . 'img/wordapp-logo.svg';
+	?>
+	<p>
+		<img src="<?php echo $logo_url; ?>" style="width: 40px; height: 40px; float: left; margin: 0 10px 7px 0;">
+	<?php
+	echo __('Wordapp is a free word-processing and publishing platform for e-commerce that lets you manage and control your content creation with a crowd of writers and editors suited to your job. The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.', 'wordapp');
+	?>
+	</p>
+	<hr style="clear: both;" />
+	<div style="font-weight: bold;">
+		<?php esc_html_e('Connection Status', 'wordapp') ?>:
+		<?php
+		if(empty($cfg)){
+			?>
+			<span style="color: red;"><?php esc_html_e('Not connected', 'wordapp'); ?></span>
+			<?php
+		} else {
+			?>
+			<span style="color: #82b15a;"><?php esc_html_e('Connected to Wordapp', 'wordapp'); ?></span>
+			<?php
+		}
+		?>
+	</div>
+	<?php
+}
 
-		return wp_parse_args($options, self::$default_options);
-	}
+/**
+ * Prints out validate_signature field.
+ *
+ * @return void
+ */
+function wa_pdx_print_validate_signature_field(){
+	$options = wa_pdx_get_options();
+	?>
+	<input type="checkbox" id="wordapp_validate_signature" name="<?php echo PDX_SETTINGS_OPTION_NAME; ?>[validate_signature]" value="1" <?php checked( (bool) $options['validate_signature'] ); ?> />
+	<label for="wordapp_validate_signature"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
+	<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Pluging to validate sender by digital signature check.', 'wordapp' ); ?></p>
+	<?php
+}
 
-	/**
-	 * Plugin Settings menu.
-	 *
-	 * @since 1.2.7
-	 */
-	public function register_settings_page() {
+/**
+ * Prints out validate_ip field.
+ *
+ * @return void
+ */
+function wa_pdx_print_validate_ip_field(){
+	$options = wa_pdx_get_options();
+	?>
+	<input type="checkbox" id="wordapp_validate_ip" name="<?php echo PDX_SETTINGS_OPTION_NAME; ?>[validate_ip]" value="1" <?php checked( (bool) $options['validate_ip'] ); ?> />
+	<label for="wordapp_validate_ip"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
+	<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Plugin to validate sender by IP address.', 'wordapp' ); ?></p>
+	<?php
+}
 
-		add_options_page(
-			__( 'Wordapp', 'wordapp' ),
-			__( 'Wordapp', 'wordapp' ),
-			'manage_options',
-			self::$page,
-			array( $this, 'settings_page' )
-		);
+/**
+ * Prints out server_ip field.
+ *
+ * @return void
+ */
+function wa_pdx_print_server_ip_field(){
+	$options = wa_pdx_get_options();
+	$errors = get_settings_errors('wordapp_server_ip');
+	$style = !empty($errors) && $errors[0]['code'] == 'wordapp_server_ip_error_invalid_ip' ? 'style="border: 2px solid red;"' : '';
+	?>
+	<textarea cols="17" rows="5" id="wordapp_server_ip" name="<?php echo PDX_SETTINGS_OPTION_NAME; ?>[server_ip]" <?php echo $style; ?> onfocus="this.style.border='none'"><?php echo esc_html_e( preg_replace('/\s+/', "\n", $options['server_ip']) ); ?></textarea>
+	<p class="description">
+		<small><?php esc_html_e('(Required when Validate IP is checked)', 'wordapp'); ?></small>
+		<br>
+		<?php esc_html_e( 'Enter one or more IP addresses to give access to specific IPs to Wordapp Plugin.', 'wordapp' ); ?>
+		<br>
+		<?php esc_html_e( 'Write each IP address in a separate line.', 'wordapp' ); ?>
+	</p>
+	<?php
+}
 
-		add_action( 'admin_init', array( $this, 'register_settings'  ) );
+/**
+ * Validate server_ip field and adds settings errors if there are any.
+ *
+ * @param  string  $field       Value of the server_ip field.
+ *                              It should be converted to a space separated values list before passed to this function.
+ * @param  boolean $validate_ip Value of the validate_ip field.
+ * @return void
+ */
+function wa_pdx_validate_server_ip_field($field, $validate_ip = false){
+	// server_ip field should not be empty when validate_ip field is checked
+	$field = trim($field);
 
-	}
-
-
-	/**
-	 * Register plugin settings.
-	 *
-	 * @since 1.2.7
-	 */
-	public function register_settings() {
-
-		register_setting(
-			self::$option_name,
-			self::$option_name,
-			array( $this, 'sanitize_field' )
-		);
-
-		add_settings_section(
-			self::$option_name,
-			__( 'Wordapp Plugin Settings', 'wordapp' ),
-			array( $this, 'settings_info' ),
-			self::$page
-		);
-
-		$settings_fields = array(
-			'validate_signature' => array(
-				'label'    => esc_html__( 'Validate Signature', 'wordapp' ),
-				'callback' => array( $this, 'print_validate_signature_field' ),
-		   	),
-			'validate_ip' => array(
-				'label'    => esc_html__( 'Validate IP', 'wordapp' ),
-				'callback' => array( $this, 'print_validate_ip_field' ),
-			),
-			'server_ip' => array(
-				'label'    => esc_html__( 'Server IP address(es)', 'wordapp' ),
-				'callback' => array( $this, 'print_server_ip_field' ),
-		   	),
-		);
-
-		foreach ( $settings_fields as $key => $field ) {
-			add_settings_field(
-				self::$option_name . '['. $key . ']',
-				$field['label'],
-				$field['callback'],
-				self::$page,
-				self::$option_name
+	if($validate_ip == true){
+		if(empty($field)){
+			add_settings_error(
+				'wordapp_server_ip',
+				esc_attr( 'wordapp_server_ip_error_empty_value' ),
+				__('Warning: "Server IPs List" should not be empty when "Validate IP" option is checked.', 'wordapp'),
+				'error'
 			);
 		}
-
 	}
 
-
-	/**
-	 * Settings page additional info.
-	 * Prints more details on the plugin settings page.
-	 *
-	 * @since 1.2.7
-	 */
-	public function settings_info() {
-
+	if(!empty($field)){
+		$ips = explode(' ', $field);
+		foreach ($ips as $ip) {
+			if(!preg_match('/(?:\d{1,3}\.){3}\d{1,3}/', $ip)){
+				add_settings_error(
+					'wordapp_server_ip',
+					esc_attr( 'wordapp_server_ip_error_invalid_ip' ),
+					__('Warning: One or more IP addresses are invalid. Please fix it to help Wordapp Plugin validate IP addresses properly.', 'wordapp'),
+					'error'
+				);
+				break;
+			}
+		}
 	}
+}
 
-	/**
-	 * Prints out 'Validate Signature field'
-	 *
-	 * @since 1.2.7
-	 */
-	public function print_validate_signature_field() {
+/**
+ * Sanitizes server_ip field coming directly from user input.
+ *
+ * @param  string $str Value to be sanitized
+ * @return string      Sanitized string
+ */
+function wa_pdx_sanitize_server_ip_field($str){
+	$str = preg_replace('/\s{2,}/', ' ', trim($str));
+	return sanitize_text_field($str);
+}
 
-		?>
-		<input type="checkbox" id="wordapp_validate_signature" name="<?php echo self::$option_name; ?>[validate_signature]" value="1" <?php checked( (bool) $this->options['validate_signature'] ); ?> />
-		<label for="wordapp_validate_signature"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
-		<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Pluging to validate sender by digital signature check.', 'wordapp' ); ?></p>
+/**
+ * Sanitizes fields. This function is the callback that is passed to register_setting when PDX_SETTINGS_OPTION_NAME setting is registered.
+ *
+ * @param  array $option An array that holds the setting.
+ * @return array         An array of sanitized values.
+ */
+function wa_pdx_sanitize_field($option){
+	$input = wp_parse_args( $option, array(
+		'validate_signature' => false,
+		'validate_ip' => false,
+		'server_ip' => '',
+	) );
+
+	$sanitized_input = array(
+		'validate_signature' => ! empty( $input['validate_signature'] ),
+		'validate_ip' => ! empty( $input['validate_ip'] ),
+		'server_ip' => wa_pdx_sanitize_server_ip_field( $input['server_ip'] ), // todo trim?
+	);
+
+	wa_pdx_validate_server_ip_field($sanitized_input['server_ip'], $sanitized_input['validate_ip']);
+
+	return $sanitized_input;
+}
+
+/**
+ * Prints out the contents of the settings page of Wordapp Plugin.
+ *
+ * @return void
+ */
+function wa_pdx_settings_page(){
+	?>
+	<div class="wrap">
+		<h2><?php esc_html_e( 'Wordapp', 'wordapp' ); ?></h2>
+		<hr />
+		<!-- <pre>
 		<?php
-
-	}
-
-	/**
-	 * Prints out 'Validate IP field'
-	 *
-	 * @since 1.2.7
-	 */
-	public function print_validate_ip_field() {
-
+		$errors = get_settings_errors('wordapp_server_ip');
+		print_r($errors);
 		?>
-		<input type="checkbox" id="wordapp_validate_ip" name="<?php echo self::$option_name; ?>[validate_ip]" value="1" <?php checked( (bool) $this->options['validate_ip'] ); ?> />
-		<label for="wordapp_validate_ip"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
-		<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Plugin to validate sender by IP address.', 'wordapp' ); ?></p>
-		<?php
-	}
+		</pre> -->
 
-	/**
-	 * Settings page IP Range field.
-	 *
-	 * @since 1.2.7
-	 */
-	public function print_server_ip_field() {
+		<form method="post" action="options.php">
+			<?php
 
-		?>
-		<input type="text" class="regular-text" id="wordapp_server_ip" name="<?php echo self::$option_name; ?>[server_ip]" value="<?php echo esc_attr( $this->options['server_ip'] ); ?>" />
-		<label for="wordapp_server_ip"><?php esc_html_e( 'Server IP address(es) (optional)', 'wordapp' ); ?></label><br>
-		<p class="description"><?php esc_html_e( 'You may specify any of the following, to give access to specific IPs to Wordapp Plugin:', 'wordapp' ); ?><br>
-			<ol>
-				<li><small><?php
-					/* translators: Placeholders: %1$s - a single IP address */
-					printf( __( 'An IP address (for example %1$s).', 'wordapp' ),
-						'<code>192.168.50.4</code>'
-					); ?></small></li>
-				<li><small><?php
-					/* translators: Placeholders: %1$s - comma separated IP addresses */
-					printf( __( 'Comma separated (%1$s).', 'wordapp' ),
-						'<code>192.168.10.25, 192.168.10.28</code>'
-					); ?></small></li>
-			</ol>
-		</p>
-		<?php
+			settings_fields( PDX_SETTINGS_OPTION_NAME );
 
-	}
+			do_settings_sections( PDX_SETTINGS_PAGE_SLUG );
 
-	/**
-	 * Sanitize user input in settings page.
-	 *
-	 * @since  1.2.7
-	 * @param  array $option user input
-	 * @return array sanitized input
-	 */
-	public function sanitize_field( $option ) {
+			submit_button();
 
-		$input = wp_parse_args( $option, array(
-			'validate_signature' => false,
-			'validate_ip' => false,
-			'server_ip' => '',
-		) );
-
-		$sanitized_input = array(
-			'validate_signature' => ! empty( $input['validate_signature'] ),
-			'validate_ip' => ! empty( $input['validate_ip'] ),
-			'server_ip' => sanitize_text_field( $input['server_ip'] ),
-		);
-
-		return $sanitized_input;
-	}
-
-
-	/**
-	 * Settings page.
-	 *
-	 * @since 1.2.7
-	 */
-	public function settings_page() {
-
-		?>
-		<div class="wrap">
-			<h2><?php esc_html_e( 'Wordapp', 'wordapp' ); ?></h2>
-			<hr />
-			<form method="post" action="options.php">
-				<?php
-
-				settings_fields( self::$option_name );
-
-				do_settings_sections( self::$page );
-
-				submit_button();
-
-				?>
-			</form>
-		</div>
-		<?php
-
-	}
-
-
+			?>
+		</form>
+	</div>
+	<?php
 }
