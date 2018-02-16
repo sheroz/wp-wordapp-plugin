@@ -48,7 +48,7 @@ const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
 // parameter: PDX_CONFIG_VALIDATE_IP
 // values: 1 - validate sender by IP address, 0 = do not validate IP
 const PDX_CONFIG_VALIDATE_IP = 1;
-const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
+const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35 ';
 
 // parameter: PDX_CONFIG_PUSH
 // values: 1 - server push configuration, 0 = use a preferred and secure ticket based mechanism
@@ -63,6 +63,9 @@ const PDX_CONFIG_SCHEDULE_PUBLISH_MISSED = 1;
 // parameter:  PDX_LOG_ENABLE
 // values: 1 - logs to PDX_LOG_FILE, 0 - disable logs
 const PDX_LOG_ENABLE = 0;
+//const PDX_LOG_FILE = plugin_dir_path( __FILE__ ) . 'wordapp.log';
+// define('PDX_LOG_FILE', WP_CONTENT_DIR . '/wordapp-log.txt');
+// define('PDX_LOG_FILE', get_home_path() . '/wordapp-log.txt');
 const PDX_LOG_FILE = '/var/www/html/tmp/wordapp-seo.log';
 
 /*
