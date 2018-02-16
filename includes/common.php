@@ -106,7 +106,7 @@ function wa_pdx_load_admin($plugin_name) {
 		// Add a settings link to the plugins admin screen.
 		add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
 			return array_merge( array(
-				'<a href="' . esc_url( admin_url( 'options-general.php?page=wordapp' ) ) . '">' . __( 'Settings', 'wordapp' ) . '</a>',
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=wa_pdx' ) ) . '">' . __( 'Settings', 'wordapp' ) . '</a>',
 			), $actions );
 		} );
 
