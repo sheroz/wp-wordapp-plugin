@@ -155,7 +155,7 @@ function wa_pdx_print_server_ip_field(){
 	<p class="description">
 		<small><?php esc_html_e('(Required when Validate IP is checked)', 'wordapp'); ?></small>
 		<br>
-		<?php esc_html_e( 'Enter one or more IP addresses to allow access to the Wordapp Plugin.', 'wordapp' ); ?>
+		<?php esc_html_e( 'Enter one or more IP addresses to allow access from to the Wordapp Plugin.', 'wordapp' ); ?>
 		<br>
 		<?php esc_html_e( 'Write each IP address in a separate line.', 'wordapp' ); ?>
 	</p>
