@@ -54,6 +54,11 @@ function wa_pdx_register_settings(){
 	);
 
 	$settings_fields = array(
+
+		'connection_status' => array(
+        'label' => esc_html__( 'Connection Status', 'wordapp' ),
+        'callback' => 'wa_pdx_print_connection_status',
+        ),
 		'validate_signature' => array(
 			'label' => esc_html__( 'Validate Signature', 'wordapp' ),
 			'callback' => 'wa_pdx_print_validate_signature_field',
@@ -85,8 +90,6 @@ function wa_pdx_register_settings(){
  * @return void
  */
 function wa_pdx_print_settings_page_info(){
-	$cfg = get_option(PDX_CONFIG_OPTION_KEY);
-
 	$logo_url = plugin_dir_url(dirname(__FILE__)) . 'img/wordapp-logo.svg';
 	?>
 	<p>
@@ -96,21 +99,25 @@ function wa_pdx_print_settings_page_info(){
 	?>
 	</p>
 	<hr style="clear: both;" />
-	<div style="font-weight: bold;">
-		<?php esc_html_e('Connection Status', 'wordapp') ?>:
-		<?php
-		if(empty($cfg)){
-			?>
-			<span style="color: red;"><?php esc_html_e('Not connected', 'wordapp'); ?></span>
-			<?php
-		} else {
-			?>
-			<span style="color: #82b15a;"><?php esc_html_e('Connected to Wordapp', 'wordapp'); ?></span>
-			<?php
-		}
-		?>
-	</div>
 	<?php
+}
+
+/**
+ * Prints out connection status.
+ *
+ * @return void
+ */
+function wa_pdx_print_connection_status() {
+    $cfg = get_option(PDX_CONFIG_OPTION_KEY);
+    if(empty($cfg)){
+        ?>
+        <span style="color: red;font-weight: bold;"><?php esc_html_e('Not connected', 'wordapp'); ?></span>
+        <?php
+    } else {
+        ?>
+        <span style="color: #82b15a;font-weight: bold;"><?php esc_html_e('Connected to Wordapp', 'wordapp'); ?></span>
+        <?php
+    }
 }
 
 /**
