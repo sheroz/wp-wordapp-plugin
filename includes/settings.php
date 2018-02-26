@@ -68,7 +68,7 @@ function wa_pdx_register_settings(){
 			'callback' => 'wa_pdx_print_validate_ip_field',
 		),
 		'server_ip' => array(
-			'label' => esc_html__( 'Server IPs List', 'wordapp' ),
+			'label' => esc_html__( 'Server IP List', 'wordapp' ),
 			'callback' => 'wa_pdx_print_server_ip_field',
 		),
 	);
@@ -164,7 +164,7 @@ function wa_pdx_print_server_ip_field(){
 		<br>
 		<?php esc_html_e( 'Enter one or more IP address that you want to allow access to the Wordapp Plugin.', 'wordapp' ); ?>
 		<br>
-		<?php esc_html_e( 'Write each IP address in a separate line.', 'wordapp' ); ?>
+		<?php esc_html_e( 'Write each IP address on a separate line.', 'wordapp' ); ?>
 	</p>
 	<?php
 }
