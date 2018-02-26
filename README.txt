@@ -84,3 +84,6 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.6 (2017-07-05): =
 * Bug fix: title corrupted
+
+= 1.2.7 (2018-02-26): =
+* Settings panel added

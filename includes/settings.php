@@ -92,7 +92,7 @@ function wa_pdx_print_settings_page_info(){
 	<p>
 		<img src="<?php echo $logo_url; ?>" style="width: 40px; height: 40px; float: left; margin: 0 10px 7px 0;">
 	<?php
-	echo __('Wordapp is a free word-processing and publishing platform for e-commerce that lets you manage and control your content creation with a crowd of writers and editors suited to your job. The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.', 'wordapp');
+	echo __('The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.', 'wordapp');
 	?>
 	</p>
 	<hr style="clear: both;" />
@@ -123,7 +123,7 @@ function wa_pdx_print_validate_signature_field(){
 	?>
 	<input type="checkbox" id="wordapp_validate_signature" name="<?php echo PDX_SETTINGS_OPTION_NAME; ?>[validate_signature]" value="1" <?php checked( (bool) $options['validate_signature'] ); ?> />
 	<label for="wordapp_validate_signature"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
-	<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Pluging to validate sender by digital signature check.', 'wordapp' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Tick this option to validate sender by digital signature check.', 'wordapp' ); ?></p>
 	<?php
 }
 
@@ -137,7 +137,7 @@ function wa_pdx_print_validate_ip_field(){
 	?>
 	<input type="checkbox" id="wordapp_validate_ip" name="<?php echo PDX_SETTINGS_OPTION_NAME; ?>[validate_ip]" value="1" <?php checked( (bool) $options['validate_ip'] ); ?> />
 	<label for="wordapp_validate_ip"><?php esc_html_e( 'Yes', 'wordapp' ); ?></label><br>
-	<p class="description"><?php esc_html_e( 'Tick this option if you want Wordapp Plugin to validate sender by IP address.', 'wordapp' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Tick this option to validate sender by IP address.', 'wordapp' ); ?></p>
 	<?php
 }
 
