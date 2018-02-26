@@ -92,7 +92,7 @@ function wa_pdx_print_settings_page_info(){
 	<p>
 		<img src="<?php echo $logo_url; ?>" style="width: 40px; height: 40px; float: left; margin: 0 10px 7px 0;">
 	<?php
-	echo __('<a href="http://wordapp.io" target="_blank">Wordapp</a> is a language-processing platform for SEO and SEM. The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.', 'wordapp');
+	echo __('<a href="http://wordapp.io" target="_blank">Wordapp</a> is a language-processing platform for SEO and SEM.<br/>The Wordapp Plugin connects your site to the Wordapp Platform to allow you to create, translate and optimize online content easily and seamlessly.', 'wordapp');
 	?>
 	</p>
 	<hr style="clear: both;" />
