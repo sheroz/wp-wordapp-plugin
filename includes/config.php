@@ -100,7 +100,9 @@ function wa_pdx_op_config_set ($params)
 
     */
 
-    if (PDX_CONFIG_VALIDATE_SIGNATURE == 1)
+    $wa_pdx_options = wa_pdx_get_options();
+
+    if ($wa_pdx_options['validate_signature'])
     {
         $reassembled_data = sprintf("%02x", PDX_OP_WP_CONFIG_SET);
         $reassembled_data .= $ticket_id;
@@ -130,10 +132,10 @@ function wa_pdx_op_config_set ($params)
         }
     }
 
-    if (PDX_CONFIG_VALIDATE_IP == 1)
+    if ($wa_pdx_options['validate_ip'])
     {
         $sender = $_SERVER['REMOTE_ADDR'];
-        $ips = explode(' ', PDX_CONFIG_SERVER_IP);
+        $ips = explode(' ', $wa_pdx_options['server_ip']);
         $found = false;
         foreach ($ips as $ip) {
             if ($found = ($sender==$ip))

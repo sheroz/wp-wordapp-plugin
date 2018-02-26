@@ -92,3 +92,24 @@ function wa_pdx_add_url_params ($url, $params)
 
     return $url . $query;
 }
+
+/**
+ * Loads the settings page of Wordapp Plugin
+ *
+ * @param  string $plugin_name
+ * @return void
+ */
+function wa_pdx_load_admin($plugin_name) {
+
+	if ( ! defined( 'DOING_AJAX' ) && is_admin() ) {
+
+		// Add a settings link to the plugins admin screen.
+		add_filter( "plugin_action_links_{$plugin_name}", function( $actions ) {
+			return array_merge( array(
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=wa_pdx' ) ) . '">' . __( 'Settings', 'wordapp' ) . '</a>',
+			), $actions );
+		} );
+
+		add_action('admin_menu', 'wa_pdx_register_settings_page');
+	}
+}

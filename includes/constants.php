@@ -48,6 +48,8 @@ const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
 // parameter: PDX_CONFIG_VALIDATE_IP
 // values: 1 - validate sender by IP address, 0 = do not validate IP
 const PDX_CONFIG_VALIDATE_IP = 1;
+
+const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
 const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35 ';
 
 // parameter: PDX_CONFIG_PUSH
@@ -67,6 +69,11 @@ const PDX_LOG_ENABLE = 0;
 // define('PDX_LOG_FILE', WP_CONTENT_DIR . '/wordapp-log.txt');
 // define('PDX_LOG_FILE', get_home_path() . '/wordapp-log.txt');
 const PDX_LOG_FILE = '/var/www/html/tmp/wordapp-seo.log';
+
+
+const PDX_SETTINGS_PAGE_SLUG = 'wa_pdx';
+const PDX_SETTINGS_OPTION_NAME = 'wa_pdx_options';
+
 
 /*
 
