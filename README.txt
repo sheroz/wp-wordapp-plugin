@@ -1,8 +1,8 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.5
-Tested up to: 4.8
-Stable tag: 4.8
+Tested up to: 4.9.4
+Stable tag: 4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,3 +87,4 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.7 (2018-02-26): =
 * Settings panel added
+* beta server default IP changed to 34.253.239.202

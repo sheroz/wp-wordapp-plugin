@@ -30,16 +30,12 @@ const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.2.7';
 
+const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
+const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
-const PDX_SCHEDULED_OPTION_KEY     = 'wa_pdx_future';
+const PDX_SCHEDULED_OPTION_KEY  = 'wa_pdx_future';
 
-const PDX_MARKER_CONTENT_BEGIN  = '<!-- Wordapp-Marker-Begin: Content -->';
-const PDX_MARKER_CONTENT_END    = '<!-- Wordapp-Marker-End: Content -->';
-
-const PDX_MARKER_BLOCK_BEGIN    = '<!-- Wordapp-Marker-Begin: {} -->';
-const PDX_MARKER_BLOCK_END      = '<!-- Wordapp-Marker-End: {} -->';
-
-const PDX_PUB_KEY_PEM_2048   = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApMxOSkfyRShmTseKyRbt\noi1qSLXPvRjr31cdNf4LFfxGAnpUui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEK\npdcvW/SFjGSsoFIm90sHG0onuPNhC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8\ngRh/BXZEG5I4pUIN3xHkl34vFgyFA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJ\nXRW4cUBtvtbpPIh/MTU8Mna4h/cSzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAt\nJZ00+k75fM/lINrcJMrlfebb27hPFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963\nYwIDAQAB\n-----END PUBLIC KEY-----\n";
+const PDX_PUB_KEY_PEM_2048      = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApMxOSkfyRShmTseKyRbt\noi1qSLXPvRjr31cdNf4LFfxGAnpUui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEK\npdcvW/SFjGSsoFIm90sHG0onuPNhC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8\ngRh/BXZEG5I4pUIN3xHkl34vFgyFA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJ\nXRW4cUBtvtbpPIh/MTU8Mna4h/cSzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAt\nJZ00+k75fM/lINrcJMrlfebb27hPFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963\nYwIDAQAB\n-----END PUBLIC KEY-----\n";
 
 // parameter: PDX_CONFIG_VALIDATE_SIGNATURE
 // values: 1 - validate sender by digital signature check, 0 = do not validate by signature
@@ -49,7 +45,7 @@ const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
 // values: 1 - validate sender by IP address, 0 = do not validate IP
 const PDX_CONFIG_VALIDATE_IP = 1;
 
-const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35';
+const PDX_CONFIG_SERVER_IP = '54.246.232.229 34.253.239.202 52.16.70.35';
 // const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35 ';
 
 // parameter: PDX_CONFIG_PUSH
@@ -70,10 +66,11 @@ const PDX_LOG_ENABLE = 0;
 // define('PDX_LOG_FILE', get_home_path() . '/wordapp-log.txt');
 const PDX_LOG_FILE = '/var/www/html/tmp/wordapp-seo.log';
 
+const PDX_MARKER_CONTENT_BEGIN  = '<!-- Wordapp-Marker-Begin: Content -->';
+const PDX_MARKER_CONTENT_END    = '<!-- Wordapp-Marker-End: Content -->';
 
-const PDX_SETTINGS_PAGE_SLUG = 'wa_pdx';
-const PDX_SETTINGS_OPTION_NAME = 'wa_pdx_options';
-
+const PDX_MARKER_BLOCK_BEGIN    = '<!-- Wordapp-Marker-Begin: {} -->';
+const PDX_MARKER_BLOCK_END      = '<!-- Wordapp-Marker-End: {} -->';
 
 /*
 
