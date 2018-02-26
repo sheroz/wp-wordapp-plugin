@@ -87,4 +87,3 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.7 (2018-02-26): =
 * Settings panel added
-* beta server default IP changed to 34.253.239.202

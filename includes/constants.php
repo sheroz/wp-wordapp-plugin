@@ -45,8 +45,8 @@ const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
 // values: 1 - validate sender by IP address, 0 = do not validate IP
 const PDX_CONFIG_VALIDATE_IP = 1;
 
-const PDX_CONFIG_SERVER_IP = '54.246.232.229 34.253.239.202 52.16.70.35';
-// const PDX_CONFIG_SERVER_IP = '54.246.232.229 54.171.165.11 52.16.70.35 ';
+const PDX_CONFIG_SERVER_IP = '54.246.232.229';
+// const PDX_CONFIG_SERVER_IP = '54.246.232.229 34.253.239.202 52.16.70.35 ';
 
 // parameter: PDX_CONFIG_PUSH
 // values: 1 - server push configuration, 0 = use a preferred and secure ticket based mechanism

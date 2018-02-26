@@ -155,7 +155,7 @@ function wa_pdx_print_server_ip_field(){
 	<p class="description">
 		<small><?php esc_html_e('(Required when Validate IP is checked)', 'wordapp'); ?></small>
 		<br>
-		<?php esc_html_e( 'Enter one or more IP addresses to give access to specific IPs to Wordapp Plugin.', 'wordapp' ); ?>
+		<?php esc_html_e( 'Enter one or more IP addresses to allow access to the Wordapp Plugin.', 'wordapp' ); ?>
 		<br>
 		<?php esc_html_e( 'Write each IP address in a separate line.', 'wordapp' ); ?>
 	</p>
@@ -179,7 +179,7 @@ function wa_pdx_validate_server_ip_field($field, $validate_ip = false){
 			add_settings_error(
 				'wordapp_server_ip',
 				esc_attr( 'wordapp_server_ip_error_empty_value' ),
-				__('Warning: "Server IPs List" should not be empty when "Validate IP" option is checked.', 'wordapp'),
+				__('Warning: Server IPs list should not be empty when "Validate IP" option is checked.', 'wordapp'),
 				'error'
 			);
 		}
@@ -188,11 +188,11 @@ function wa_pdx_validate_server_ip_field($field, $validate_ip = false){
 	if(!empty($field)){
 		$ips = explode(' ', $field);
 		foreach ($ips as $ip) {
-			if(!preg_match('/(?:\d{1,3}\.){3}\d{1,3}/', $ip)){
+			if(!preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip)){
 				add_settings_error(
 					'wordapp_server_ip',
 					esc_attr( 'wordapp_server_ip_error_invalid_ip' ),
-					__('Warning: One or more IP addresses are invalid. Please fix it to help Wordapp Plugin validate IP addresses properly.', 'wordapp'),
+					__('Warning: One or more IP addresses are invalid. Please fix it to validate IP addresses properly.', 'wordapp'),
 					'error'
 				);
 				break;
