@@ -558,6 +558,12 @@ function wa_pdx_op_post_get ($params)
             if($post)
             {
                 $post['url'] = get_permalink( $post['ID'] );
+
+                // rendering workaround for Visual Composer Plugin
+                if ( class_exists( 'WPBMap' ) && method_exists( 'WPBMap', 'addAllMappedShortcodes' ) ) {
+                    WPBMap::addAllMappedShortcodes();
+                }
+
                 $post['content_html'] = do_shortcode( $post['post_content'] );
 
                 wa_pdx_send_response($post, true);
