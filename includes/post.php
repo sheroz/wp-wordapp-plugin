@@ -558,6 +558,8 @@ function wa_pdx_op_post_get ($params)
             if($post)
             {
                 $post['url'] = get_permalink( $post['ID'] );
+                $post['content_html'] = do_shortcode( $post['post_content'] );
+
                 wa_pdx_send_response($post, true);
             } else
                 wa_pdx_send_response('Post not found');

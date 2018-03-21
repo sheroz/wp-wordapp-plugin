@@ -87,3 +87,6 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.7 (2018-02-26): =
 * Settings panel added
+
+= 1.2.8 (2018-03-21): =
+* Short code rendered html content is available in content_html field
