@@ -363,6 +363,7 @@ function wa_pdx_post_process_params ($params, $add = false) {
 function wa_pdx_post_add ($params)
 {
     $post = wa_pdx_post_process_params ($params, true);
+    remove_all_filters("content_save_pre");
     $post_id = wp_insert_post($post);
     if ($post_id != 0) {
         wa_pdx_post_update_template($post_id, $params);
@@ -467,7 +468,7 @@ function wa_pdx_post_update ($params)
 
     $post['ID'] = $post_id;
     $post['post_content'] = $post_content;
-
+    remove_all_filters("content_save_pre");
     if (wp_update_post($post, false) != 0) {
         wa_pdx_post_update_template($post_id, $params);
         wa_pdx_post_update_metas($post_id, $params);
