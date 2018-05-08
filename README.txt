@@ -93,3 +93,6 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.2.9 (2018-03-21): =
 * Short code rendering support for Visual Composer Plugin
+
+= 1.3.0 (2018-05-08): =
+* Integration with SEO Ultimate plugin
