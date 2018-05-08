@@ -57,6 +57,5 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
             update_post_meta($post_id, '_su_description', $meta_description);
         if (!is_null($focus_keyword))
             update_post_meta($post_id, '_su_keywords', $focus_keyword);
-
     }
 }
