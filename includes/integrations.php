@@ -23,6 +23,8 @@
  */
 function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description, $focus_keyword)
 {
+    // a good source for other integrations: https://github.com/pdclark/ajax-post-meta/blob/master/ajax-post-meta.php
+
     // Integration with Yoast SEO
     // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
     if (function_exists('wpseo_set_value')) {
@@ -53,5 +55,8 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
             update_post_meta($post_id, '_su_title', $meta_title);
         if (!is_null($meta_description))
             update_post_meta($post_id, '_su_description', $meta_description);
+        if (!is_null($focus_keyword))
+            update_post_meta($post_id, '_su_keywords', $focus_keyword);
+
     }
 }
