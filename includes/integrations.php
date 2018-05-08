@@ -46,4 +46,12 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
         if (!is_null($focus_keyword))
             update_post_meta($post_id, '_aioseop_keywords', $focus_keyword);
     }
+
+    // Integration with SEO_Ultimate
+    if (class_exists('SEO_Ultimate')) {
+        if (!is_null($meta_title))
+            update_post_meta($post_id, '_su_title', $meta_title);
+        if (!is_null($meta_description))
+            update_post_meta($post_id, '_su_description', $meta_description);
+    }
 }
