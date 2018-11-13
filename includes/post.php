@@ -61,9 +61,12 @@ function wa_pdx_find_post_by_url ($post_url)
         return null;
 
     $posts = wa_pdx_get_posts(null);
-    foreach ($posts as $post)
+    foreach ($posts as $post) {
         if ($post['url'] == $post_url)
             return $post['id'];
+        if (get_permalink($post['id']) == $post_url)
+            return $post['id'];
+    }
 
     return null;
 }
@@ -389,6 +392,7 @@ function wa_pdx_post_update ($params)
 {
     $post_id = $params['id'];
     $post_url = $params['url'];
+    $post_name = null;
 
     if (empty($post_id))
     {
