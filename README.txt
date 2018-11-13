@@ -1,8 +1,8 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.5
-Tested up to: 4.9.4
-Stable tag: 4.9
+Tested up to: 5.0
+Stable tag: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,3 +96,6 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.3.0 (2018-05-08): =
 * Integration with SEO Ultimate plugin
+
+= 1.3.1 (2018-11-13): =
+* Readiness for upcoming WordPress 5.0
