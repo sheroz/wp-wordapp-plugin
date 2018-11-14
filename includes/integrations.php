@@ -27,7 +27,7 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
 
     // Integration with Yoast SEO
     // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
-    if (function_exists('wpseo_set_value')) {
+    if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')) {
         if (!is_null($meta_title))
             update_post_meta($post_id, '_yoast_wpseo_title', $meta_title);
         if (!is_null($meta_description))
