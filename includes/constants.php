@@ -28,7 +28,7 @@ const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
 const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.3.2';
+const PDX_PLUGIN_VERSION_NUMBER = '1.3.3';
 
 const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';

@@ -99,3 +99,9 @@ After installation and activation of plugin in your site, please contact wordapp
 
 = 1.3.1 (2018-11-13): =
 * Readiness for upcoming WordPress 5.0
+
+= 1.3.2 (2018-11-13): =
+* Fix for upcoming WordPress 5.0
+
+= 1.3.3 (2018-11-14): =
+* Fix for Yoast 9.1
