@@ -33,8 +33,7 @@ To upload the plugin through WordPress, instead of FTP:
 
 1. Upload the downloaded zip file on the "Add New" plugins screen (see the "Upload" tab) in your WordPress admin area and activate.
 
-Note: This plugin does not have a settings page within WordPress. All settings and configuration are done directly from within the Wordapp Platform.
-After installation and activation of plugin in your site, please contact wordapp support to configure and activate plugin in wordapp.
+Note: After installation and activation of plugin in your site, please contact wordapp support to activate plugin in the Wordapp Platform.
 
 == Changelog ==
 
