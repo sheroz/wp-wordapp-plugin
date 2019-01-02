@@ -64,7 +64,14 @@ function wa_pdx_get_slimstat_token ()
 {
     if (class_exists('wp_slimstat')) {
         $slimstat_options = get_option('slimstat_options');
-        $rest_api_tokens = $slimstat_options['rest_api_tokens'];
-        wa_pdx_send_response($rest_api_tokens, true);
-    }
+        if (!is_null($slimstat_options)) {
+            $rest_api_tokens = $slimstat_options['rest_api_tokens'];
+            if (!is_null($rest_api_tokens)) {
+                wa_pdx_send_response($rest_api_tokens, true);
+            } else 
+                wa_pdx_send_response('invalid_slimstat_token');
+        } else
+            wa_pdx_send_response('invalid_slimstat_options');
+    } else
+        wa_pdx_send_response('wp_slimstat_not_found');
 }
