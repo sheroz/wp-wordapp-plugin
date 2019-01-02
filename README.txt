@@ -20,18 +20,18 @@ For more information please visit http://www.wordapp.com
 
 For an automatic installation through WordPress:
 
-1. Go to the **Add New** plugins screen in your WordPress admin area.
-2. Search for **Wordapp**.
+1. Go to the "Add New" plugins screen in your WordPress admin area.
+2. Search for "Wordapp"
 3. Click 'Install Now' and activate the plugin.
 
 For a manual installation via FTP:
 
-1. Upload the **wordapp** directory to the **/wp-content/plugins/** directory
-2. Activate the plugin through the **Plugins** screen in your WordPress admin area
+1. Upload the "wordapp" directory to the "/wp-content/plugins/" directory
+2. Activate the plugin through the "Plugins" screen in your WordPress admin area
 
 To upload the plugin through WordPress, instead of FTP:
 
-1. Upload the downloaded zip file on the **Add New** plugins screen (see the **Upload** tab) in your WordPress admin area and activate.
+1. Upload the downloaded zip file on the "Add New" plugins screen (see the "Upload" tab) in your WordPress admin area and activate.
 
 Note: This plugin does not have a settings page within WordPress. All settings and configuration are done directly from within the Wordapp Platform.
 After installation and activation of plugin in your site, please contact wordapp support to configure and activate plugin in wordapp.
