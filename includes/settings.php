@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * @author      Sheroz Khaydarov http://sheroz.com
+ * @license     GNU General Public License, version 2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   Wordapp, 2017
+ * @link        https://github.com/sheroz/wp-wordapp-plugin
+ * @since       1.2.7
+ */
 
 /**
  * Returns options.
@@ -220,7 +229,8 @@ function wa_pdx_sanitize_server_ip_field($str){
 }
 
 /**
- * Sanitizes fields. This function is the callback that is passed to register_setting when PDX_SETTINGS_OPTION_NAME setting is registered.
+ * Sanitizes fields.
+ * This function is the callback that is passed to register_setting when PDX_SETTINGS_OPTION_NAME setting is registered.
  *
  * @param  array $option An array that holds the setting.
  * @return array         An array of sanitized values.

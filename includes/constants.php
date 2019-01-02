@@ -2,11 +2,11 @@
 /**
  * Wordapp plugin constants.
  *
- * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @author      Sheroz Khaydarov http://sheroz.com
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @copyright   Wordapp, 2017
- * @link        http://wordapp.io
+ * @link        https://github.com/sheroz/wp-wordapp-plugin
  * @since       1.0.0
  */
 
@@ -43,7 +43,7 @@ const PDX_CONFIG_VALIDATE_SIGNATURE = 1;
 
 // parameter: PDX_CONFIG_VALIDATE_IP
 // values: 1 - validate sender by IP address, 0 = do not validate IP
-const PDX_CONFIG_VALIDATE_IP = 1;
+const PDX_CONFIG_VALIDATE_IP = 0;
 
 const PDX_CONFIG_SERVER_IP = '54.246.232.229';
 // const PDX_CONFIG_SERVER_IP = '54.246.232.229 34.253.239.202 52.16.70.35 ';

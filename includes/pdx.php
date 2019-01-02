@@ -15,11 +15,11 @@ require plugin_dir_path( __FILE__ ) . 'settings.php';
 /**
  * The main AJAX entry point of the Wordapp plugin.
  *
- * @author      Sheroz Khaydarov <sheroz@wordapp.io>
+ * @author      Sheroz Khaydarov http://sheroz.com
  * @license     GNU General Public License, version 2
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @copyright   Wordapp, 2017
- * @link        http://wordapp.io
+ * @link        https://github.com/sheroz/wp-wordapp-plugin
  * @since       1.0.0
  */
 
