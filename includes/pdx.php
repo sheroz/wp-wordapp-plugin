@@ -159,6 +159,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_user_list();
                     break;
 
+                case PDX_OP_WP_GET_SLIMSTAT_TOKEN:
+                    wa_pdx_get_slimstat_token();
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }

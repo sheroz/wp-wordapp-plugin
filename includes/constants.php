@@ -27,6 +27,7 @@ const PDX_OP_WP_MEDIA_ADD           =   21;
 const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
 const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
+const PDX_OP_WP_GET_SLIMSTAT_TOKEN  =   50;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.3.3';
 

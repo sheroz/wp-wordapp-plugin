@@ -59,3 +59,12 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
             update_post_meta($post_id, '_su_keywords', $focus_keyword);
     }
 }
+
+function wa_pdx_get_slimstat_token ()
+{
+    if (class_exists('wp_slimstat')) {
+        $slimstat_options = get_option('slimstat_options');
+        $rest_api_tokens = $slimstat_options['rest_api_tokens'];
+        wa_pdx_send_response($rest_api_tokens, true);
+    }
+}
