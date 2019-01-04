@@ -22,14 +22,14 @@ const PDX_OP_WP_POST_STATUS_LIST    =   15;
 const PDX_OP_WP_POST_TEMPLATE_LIST  =   16;
 const PDX_OP_WP_POST_META_GET       =   17;
 const PDX_OP_WP_POST_META_UPDATE    =   18;
-const PDX_OP_WP_LAST_UPDATED_POST   =   19;
 const PDX_OP_WP_MEDIA_LIST          =   20;
 const PDX_OP_WP_MEDIA_ADD           =   21;
 const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
 const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
-const PDX_OP_WP_GET_SLIMSTAT_TOKEN  =   50;
-const PDX_OP_WP_CHECK_PLUGIN        =   51;
+const PDX_OP_WP_CHECK_PLUGIN        =   50;
+const PDX_OP_WP_GET_SLIMSTAT_TOKEN  =   60;
+const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.3.3';
 
