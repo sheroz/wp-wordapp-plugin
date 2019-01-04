@@ -604,7 +604,7 @@ function wa_pdx_op_get_frequency ()
     );
     
     $oldest_post = reset(get_posts($get_oldest_post));
-    $frequency['post_date'] = $oldest_post->post_date;
+    $frequency['first_post_date'] = $oldest_post->post_date;
 
     $post_count = wp_count_posts();
     $page_count = wp_count_posts( 'page' );
