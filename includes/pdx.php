@@ -163,6 +163,10 @@ function ajax_wa_pdx() {
                     wa_pdx_get_slimstat_token();
                     break;
 
+                case PDX_OP_WP_CHECK_PLUGIN:
+                    wa_pdx_check_plugin();
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }

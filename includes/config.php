@@ -39,7 +39,8 @@ function wa_pdx_op_config_check()
         'configured'        => !empty($cfg),
         'ajax-url'          => admin_url('admin-ajax.php'),
         'plugin-version'    => PDX_PLUGIN_VERSION_NUMBER,
-        'wp-version'        => $wp_version
+        'wp-version'        => $wp_version,
+        'plugins_found'     => wa_pdx_check_plugin()
     ), true);
 }
 
