@@ -77,7 +77,7 @@ function wa_pdx_get_slimstat_token ()
         wa_pdx_send_response('wp_slimstat_not_found');
 }
 
-function wa_pdx_check_plugin ()
+function wa_pdx_look_for_plugins ()
 {
     $plugins = array();
 
@@ -94,5 +94,10 @@ function wa_pdx_check_plugin ()
         array_push($plugins, "slimstat_analytics");
     }
 
+    return $plugins;
+}
+function wa_pdx_check_plugin ()
+{
+    $plugins = wa_pdx_look_for_plugins();
     wa_pdx_send_response($plugins, true);
 }
