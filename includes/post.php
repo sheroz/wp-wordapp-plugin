@@ -594,3 +594,19 @@ function wa_pdx_op_get_last_updated_post ()
     
     wa_pdx_send_response($last_updated_post, true);
 }
+function wa_pdx_op_get_frequency ()
+{
+    $get_oldest_post = array(
+        'numberposts' => 1,
+        'post_status' => array('publish'),
+        'order' => 'ASC',
+    );
+    
+    $oldest_post = reset(get_posts($get_oldest_post));
+    $frequency['post_date'] = $oldest_post->post_date;
+    
+    $post_count = wp_count_posts();
+    $frequency['post_count'] = $post_count->publish;
+
+    wa_pdx_send_response($frequency, true);
+}
