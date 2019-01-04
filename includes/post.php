@@ -594,6 +594,7 @@ function wa_pdx_op_get_last_updated_post ()
     
     wa_pdx_send_response($last_updated_post, true);
 }
+
 function wa_pdx_op_get_frequency ()
 {
     $get_oldest_post = array(
@@ -603,10 +604,14 @@ function wa_pdx_op_get_frequency ()
     );
     
     $oldest_post = reset(get_posts($get_oldest_post));
-    $frequency['post_date'] = $oldest_post->post_date;
-    
+    $frequency['first_post_date'] = $oldest_post->post_date;
+
     $post_count = wp_count_posts();
-    $frequency['post_count'] = $post_count->publish;
+    $page_count = wp_count_posts( 'page' );
+
+    $total_count = $page_count->publish + $post_count->publish;
+    
+    $frequency['post_count'] = $total_count;
 
     wa_pdx_send_response($frequency, true);
 }
