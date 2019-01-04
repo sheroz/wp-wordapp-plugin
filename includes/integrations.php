@@ -60,6 +60,7 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
     }
 }
 
+// Integration with Slimstat Analytics
 function wa_pdx_get_slimstat_token ()
 {
     if (class_exists('wp_slimstat')) {
@@ -74,4 +75,24 @@ function wa_pdx_get_slimstat_token ()
             wa_pdx_send_response('invalid_slimstat_options');
     } else
         wa_pdx_send_response('wp_slimstat_not_found');
+}
+
+function wa_pdx_check_plugin ()
+{
+    $plugins = array();
+
+    if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')){
+        array_push($plugins, "yoast");
+    }
+    if (function_exists('aiosp_meta')) {
+        array_push($plugins, "all_in_one_seo_pack");
+    }
+    if (class_exists('SEO_Ultimate')) {
+        array_push($plugins, "seo_ultimate");
+    }
+    if (class_exists('wp_slimstat')) {
+        array_push($plugins, "slimstat_analytics");
+    }
+
+    wa_pdx_send_response($plugins, true);
 }

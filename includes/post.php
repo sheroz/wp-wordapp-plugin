@@ -41,7 +41,8 @@ function wa_pdx_get_posts($params)
             'type'      => $post->post_type,
             'name'      => $post->post_name,
             'title'     => $post->post_title,
-            'status'    => get_post_status( $post->ID )
+            'status'    => get_post_status( $post->ID ),
+            'date'      => get_the_date( 'd.m.Y', $post->ID )
         );
     }
     wp_reset_postdata();
@@ -578,4 +579,18 @@ function wa_pdx_op_post_get ($params)
             wa_pdx_send_response('Invalid post id');
     } else
         wa_pdx_send_response('Empty data parameter');
+}
+
+function wa_pdx_op_get_last_updated_post ()
+{
+    $cfg = get_option(PDX_CONFIG_OPTION_KEY);
+    if (empty($cfg))
+        wa_pdx_send_response('Invalid Configuration');
+
+    $last_updated_post = wp_get_recent_posts(array(
+        'numberposts' => 1, 
+        'post_status' => 'publish'
+    ));
+    
+    wa_pdx_send_response($last_updated_post, true);
 }
