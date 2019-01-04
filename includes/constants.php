@@ -22,6 +22,7 @@ const PDX_OP_WP_POST_STATUS_LIST    =   15;
 const PDX_OP_WP_POST_TEMPLATE_LIST  =   16;
 const PDX_OP_WP_POST_META_GET       =   17;
 const PDX_OP_WP_POST_META_UPDATE    =   18;
+const PDX_OP_WP_LAST_UPDATED_POST   =   19;
 const PDX_OP_WP_MEDIA_LIST          =   20;
 const PDX_OP_WP_MEDIA_ADD           =   21;
 const PDX_OP_WP_MEDIA_ADD_FROM_URL  =   22;
