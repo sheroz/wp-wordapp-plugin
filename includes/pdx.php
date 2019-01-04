@@ -171,6 +171,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_get_last_updated_post();
                     break;
 
+                case PDX_OP_WP_POST_FREQUENCY:
+                    wa_pdx_op_get_frequency();
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }

@@ -29,6 +29,7 @@ const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 const PDX_OP_WP_CHECK_PLUGIN        =   50;
 const PDX_OP_WP_GET_SLIMSTAT_TOKEN  =   60;
+const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.3.3';
