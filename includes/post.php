@@ -596,9 +596,9 @@ function wa_pdx_op_get_last_updated_posts ()
         'numberposts' => 1, 
         'post_status' => 'publish'
     ));
-    foreach ( $last_updated_posts as $post ) {
-        $post['url'] = get_permalink( $post['ID'] );
-    }
+    // foreach ( $last_updated_posts as $post ) {
+    //    $post['url'] = get_permalink( $post['ID'] );
+    // }
     wa_pdx_send_response($last_updated_posts, true);
 }
 
