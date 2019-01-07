@@ -19,12 +19,12 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @author      Sheroz Khaydarov http://sheroz.com
- * @license     GNU General Public License, version 2
- * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @author		Sheroz Khaydarov http://sheroz.com
+ * @license		GNU General Public License, version 2
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html
  * @link		https://github.com/sheroz/wp-wordapp-plugin
  * @since		1.0.0
- * @package    Wordapp
+ * @package		Wordapp
  */
 
 // If uninstall not called from WordPress, then exit.

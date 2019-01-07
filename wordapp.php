@@ -2,13 +2,13 @@
 /**
  * Wordapp Plugin for WordPress.
  *
- * @author      Sheroz Khaydarov http://sheroz.com
- * @license     GNU General Public License, version 2
- * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @author		Sheroz Khaydarov http://sheroz.com
+ * @license		GNU General Public License, version 2
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html
  * @link		https://github.com/sheroz/wp-wordapp-plugin
  * @since		1.0.0
  * @package		Wordapp
- * @copyright   Wordapp, 2017
+ * @copyright	Wordapp, 2017
  *
  * @wordpress-plugin
  * Plugin Name:		Wordapp
