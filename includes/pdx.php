@@ -159,7 +159,7 @@ function ajax_wa_pdx() {
                     wa_pdx_op_user_list();
                     break;
 
-                case PDX_OP_WP_GET_SLIMSTAT_TOKEN:
+                case PDX_OP_WP_SLIMSTAT_TOKEN_GET:
                     wa_pdx_get_slimstat_token();
                     break;
 
