@@ -63,7 +63,12 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
 /**
  * Integration with Slimstat Analytics plugin.
  * 
- * @return string $rest_api_tokens Slimstat Anlaytics Plugin token.
+ * @api
+ * @since       1.3.3
+ * 
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
  */
 function wa_pdx_get_slimstat_token ()
 {
@@ -85,7 +90,11 @@ function wa_pdx_get_slimstat_token ()
  * Integration with SEO and Analytics related plugins.
  * Supported plugins: Yoast SEO, All in One SEO Pack, SEO Ultimate, Slimstat Analytics
  * 
- * @return string $plugins plugins that site have.
+ * @api
+ * 
+ * @since       1.3.4
+ * 
+ * @return array $plugins list of plugin names required for Wordapp Platform.
  */
 function wa_pdx_look_for_plugins ()
 {
@@ -108,9 +117,15 @@ function wa_pdx_look_for_plugins ()
 }
 
 /**
- * Integration with plugins that site have.
+ * List of plugin names required for Wordapp Platform
  * 
- * @return void
+ * @api
+ * 
+ * @since       1.3.4
+ * 
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
  */
 function wa_pdx_check_plugin ()
 {
