@@ -583,10 +583,6 @@ function wa_pdx_op_post_get ($params)
 
 function wa_pdx_op_get_last_updated_posts ()
 {
-    $cfg = get_option(PDX_CONFIG_OPTION_KEY);
-    if (empty($cfg))
-        wa_pdx_send_response('Invalid Configuration');
-
     $last_updated_posts = wp_get_recent_posts(array(
         'numberposts' => 1, 
         'post_status' => 'publish'
