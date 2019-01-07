@@ -581,18 +581,20 @@ function wa_pdx_op_post_get ($params)
         wa_pdx_send_response('Empty data parameter');
 }
 
-function wa_pdx_op_get_last_updated_post ()
+function wa_pdx_op_get_last_updated_posts ()
 {
     $cfg = get_option(PDX_CONFIG_OPTION_KEY);
     if (empty($cfg))
         wa_pdx_send_response('Invalid Configuration');
 
-    $last_updated_post = wp_get_recent_posts(array(
+    $last_updated_posts = wp_get_recent_posts(array(
         'numberposts' => 1, 
         'post_status' => 'publish'
     ));
-    
-    wa_pdx_send_response($last_updated_post, true);
+    foreach ( $last_updated_posts as $post ) {
+        $post['url'] = get_permalink( $post['ID'] );
+    }
+    wa_pdx_send_response($last_updated_posts, true);
 }
 
 function wa_pdx_op_get_frequency ()

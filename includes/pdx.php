@@ -168,7 +168,7 @@ function ajax_wa_pdx() {
                     break;
 
                 case PDX_OP_WP_LAST_UPDATED_POST:
-                    wa_pdx_op_get_last_updated_post();
+                    wa_pdx_op_get_last_updated_posts();
                     break;
 
                 case PDX_OP_WP_POST_FREQUENCY:
