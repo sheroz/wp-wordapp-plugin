@@ -581,6 +581,15 @@ function wa_pdx_op_post_get ($params)
         wa_pdx_send_response('Empty data parameter');
 }
 
+/**
+ * Gets a last updated posts.
+ *
+ * @api
+ *
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_get_last_updated_posts ()
 {
     $cfg = get_option(PDX_CONFIG_OPTION_KEY);
@@ -592,11 +601,20 @@ function wa_pdx_op_get_last_updated_posts ()
         'post_status' => 'publish'
     ));
     foreach ( $last_updated_posts as $post ) {
-        $post['url'] = get_permalink( $post['ID'] );
+        $last_updated_posts['permalink'] = get_permalink( $post['ID'] );
     }
     wa_pdx_send_response($last_updated_posts, true);
 }
 
+/**
+ * Gets a post count and oldest post date.
+ *
+ * @api
+ * 
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
 function wa_pdx_op_get_frequency ()
 {
     $get_oldest_post = array(

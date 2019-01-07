@@ -12,7 +12,7 @@
 
 /**
  * Integration with SEO related plugins.
- * Supported plugins: Yoast SEO, All in One SEO Pack
+ * Supported plugins: Yoast SEO, All in One SEO Pack, SEO Ultimate
  *
  * @param int $post_id Post id.
  * @param string $title Meta title.
@@ -60,7 +60,11 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
     }
 }
 
-// Integration with Slimstat Analytics
+/**
+ * Integration with Slimstat Analytics plugin.
+ * 
+ * @return string $rest_api_tokens Slimstat Anlaytics Plugin token.
+ */
 function wa_pdx_get_slimstat_token ()
 {
     if (class_exists('wp_slimstat')) {
@@ -77,6 +81,12 @@ function wa_pdx_get_slimstat_token ()
         wa_pdx_send_response('wp_slimstat_not_found');
 }
 
+/**
+ * Integration with SEO and Analytics related plugins.
+ * Supported plugins: Yoast SEO, All in One SEO Pack, SEO Ultimate, Slimstat Analytics
+ * 
+ * @return string $plugins plugins that site have.
+ */
 function wa_pdx_look_for_plugins ()
 {
     $plugins = array();
@@ -96,6 +106,12 @@ function wa_pdx_look_for_plugins ()
 
     return $plugins;
 }
+
+/**
+ * Integration with plugins that site have.
+ * 
+ * @return void
+ */
 function wa_pdx_check_plugin ()
 {
     $plugins = wa_pdx_look_for_plugins();
