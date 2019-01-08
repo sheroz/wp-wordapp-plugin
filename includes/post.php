@@ -593,12 +593,16 @@ function wa_pdx_op_post_get ($params)
 function wa_pdx_op_get_last_updated_posts ()
 {
     $last_updated_posts = wp_get_recent_posts(array(
+        'post_type' => array('post', 'page'),
         'numberposts' => 1, 
         'post_status' => 'publish'
     ));
-    // foreach ( $last_updated_posts as $post ) {
-    //    $post['url'] = get_permalink( $post['ID'] );
-    // }
+
+    $post_count = count($last_updated_posts);
+    for ($i = 0; $i < $post_count; $i++) {
+        $last_updated_posts[$i]['url'] = get_permalink( $last_updated_posts[$i]['ID'] );
+    }
+
     wa_pdx_send_response($last_updated_posts, true);
 }
 
@@ -614,6 +618,7 @@ function wa_pdx_op_get_last_updated_posts ()
 function wa_pdx_op_get_frequency ()
 {
     $get_oldest_post = array(
+        'post_type' => array('post', 'page'),
         'numberposts' => 1,
         'post_status' => array('publish'),
         'order' => 'ASC',
