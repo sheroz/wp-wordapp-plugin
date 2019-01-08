@@ -32,7 +32,7 @@ const PDX_OP_WP_SLIMSTAT_TOKEN_GET  =   60;
 const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.3.4';
+const PDX_PLUGIN_VERSION_NUMBER = '1.3.5';
 
 const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';

@@ -107,3 +107,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.3.4 (2019-01-07): =
 * Added analytics support
+
+= 1.3.5 (2019-01-08): =
+* Fix for last updated post
