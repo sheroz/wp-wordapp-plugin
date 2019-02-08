@@ -74,7 +74,12 @@ function wa_pdx_get_slimstat_token ()
 {
     if (class_exists('wp_slimstat')) {
         $slimstat_options = get_option('slimstat_options');
-        if (!is_null($slimstat_options)) {
+        
+        if (empty($slimstat_options))
+            update_option( 'slimstat_options', wp_slimstat::$settings );
+            
+        $slimstat_options = get_option('slimstat_options');
+        if (!empty($slimstat_options)) {
             $rest_api_tokens = $slimstat_options['rest_api_tokens'];
             if (!is_null($rest_api_tokens)) {
                 wa_pdx_send_response($rest_api_tokens, true);
