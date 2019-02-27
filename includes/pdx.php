@@ -11,6 +11,7 @@ require plugin_dir_path( __FILE__ ) . 'meta.php';
 require plugin_dir_path( __FILE__ ) . 'preview.php';
 require plugin_dir_path( __FILE__ ) . 'schedule.php';
 require plugin_dir_path( __FILE__ ) . 'settings.php';
+require plugin_dir_path( __FILE__ ) . 'access.php';
 
 /**
  * The main AJAX entry point of the Wordapp plugin.
@@ -159,7 +160,7 @@ function ajax_wa_pdx() {
                     wa_pdx_op_user_list();
                     break;
 
-                case PDX_OP_WP_SLIMSTAT_TOKEN_GET:
+                case PDX_OP_WP_SLIMSTAT_TOKEN:
                     wa_pdx_get_slimstat_token();
                     break;
 
@@ -173,6 +174,10 @@ function ajax_wa_pdx() {
 
                 case PDX_OP_WP_POST_FREQUENCY:
                     wa_pdx_op_get_frequency();
+                    break;
+
+                case PDX_OP_WP_ADMIN_ACCESS_URL:
+                    wa_pdx_op_admin_access_url($params);
                     break;
 
                 default:
