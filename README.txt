@@ -113,3 +113,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.3.6 (2019-02-08): =
 * Fix for slimstat integration
+
+= 1.3.7 (2019-02-27): =
+* Added support for remote access URL

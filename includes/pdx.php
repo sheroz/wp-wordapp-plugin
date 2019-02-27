@@ -91,16 +91,16 @@ function ajax_wa_pdx() {
 
         if ($op && !empty($op))
         {
+            $params = $json['data'];
+
             if ( $op == PDX_OP_WP_CONFIG_SET ) {
-                wa_pdx_op_config_set($json['data']);
+                wa_pdx_op_config_set($params);
             } elseif ( $op == PDX_OP_WP_CONFIG_CHECK ) {
                 wa_pdx_op_config_check();
             }
 
             if (!$is_authorized)
                 wa_pdx_send_response('Not authorized');
-
-            $params = $json['data'];
 
             switch ($op) {
 

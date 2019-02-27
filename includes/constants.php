@@ -31,7 +31,7 @@ const PDX_OP_WP_CHECK_PLUGIN        =   50;
 const PDX_OP_WP_SLIMSTAT_TOKEN      =   60;
 const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
-const PDX_OP_WP_LOGIN_URL      =   31;
+const PDX_OP_WP_ADMIN_ACCESS_URL    =   80;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.3.7';
 
