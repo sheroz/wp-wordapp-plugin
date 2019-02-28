@@ -180,6 +180,10 @@ function ajax_wa_pdx() {
                     wa_pdx_op_admin_access_url($params);
                     break;
 
+                case PDX_OP_WP_YOAST_KEYWORDS:
+                    wa_pdx_get_yoast_keywords();
+                    break;
+
                 default:
                     wa_pdx_send_response('No valid command');
             }
