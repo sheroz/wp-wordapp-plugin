@@ -137,3 +137,35 @@ function wa_pdx_check_plugin ()
     $plugins = wa_pdx_look_for_plugins();
     wa_pdx_send_response($plugins, true);
 }
+
+/**
+ * Get focus keywords from Yoast SEO plugin.
+ * 
+ * @api
+ * @since       1.3.8
+ * 
+ * @return mixed JSON that indicates success/failure status
+ *               of the operation in 'success' field,
+ *               and an appropriate 'data' or 'error' fields.
+ */
+function wa_pdx_get_yoast_keywords ()
+{
+    $keywords = array();
+    if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')){
+        $get_posts = array(
+            'post_type' => array('post', 'page'),
+            'post_status' => array('publish'),
+        );
+        $posts = get_posts($get_posts);
+
+        foreach ($posts as &$post) {
+            $metas = get_post_meta($post -> ID, '_yoast_wpseo_focuskw');
+            if (!empty($metas)) {
+                $keywords = array_merge($keywords, $metas);
+            }
+        }
+        wa_pdx_send_response($keywords, true);
+    }
+    else
+        wa_pdx_send_response('yoast_plugin_not_found');
+}
