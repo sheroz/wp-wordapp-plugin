@@ -150,13 +150,13 @@ function wa_pdx_check_plugin ()
  */
 function wa_pdx_get_yoast_keywords ()
 {
-    $keywords = array();
     if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')){
         $get_posts = array(
             'post_type' => array('post', 'page'),
             'post_status' => array('publish'),
         );
         $posts = get_posts($get_posts);
+        $keywords = array();
 
         foreach ($posts as &$post) {
             $metas = get_post_meta($post -> ID, '_yoast_wpseo_focuskw');

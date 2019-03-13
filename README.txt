@@ -1,7 +1,7 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.5
-Tested up to: 5.0.3
+Tested up to: 5.1
 Stable tag: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -116,3 +116,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.3.7 (2019-02-27): =
 * Added support for remote access URL
+
+= 1.3.8 (2019-02-28): =
+* Get focus keyword from Yoast Plugin
