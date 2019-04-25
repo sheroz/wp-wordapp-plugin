@@ -183,6 +183,15 @@ function ajax_wa_pdx() {
                 case PDX_OP_WP_YOAST_KEYWORDS:
                     wa_pdx_get_yoast_keywords();
                     break;
+                    
+                case PDX_OP_WP_UPDATE_PLUGIN:
+                    include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                    wp_cache_flush();
+                    $plugin = 'wordapp/wordapp.php';
+                    $upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
+                    $upgraded = $upgrader->upgrade( $plugin );
+                    wa_pdx_send_response($upgraded, true);
+                    break;
 
                 default:
                     wa_pdx_send_response('No valid command');

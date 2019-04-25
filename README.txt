@@ -119,3 +119,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.3.8 (2019-02-28): =
 * Improved integration with Yoast plugin (pulling focus keywords)
+
+= 1.3.9 (2019-04-26): =
+* Added support for plugin update
