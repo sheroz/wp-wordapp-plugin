@@ -122,3 +122,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.3.9 (2019-04-26): =
 * Added support for plugin update
+
+= 1.4.0 (2019-04-30): =
+* Support for plugin update completed
