@@ -12,6 +12,7 @@ require plugin_dir_path( __FILE__ ) . 'preview.php';
 require plugin_dir_path( __FILE__ ) . 'schedule.php';
 require plugin_dir_path( __FILE__ ) . 'settings.php';
 require plugin_dir_path( __FILE__ ) . 'access.php';
+require plugin_dir_path( __FILE__ ) . 'manage.php';
 
 /**
  * The main AJAX entry point of the Wordapp plugin.
@@ -58,7 +59,6 @@ function ajax_wa_pdx() {
     {
         $log.= "config token: $cfg_token\n";
         $log.= "received token: $validation_token\n";
-
     }
 
     $is_authorized = ( !empty($cfg_token) && ($cfg_token === $validation_token));
@@ -185,12 +185,7 @@ function ajax_wa_pdx() {
                     break;
                     
                 case PDX_OP_WP_UPDATE_PLUGIN:
-                    include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-                    wp_cache_flush();
-                    $plugin = 'wordapp/wordapp.php';
-                    $upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
-                    $upgraded = $upgrader->upgrade( $plugin );
-                    wa_pdx_send_response($upgraded, true);
+                    wa_pdx_plugin_upgrade();
                     break;
 
                 default:

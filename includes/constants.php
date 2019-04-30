@@ -35,12 +35,13 @@ const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 const PDX_OP_WP_ADMIN_ACCESS_URL    =   80;
 const PDX_OP_WP_UPDATE_PLUGIN       =   90;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.3.9';
+const PDX_PLUGIN_VERSION_NUMBER = '1.4.0';
 
 const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
 const PDX_SCHEDULED_OPTION_KEY  = 'wa_pdx_future';
+const PDX_PLUGIN_PATH           = 'wordapp/wordapp.php';
 
 const PDX_PUB_KEY_PEM_2048      = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApMxOSkfyRShmTseKyRbt\noi1qSLXPvRjr31cdNf4LFfxGAnpUui+ggaMkg5quMHkSflKleOFG2heWtbnXrTEK\npdcvW/SFjGSsoFIm90sHG0onuPNhC4cP4SSLuczsg3TDIpsl+XJJnXFFM+gHiEa8\ngRh/BXZEG5I4pUIN3xHkl34vFgyFA6WphQjRx+FhPPakEozf3dShAWaFS26FKBbJ\nXRW4cUBtvtbpPIh/MTU8Mna4h/cSzp/3AJB2WLvytuT2jA01DYUVjc3d8tYR+XAt\nJZ00+k75fM/lINrcJMrlfebb27hPFpoB/1YTdsUa7tpAnLTXDPBkqD2kXb6F2963\nYwIDAQAB\n-----END PUBLIC KEY-----\n";
 
