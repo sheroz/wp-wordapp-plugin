@@ -205,6 +205,11 @@ function wa_pdx_post_update_metas($post_id, $params)
 
     }
 
+    $scripts =  $params['scripts'];
+    if (!is_null($scripts)) {
+        $metas['_wa_pdx_scripts'] = $scripts;
+    }
+
     if ($post_id && $post_id > 0 && !empty($metas))
     {
         foreach ( $metas as $k => $v ) {
