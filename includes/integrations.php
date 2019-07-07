@@ -25,6 +25,14 @@ function wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description,
 {
     // a good source for other integrations: https://github.com/pdclark/ajax-post-meta/blob/master/ajax-post-meta.php
 
+    // Store metas for built-in renderer
+    if (!is_null($meta_title))
+        update_post_meta($post_id, '_wa_pdx_meta_title', $meta_title);
+    if (!is_null($meta_description))
+        update_post_meta($post_id, '_wa_pdx_meta_desc', $meta_description);
+    if (!is_null($focus_keyword))
+        update_post_meta($post_id, '_wa_pdx_meta_focuskw', $focus_keyword);
+
     // Integration with Yoast SEO
     // more about: http://www.wpallimport.com/documentation/plugins-themes/yoast-wordpress-seo/
     if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')) {
@@ -148,24 +156,23 @@ function wa_pdx_check_plugin ()
  *               of the operation in 'success' field,
  *               and an appropriate 'data' or 'error' fields.
  */
-function wa_pdx_get_yoast_keywords ()
+function wa_pdx_get_post_keywords ()
 {
-    if (class_exists('WPSEO_Meta') || function_exists('wpseo_set_value')){
-        $get_posts = array(
-            'post_type' => array('post', 'page'),
-            'post_status' => array('publish'),
-        );
-        $posts = get_posts($get_posts);
-        $keywords = array();
+    $get_posts = array(
+        'post_type' => array('post', 'page'),
+        'post_status' => array('publish'),
+    );
+    $posts = get_posts($get_posts);
+    $keywords = array();
 
-        foreach ($posts as &$post) {
+    foreach ($posts as &$post) {
+        $metas = get_post_meta($post -> ID, '_wa_pdx_meta_focuskw');
+        if (empty($metas)) {
             $metas = get_post_meta($post -> ID, '_yoast_wpseo_focuskw');
-            if (!empty($metas)) {
-                $keywords = array_merge($keywords, $metas);
-            }
         }
-        wa_pdx_send_response($keywords, true);
+        if (!empty($metas)) {
+            $keywords = array_merge($keywords, $metas);
+        }
     }
-    else
-        wa_pdx_send_response('yoast_plugin_not_found');
+    wa_pdx_send_response($keywords, true);
 }

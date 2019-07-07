@@ -180,8 +180,8 @@ function ajax_wa_pdx() {
                     wa_pdx_op_admin_access_url($params);
                     break;
 
-                case PDX_OP_WP_YOAST_KEYWORDS:
-                    wa_pdx_get_yoast_keywords();
+                case PDX_OP_WP_POST_KEYWORDS:
+                    wa_pdx_get_post_keywords();
                     break;
                     
                 case PDX_OP_WP_UPDATE_PLUGIN:

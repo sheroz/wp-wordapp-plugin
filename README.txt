@@ -1,7 +1,7 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.5
-Tested up to: 5.1.1
+Tested up to: 5.2.2
 Stable tag: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -125,3 +125,7 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.4.0 (2019-04-30): =
 * Support for plugin update completed
+
+= 1.4.1 (2019-07-07): =
+* Support for built-in meta rendering
+* Support for header scripts

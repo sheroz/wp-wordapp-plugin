@@ -29,13 +29,13 @@ const PDX_OP_WP_USER_LIST           =   30;
 const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 const PDX_OP_WP_CHECK_PLUGIN        =   50;
 const PDX_OP_WP_SLIMSTAT_TOKEN      =   60;
-const PDX_OP_WP_YOAST_KEYWORDS      =   61;
+const PDX_OP_WP_POST_KEYWORDS       =   61;
 const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 const PDX_OP_WP_ADMIN_ACCESS_URL    =   80;
 const PDX_OP_WP_UPDATE_PLUGIN       =   90;
 
-const PDX_PLUGIN_VERSION_NUMBER = '1.4.0';
+const PDX_PLUGIN_VERSION_NUMBER = '1.4.1';
 
 const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';
