@@ -176,3 +176,113 @@ function wa_pdx_get_post_keywords ()
     }
     wa_pdx_send_response($keywords, true);
 }
+
+/**
+ * Update the domain specific scripts
+ * 
+ * @since       1.4.1
+ * 
+ * @return void
+ */
+
+function wa_pdx_update_scripts($params)
+{
+    if (!empty($params))
+    {
+        $scripts = $params['scripts'];
+        if (empty($scripts))
+        {
+            $scripts = '';
+        }
+        $scripts = stripslashes($scripts);
+        update_option( PDX_CONFIG_SCRIPTS_KEY, $scripts );
+        if (PDX_LOG_ENABLE)
+        {
+            $log= "\nwa_pdx_update_scripts(): Stored scripts:\n*** BEGIN ***\n".$scripts."\n*** END ***\n";
+            file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+        }
+    }
+}
+
+/**
+ * Injects scripts into head section
+ * 
+ * @since       1.4.1
+ * 
+ * @return void
+ */
+function wa_pdx_hook_head()
+{
+    // process the meta 
+    if ( is_page() || is_single() ) {
+        if (!wa_pdx_is_any_seo_plugin_exists())
+        {
+            $post_id = get_queried_object_id();
+            $meta_description = get_post_meta($post_id, '_wa_pdx_meta_desc', true);
+            if (!empty($meta_description))
+            {
+                echo '<meta name=”description” content=”' . $meta_description . '” />';
+            }    
+        }
+    }
+
+    // print the domain related scripts
+    $scripts = get_option( PDX_CONFIG_SCRIPTS_KEY, '');
+    if (!empty($scripts))
+    {
+        echo $scripts;
+    }
+    if (PDX_LOG_ENABLE)
+    {
+        $log= "\nwa_pdx_hook_head(): Loaded scripts:\n*** BEGIN ***\n".$scripts."\n*** END ***\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+}
+
+/**
+ * Puts title into head section
+ * 
+ * @since       1.4.1
+ * 
+ * @return void
+ */
+function wa_pdx_hook_title($post_title, $post_id)
+{
+    if ( is_page() || is_single() ) {
+        if (!wa_pdx_is_any_seo_plugin_exists())
+        {
+            $meta_title = get_post_meta($post_id, '_wa_pdx_meta_title', true);
+            if (!empty($meta_title))
+            {
+                $post_title = $meta_title;
+            }
+        }
+    }
+    if (PDX_LOG_ENABLE)
+    {
+        $log = "\nwa_pdx_hook_title(): \n";
+        $log .= "post_id: ".print_r($post_id, true)."\n";
+        $log .= "post_title: ".print_r($post_title, true)."\n";
+        $log .= "\n---\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+    return $post_title;
+}
+
+/**
+ * Checks if any SEO plugin is exists
+ * 
+ * @since       1.4.1
+ * 
+ * @return boolean
+ */
+function wa_pdx_is_any_seo_plugin_exists()
+{
+    $seo_plugin_exists = class_exists('WPSEO_Meta') || function_exists('wpseo_set_value') || function_exists('aiosp_meta') ||  class_exists('SEO_Ultimate');
+    if (PDX_LOG_ENABLE)
+    {
+        $log= "\nwa_pdx_is_any_seo_plugin_exists(): ".var_export($seo_plugin_exists, true)."\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
+    return $seo_plugin_exists;
+}

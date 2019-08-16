@@ -40,6 +40,7 @@ const PDX_PLUGIN_VERSION_NUMBER = '1.4.1';
 const PDX_SETTINGS_PAGE_SLUG    = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME  = 'wa_pdx_options';
 const PDX_CONFIG_OPTION_KEY     = 'wa_pdx_config';
+const PDX_CONFIG_SCRIPTS_KEY    = 'wa_pdx_scripts';
 const PDX_SCHEDULED_OPTION_KEY  = 'wa_pdx_future';
 const PDX_PLUGIN_PATH           = 'wordapp/wordapp.php';
 
@@ -68,12 +69,14 @@ const PDX_CONFIG_PUSH = 1;
 const PDX_CONFIG_SCHEDULE_PUBLISH_MISSED = 1;
 
 // parameter:  PDX_LOG_ENABLE
-// values: 1 - logs to PDX_LOG_FILE, 0 - disable logs
+// values: 1 - enable plugin logs, 0 - disable logs
 const PDX_LOG_ENABLE = 0;
-//const PDX_LOG_FILE = plugin_dir_path( __FILE__ ) . 'wordapp.log';
-// define('PDX_LOG_FILE', WP_CONTENT_DIR . '/wordapp-log.txt');
-// define('PDX_LOG_FILE', get_home_path() . '/wordapp-log.txt');
-const PDX_LOG_FILE = '/var/www/html/tmp/wordapp-seo.log';
+
+if (PDX_LOG_ENABLE != 0)
+{
+    $upload_dir = wp_upload_dir(null, false);
+    define('PDX_LOG_FILE', $upload_dir["basedir"] . '/wordapp-plugin.log'); 
+}
 
 const PDX_MARKER_CONTENT_BEGIN  = '<!-- Wordapp-Marker-Begin: Content -->';
 const PDX_MARKER_CONTENT_END    = '<!-- Wordapp-Marker-End: Content -->';

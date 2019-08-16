@@ -126,6 +126,6 @@ Note: After installation and activation of plugin in your site, please contact w
 = 1.4.0 (2019-04-30): =
 * Support for plugin update completed
 
-= 1.4.1 (2019-07-07): =
+= 1.4.1 (2019-08-15): =
 * Support for built-in meta rendering
 * Support for header scripts
