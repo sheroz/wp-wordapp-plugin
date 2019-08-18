@@ -100,7 +100,7 @@ function ajax_wa_pdx() {
             }
 
             if (!$is_authorized)
-                wa_pdx_send_response('Not authorized');
+                wa_pdx_send_response('not_authorized');
 
             switch ($op) {
 
@@ -184,19 +184,39 @@ function ajax_wa_pdx() {
                     wa_pdx_get_post_keywords();
                     break;
                     
-                case PDX_OP_WP_UPDATE_PLUGIN:
-                    wa_pdx_plugin_upgrade();
+                case PDX_OP_WP_PLUGIN_LIST:
+                    wa_pdx_plugin_list();
+                    break;
+
+                case PDX_OP_WP_PLUGIN_UPDATE:
+                    wa_pdx_plugin_upgrade($params);
+                    break;
+
+                case PDX_OP_WP_PLUGIN_INSTALL:
+                    wa_pdx_plugin_install($params);
+                    break;
+
+                case PDX_OP_WP_PLUGIN_ACTIVATE:
+                    wa_pdx_plugin_activate($params);
+                    break;
+
+                case PDX_OP_WP_PLUGIN_DEACTIVATE:
+                    wa_pdx_plugin_deactivate($params);
+                    break;
+
+                case PDX_OP_WP_PLUGIN_DELETE:
+                    wa_pdx_plugin_delete($params);
                     break;
 
                 default:
-                    wa_pdx_send_response('No valid command');
+                    wa_pdx_send_response('unsupported_operation');
             }
         }
         else
-            wa_pdx_send_response('No command found');
+            wa_pdx_send_response('invalid_operation');
     }
     else
-        wa_pdx_send_response('Invalid Data');
+        wa_pdx_send_response('invalid_data');
 }
 
 

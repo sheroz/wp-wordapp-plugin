@@ -33,7 +33,12 @@ const PDX_OP_WP_POST_KEYWORDS       =   61;
 const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 const PDX_OP_WP_ADMIN_ACCESS_URL    =   80;
-const PDX_OP_WP_UPDATE_PLUGIN       =   90;
+const PDX_OP_WP_PLUGIN_UPDATE       =   90;
+const PDX_OP_WP_PLUGIN_LIST         =   91;
+const PDX_OP_WP_PLUGIN_INSTALL      =   92;
+const PDX_OP_WP_PLUGIN_ACTIVATE     =   93;
+const PDX_OP_WP_PLUGIN_DEACTIVATE   =   94;
+const PDX_OP_WP_PLUGIN_DELETE       =   95;
 
 const PDX_PLUGIN_VERSION_NUMBER = '1.4.1';
 
