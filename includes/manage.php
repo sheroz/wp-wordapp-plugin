@@ -79,7 +79,7 @@ function wa_pdx_plugin_upgrade ($params)
 function wa_pdx_plugin_install ($params)
 {
     $plugin = $params['plugin'];
-    if (!empty($plugin))
+    if (empty($plugin))
     {
         wa_pdx_send_response('plugin_parameter_empty');
         return;
@@ -114,7 +114,7 @@ function wa_pdx_plugin_install ($params)
 function wa_pdx_plugin_activate ($params)
 {
     $plugin = $params['plugin'];
-    if (!empty($plugin))
+    if (empty($plugin))
     {
         wa_pdx_send_response('plugin_parameter_empty');
         return;
@@ -151,7 +151,7 @@ function wa_pdx_plugin_activate ($params)
 function wa_pdx_plugin_deactivate ($params)
 {
     $plugin = $params['plugin'];
-    if (!empty($plugin))
+    if (empty($plugin))
     {
         wa_pdx_send_response('plugin_parameter_empty');
         return;
@@ -188,7 +188,7 @@ function wa_pdx_plugin_deactivate ($params)
 function wa_pdx_plugin_delete ($params)
 {
     $plugin = $params['plugin'];
-    if (!empty($plugin))
+    if (empty($plugin))
     {
         wa_pdx_send_response('plugin_parameter_empty');
         return;
