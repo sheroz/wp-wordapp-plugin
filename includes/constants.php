@@ -30,6 +30,7 @@ const PDX_OP_WP_PREPARE_PREVIEW     =   40;
 const PDX_OP_WP_CHECK_PLUGIN        =   50;
 const PDX_OP_WP_SLIMSTAT_TOKEN      =   60;
 const PDX_OP_WP_POST_KEYWORDS       =   61;
+const PDX_OP_WP_ANALYTICS_SCRIPTS   =   62;
 const PDX_OP_WP_POST_FREQUENCY      =   70;
 const PDX_OP_WP_LAST_UPDATED_POST   =   71;
 const PDX_OP_WP_ADMIN_ACCESS_URL    =   80;

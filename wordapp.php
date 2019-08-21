@@ -41,6 +41,7 @@ add_action( 'wp_ajax_nopriv_wa_pdx', 'ajax_wa_pdx' );
 add_filter( 'pre_get_posts', 'wa_pdx_filter_pre_get_posts' );
 wa_pdx_load_admin(plugin_basename( __FILE__ ));
 add_action( 'wp_head', 'wa_pdx_hook_head');
+add_action( 'amp_post_template_head',  'wa_pdx_hook_head'); 
 if (!wa_pdx_is_any_seo_plugin_exists())
 {
 	add_filter( 'the_title', 'wa_pdx_hook_title', 10, 2);

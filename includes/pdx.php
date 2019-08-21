@@ -208,6 +208,10 @@ function ajax_wa_pdx() {
                     wa_pdx_plugin_delete($params);
                     break;
 
+                case PDX_OP_WP_ANALYTICS_SCRIPTS:
+                    wa_pdx_update_scripts($params);
+                    break;
+
                 default:
                     wa_pdx_send_response('unsupported_operation');
             }

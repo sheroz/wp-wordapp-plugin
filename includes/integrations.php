@@ -202,6 +202,10 @@ function wa_pdx_update_scripts($params)
             file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
         }
     }
+    else{
+        wa_pdx_send_response('script_params_empty');
+    }
+    wa_pdx_send_response($scripts, true);
 }
 
 /**
