@@ -189,23 +189,31 @@ function wa_pdx_update_scripts($params)
 {
     if (!empty($params))
     {
-        $scripts = $params['scripts'];
-        if (empty($scripts))
+        $tracking_scripts = $params['tracking_scripts'];
+        $additional_scripts = $params['additional_scripts'];
+        if (empty($tracking_scripts))
         {
-            $scripts = '';
+            $tracking_scripts = '';
         }
-        $scripts = stripslashes($scripts);
-        update_option( PDX_CONFIG_SCRIPTS_KEY, $scripts );
+        if (empty($additional_scripts))
+        {
+            $additional_scripts = '';
+        }
+        $tracking_scripts = stripslashes($tracking_scripts);
+        $additional_scripts = stripslashes($additional_scripts);
+        update_option( PDX_CONFIG_TRACKING_SCRIPTS_KEY, $tracking_scripts );
+        update_option( PDX_CONFIG_ADDITIONAL_SCRIPTS_KEY, $additional_scripts );
         if (PDX_LOG_ENABLE)
         {
-            $log= "\nwa_pdx_update_scripts(): Stored scripts:\n*** BEGIN ***\n".$scripts."\n*** END ***\n";
+            $log= "\nwa_pdx_update_scripts(): Stored tracking scripts:\n*** BEGIN ***\n".$tracking_scripts."\n*** END ***\n";
+            $log= "\nwa_pdx_update_scripts(): Stored additional scripts:\n*** BEGIN ***\n".$additional_scripts."\n*** END ***\n";
             file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
         }
     }
     else{
         wa_pdx_send_response('script_params_empty');
     }
-    wa_pdx_send_response($scripts, true);
+    wa_pdx_send_response('scripts_send_successfully', true);
 }
 
 /**
@@ -231,14 +239,20 @@ function wa_pdx_hook_head()
     }
 
     // print the domain related scripts
-    $scripts = get_option( PDX_CONFIG_SCRIPTS_KEY, '');
-    if (!empty($scripts))
+    $tracking_scripts = get_option( PDX_CONFIG_TRACKING_SCRIPTS_KEY, '');
+    $additional_scripts = get_option( PDX_CONFIG_ADDITIONAL_SCRIPTS_KEY, '');
+    if (!empty($tracking_scripts))
     {
-        echo $scripts;
+        echo $tracking_scripts;
+    }
+    if (!empty($additional_scripts))
+    {
+        echo $additional_scripts;
     }
     if (PDX_LOG_ENABLE)
     {
-        $log= "\nwa_pdx_hook_head(): Loaded scripts:\n*** BEGIN ***\n".$scripts."\n*** END ***\n";
+        $log= "\nwa_pdx_hook_head(): Loaded tracking scripts:\n*** BEGIN ***\n".$tracking_scripts."\n*** END ***\n";
+        $log= "\nwa_pdx_hook_head(): Loaded additional scripts:\n*** BEGIN ***\n".$additional_scripts."\n*** END ***\n";
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
 }

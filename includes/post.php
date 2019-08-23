@@ -382,7 +382,6 @@ function wa_pdx_post_add ($params)
         $meta_title = $params['meta_title'];
         $meta_description = $params['meta_description'];
         wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description, $focus_keyword);
-        wa_pdx_update_scripts($params);
         return $post_id;
     }
     return null;
@@ -488,7 +487,6 @@ function wa_pdx_post_update ($params)
         $meta_title = $params['meta_title'];
         $meta_description = $params['meta_description'];
         wa_pdx_seo_plugins_integrate ($post_id, $meta_title, $meta_description, $focus_keyword);
-        wa_pdx_update_scripts($params);
         return $post_id;
     }
     return null;
