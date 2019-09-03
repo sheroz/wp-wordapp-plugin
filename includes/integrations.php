@@ -191,6 +191,7 @@ function wa_pdx_update_scripts($params)
     {
         $tracking_scripts = $params['tracking_scripts'];
         $additional_scripts = $params['additional_scripts'];
+        $amp_body_scripts = $params['amp_body_scripts'];
         if (empty($tracking_scripts))
         {
             $tracking_scripts = '';
@@ -199,14 +200,21 @@ function wa_pdx_update_scripts($params)
         {
             $additional_scripts = '';
         }
+        if (empty($amp_body_scripts))
+        {
+            $amp_body_scripts = '';
+        }
         $tracking_scripts = stripslashes($tracking_scripts);
         $additional_scripts = stripslashes($additional_scripts);
+        $amp_body_scripts = stripslashes($amp_body_scripts);
         update_option( PDX_CONFIG_TRACKING_SCRIPTS_KEY, $tracking_scripts );
         update_option( PDX_CONFIG_ADDITIONAL_SCRIPTS_KEY, $additional_scripts );
+        update_option( PDX_CONFIG_AMP_BODY_SCRIPTS_KEY, $amp_body_scripts );
         if (PDX_LOG_ENABLE)
         {
             $log= "\nwa_pdx_update_scripts(): Stored tracking scripts:\n*** BEGIN ***\n".$tracking_scripts."\n*** END ***\n";
             $log= "\nwa_pdx_update_scripts(): Stored additional scripts:\n*** BEGIN ***\n".$additional_scripts."\n*** END ***\n";
+            $log= "\nwa_pdx_update_scripts(): Stored amp body scripts:\n*** BEGIN ***\n".$amp_body_scripts."\n*** END ***\n";
             file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
         }
     }
@@ -303,4 +311,25 @@ function wa_pdx_is_any_seo_plugin_exists()
         file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
     }
     return $seo_plugin_exists;
+}
+
+/**
+ * Injects scripts into body section for amp sites
+ * 
+ * @since       1.4.2
+ * 
+ * @return void
+ */
+function wa_pdx_hook_body()
+{
+    $amp_body_scripts = get_option( PDX_CONFIG_AMP_BODY_SCRIPTS_KEY, '');
+    if (!empty($amp_body_scripts))
+    {
+        echo $amp_body_scripts;
+    }
+    if (PDX_LOG_ENABLE)
+    {
+        $log= "\wa_pdx_hook_body(): Loaded amp body tracking scripts:\n*** BEGIN ***\n".$amp_body_scripts."\n*** END ***\n";
+        file_put_contents(PDX_LOG_FILE, $log, FILE_APPEND);
+    }
 }

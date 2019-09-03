@@ -131,3 +131,5 @@ Note: After installation and activation of plugin in your site, please contact w
 * Support for header scripts
 * Support for remote plugin management
 
+= 1.4.2 (2019-09-03): =
+* Support body scripts for amp sites

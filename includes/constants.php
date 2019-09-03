@@ -41,13 +41,14 @@ const PDX_OP_WP_PLUGIN_ACTIVATE     =   93;
 const PDX_OP_WP_PLUGIN_DEACTIVATE   =   94;
 const PDX_OP_WP_PLUGIN_DELETE       =   95;
 
-const PDX_PLUGIN_VERSION_NUMBER     = '1.4.1';
+const PDX_PLUGIN_VERSION_NUMBER     = '1.4.2';
 
 const PDX_SETTINGS_PAGE_SLUG            = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME          = 'wa_pdx_options';
 const PDX_CONFIG_OPTION_KEY             = 'wa_pdx_config';
 const PDX_CONFIG_TRACKING_SCRIPTS_KEY   = 'wa_pdx_tracking_scripts';
 const PDX_CONFIG_ADDITIONAL_SCRIPTS_KEY = 'wa_pdx_additional_scripts';
+const PDX_CONFIG_AMP_BODY_SCRIPTS_KEY   = 'wa_pdx_amp_body_scripts';
 const PDX_SCHEDULED_OPTION_KEY          = 'wa_pdx_future';
 const PDX_PLUGIN_PATH                   = 'wordapp/wordapp.php';
 
