@@ -12,7 +12,7 @@
 
 include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 class Pdx_Silent_Skin extends \WP_Upgrader_Skin {
-    public function feedback($string) { /* no output */ }
+    public function feedback($string, ...$args) { /* no output */ }
 }
 
 /**
