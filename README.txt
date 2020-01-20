@@ -133,3 +133,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.4.2 (2019-09-03): =
 * Support body scripts for amp sites
+
+= 1.4.3 (2020-01-20): =
+* bug fix on WP_Upgrader_Skin::feedback
