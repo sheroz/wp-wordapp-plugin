@@ -1,7 +1,7 @@
 === Wordapp ===
 Contributors: Wordapp
 Requires at least: 3.5
-Tested up to: 5.2.2
+Tested up to: 5.5.3
 Stable tag: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -136,3 +136,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.4.3 (2020-01-20): =
 * bug fix on WP_Upgrader_Skin::feedback
+
+= 1.4.4 (2020-12-06): =
+* Tested for new version of WordPress

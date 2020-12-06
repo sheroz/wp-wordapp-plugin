@@ -14,7 +14,7 @@
  * Plugin Name:		Wordapp
  * Plugin URI:		https://wordpress.org/plugins/wordapp/
  * Description:		Wordapp is a language-processing platform for SEO and SEM. Wordapp plugin connects your site with Wordapp Platform to create, translate and optimize online content easily and seamlessly.
- * Version:			1.4.3
+ * Version:			1.4.4
  * Author:			Wordapp
  * Author URI:		http://wordapp.com
  * License:			GPL-2.0+
