@@ -148,3 +148,6 @@ Note: After installation and activation of plugin in your site, please contact w
 
 = 1.4.7 (2022-05-11): =
 * Tested for new version of WordPress
+
+= 1.4.8 (2022-05-11): =
+* Tested for new version of WordPress
