@@ -41,7 +41,7 @@ const PDX_OP_WP_PLUGIN_ACTIVATE     =   93;
 const PDX_OP_WP_PLUGIN_DEACTIVATE   =   94;
 const PDX_OP_WP_PLUGIN_DELETE       =   95;
 
-const PDX_PLUGIN_VERSION_NUMBER     = '1.5.0';
+const PDX_PLUGIN_VERSION_NUMBER     = '1.6.0';
 
 const PDX_SETTINGS_PAGE_SLUG            = 'wa_pdx';
 const PDX_SETTINGS_OPTION_NAME          = 'wa_pdx_options';
